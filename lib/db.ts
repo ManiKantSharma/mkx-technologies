@@ -87,3 +87,13 @@ export default connectDB
 
 
 export type { IProduct as Product, IPricingPlan as PricingPlan, IUser as User, ISubscription as Subscription, IBlogPost as BlogPost } from './models'
+
+import type { ISubscription, IUser, IProduct, IPricingPlan } from './models'
+
+export type SubscriptionWithDetails = ISubscription & {
+  userName: string;
+  userEmail: string;
+  productName: string;
+  planName: string;
+  planPrice: number;
+};

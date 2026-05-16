@@ -103,7 +103,7 @@ export default function PricingPage() {
       features: plan.features.join("\n"),
       isPopular: plan.isPopular,
       isActive: plan.isActive,
-      productId: plan.productId,
+      productId: plan.productId as string,
     });
     setDialogOpen(true);
   }
@@ -154,8 +154,9 @@ export default function PricingPage() {
 
   const groupedPlans = plans.reduce(
     (acc, plan) => {
-      if (!acc[plan.productId]) acc[plan.productId] = [];
-      acc[plan.productId].push(plan);
+      const pid = plan.productId as string;
+      if (!acc[pid]) acc[pid] = [];
+      acc[pid].push(plan);
       return acc;
     },
     {} as Record<string, PlanWithProduct[]>,

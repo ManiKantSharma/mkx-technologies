@@ -1,5 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
+const commonTransform = {
+  virtuals: true,
+  versionKey: false,
+  transform: (_doc: any, ret: any) => {
+    ret.id = ret._id.toString();
+    return ret;
+  }
+};
+
 /**
  * Represents a Product in the system.
  * 
@@ -7,6 +16,7 @@ import mongoose, { Schema, Document } from 'mongoose'
  * @extends Document
  */
 export interface IProduct extends Document {
+  id: string
   name: string
   description?: string
   icon?: string
@@ -20,7 +30,7 @@ const ProductSchema = new Schema<IProduct>({
   description: { type: String },
   icon: { type: String },
   isActive: { type: Boolean, default: true },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 /**
  * Represents a Pricing Plan for a specific Product.
@@ -29,13 +39,14 @@ const ProductSchema = new Schema<IProduct>({
  * @extends Document
  */
 export interface IPricingPlan extends Document {
+  id: string
   name: string
   price: number
   interval: 'MONTH' | 'YEAR'
   features: string[]
   isPopular: boolean
   isActive: boolean
-  productId: mongoose.Types.ObjectId
+  productId: string | mongoose.Types.ObjectId
   createdAt: Date
   updatedAt: Date
 }
@@ -48,7 +59,7 @@ const PricingPlanSchema = new Schema<IPricingPlan>({
   isPopular: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
   productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 /**
  * Represents a User in the system.
@@ -57,6 +68,7 @@ const PricingPlanSchema = new Schema<IPricingPlan>({
  * @extends Document
  */
 export interface IUser extends Document {
+  id: string
   email: string
   password?: string
   name?: string
@@ -72,7 +84,7 @@ const UserSchema = new Schema<IUser>({
   name: { type: String },
   company: { type: String },
   companySize: { type: String },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 
 /**
@@ -82,9 +94,10 @@ const UserSchema = new Schema<IUser>({
  * @extends Document
  */
 export interface ISubscription extends Document {
-  userId: mongoose.Types.ObjectId
-  productId: mongoose.Types.ObjectId
-  pricingPlanId: mongoose.Types.ObjectId
+  id: string
+  userId: string | mongoose.Types.ObjectId
+  productId: string | mongoose.Types.ObjectId
+  pricingPlanId: string | mongoose.Types.ObjectId
   status: 'ACTIVE' | 'CANCELLED' | 'EXPIRED' | 'PENDING'
   startDate: Date
   endDate?: Date
@@ -99,7 +112,7 @@ const SubscriptionSchema = new Schema<ISubscription>({
   status: { type: String, enum: ['ACTIVE', 'CANCELLED', 'EXPIRED', 'PENDING'], default: 'ACTIVE' },
   startDate: { type: Date, default: Date.now },
   endDate: { type: Date },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 /**
  * Represents a Blog Post in the system.
@@ -108,6 +121,7 @@ const SubscriptionSchema = new Schema<ISubscription>({
  * @extends Document
  */
 export interface IBlogPost extends Document {
+  id: string
   title: string
   description: string
   slug: string
