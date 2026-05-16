@@ -95,13 +95,13 @@ export default function BlogAdminPage() {
     try {
       const url = editingPost ? `/api/admin/blog/${editingPost.id}` : "/api/admin/blog"
       const method = editingPost ? "PUT" : "POST"
-      
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-      
+
       if (res.ok) {
         toast.success(editingPost ? "Post updated successfully" : "Post created successfully")
         fetchPosts()
@@ -131,8 +131,6 @@ export default function BlogAdminPage() {
       toast.error("An error occurred while deleting the post")
     }
   }
-
-  // Auto-generate slug from title
   useEffect(() => {
     if (!editingPost && formData.title) {
       const slug = formData.title

@@ -22,8 +22,8 @@ export async function POST(request: Request) {
     }
 
     const brandColor = "#A70400";
-    const backgroundColor = "#0a0a0a"; 
-    const cardBackground = "#141414"; 
+    const backgroundColor = "#0a0a0a";
+    const cardBackground = "#141414";
     const textColor = "#ffffff";
     const mutedTextColor = "#a3a3a3";
     const borderColor = "#262626";
@@ -53,26 +53,26 @@ export async function POST(request: Request) {
                     <td style="padding: 24px 16px;">
                       ${logoHtml}
                       <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 20px; color: ${textColor}; line-height: 1.2;">New Demo Request</h2>
-                      
+
                       <div style="background-color: ${backgroundColor}; border-radius: 6px; border: 1px solid ${borderColor}; padding: 14px;">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                           <tr><td style="padding: 6px 0; color: ${mutedTextColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Full Name</td></tr>
                           <tr><td style="padding: 0 0 10px; font-size: 15px; font-weight: 500;">${firstName} ${lastName}</td></tr>
-                          
+
                           <tr><td style="padding: 6px 0; color: ${mutedTextColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Work Email</td></tr>
                           <tr><td style="padding: 0 0 10px; font-size: 15px; font-weight: 500;"><a href="mailto:${email}" style="color: ${brandColor}; text-decoration: none;">${email}</a></td></tr>
-                          
+
                           <tr><td style="padding: 6px 0; color: ${mutedTextColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Company Details</td></tr>
                           <tr><td style="padding: 0 0 10px; font-size: 15px; font-weight: 500;">${company} (${companySize})</td></tr>
-                          
+
                           <tr><td style="padding: 6px 0; color: ${mutedTextColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Product Interest</td></tr>
                           <tr><td style="padding: 0 0 10px; font-size: 15px; font-weight: 600; color: ${brandColor}; text-transform: uppercase;">${product}</td></tr>
-                          
+
                           <tr><td style="padding: 6px 0; color: ${mutedTextColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Message</td></tr>
                           <tr><td style="padding: 0; font-size: 14px; line-height: 1.5; color: #d4d4d4;">${message || "No additional message provided."}</td></tr>
                         </table>
                       </div>
-                      
+
                       <p style="margin: 20px 0 0; font-size: 10px; color: ${mutedTextColor}; text-align: center;">Timestamp: ${new Date().toLocaleString()}</p>
                     </td>
                   </tr>
@@ -83,8 +83,6 @@ export async function POST(request: Request) {
         </div>
       `,
     };
-
-    // Prepare the confirmation email for the user
     const confirmationEmail = {
       subject: "Demo Request Confirmed - MKX Technologies Pvt Ltd",
       html: `
@@ -100,18 +98,18 @@ export async function POST(request: Request) {
                       <p style="font-size: 14px; line-height: 1.6; color: #d4d4d4; margin: 0 0 20px;">
                         Thank you for choosing <strong>MKX Technologies Pvt Ltd</strong>. We have successfully received your request for a personalized demo of our <strong>${product.toUpperCase()}</strong> system.
                       </p>
-                      
+
                       <div style="background-color: ${backgroundColor}; border-left: 3px solid ${brandColor}; padding: 16px; border-radius: 4px; margin: 0 0 20px;">
                         <h3 style="margin: 0 0 6px; font-size: 13px; color: ${textColor}; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">NEXT STEPS</h3>
                         <p style="margin: 0; color: ${mutedTextColor}; font-size: 13px; line-height: 1.5;">
                           Our technical team is reviewing your requirements. A specialist will contact you at <strong>${email}</strong> within 24 hours to coordinate the walkthrough.
                         </p>
                       </div>
-                      
+
                       <p style="font-size: 14px; line-height: 1.6; color: #d4d4d4; margin: 0 0 24px;">
                         Discover how our solutions can transform your business operations. Visit our <a href="https://mkx-technologies.com" style="color: ${brandColor}; text-decoration: none; font-weight: 600;">Resource Center</a> for more information.
                       </p>
-                      
+
                       <div style="border-top: 1px solid ${borderColor}; padding-top: 20px; text-align: center;">
                         <p style="font-size: 12px; color: ${mutedTextColor}; margin: 0 0 4px;">Best regards,</p>
                         <p style="font-size: 15px; font-weight: 800; color: ${textColor}; margin: 0; text-transform: uppercase; letter-spacing: 1px;">MKX Technologies</p>
@@ -143,8 +141,8 @@ export async function POST(request: Request) {
       html: confirmationEmail.html,
     });
 
-    console.log("Demo Request Submitted:", { 
-      emailToSelf, 
+    console.log("Demo Request Submitted:", {
+      emailToSelf,
       confirmationEmail,
       adminEmailResponse: adminRes,
       userEmailResponse: userRes

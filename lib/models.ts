@@ -1,5 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
+/**
+ * Represents a Product in the system.
+ * 
+ * @interface IProduct
+ * @extends Document
+ */
 export interface IProduct extends Document {
   name: string
   description?: string
@@ -16,6 +22,12 @@ const ProductSchema = new Schema<IProduct>({
   isActive: { type: Boolean, default: true },
 }, { timestamps: true })
 
+/**
+ * Represents a Pricing Plan for a specific Product.
+ * 
+ * @interface IPricingPlan
+ * @extends Document
+ */
 export interface IPricingPlan extends Document {
   name: string
   price: number
@@ -38,6 +50,12 @@ const PricingPlanSchema = new Schema<IPricingPlan>({
   productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
 }, { timestamps: true })
 
+/**
+ * Represents a User in the system.
+ * 
+ * @interface IUser
+ * @extends Document
+ */
 export interface IUser extends Document {
   email: string
   password?: string
@@ -57,6 +75,12 @@ const UserSchema = new Schema<IUser>({
 }, { timestamps: true })
 
 
+/**
+ * Represents a Subscription of a User to a Product/Plan.
+ * 
+ * @interface ISubscription
+ * @extends Document
+ */
 export interface ISubscription extends Document {
   userId: mongoose.Types.ObjectId
   productId: mongoose.Types.ObjectId
@@ -77,6 +101,12 @@ const SubscriptionSchema = new Schema<ISubscription>({
   endDate: { type: Date },
 }, { timestamps: true })
 
+/**
+ * Represents a Blog Post in the system.
+ * 
+ * @interface IBlogPost
+ * @extends Document
+ */
 export interface IBlogPost extends Document {
   title: string
   description: string

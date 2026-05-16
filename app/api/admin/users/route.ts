@@ -1,22 +1,16 @@
-import connectDB, { isMockMode } from '@/lib/db'
+import connectDB from '@/lib/db'
 import { User, Subscription } from '@/lib/models'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json([])
-    }
 
     const users = await User.find().sort({ createdAt: -1 })
-    
-    // Enrich with active subscription counts
     const enrichedUsers = await Promise.all(users.map(async (u) => {
-      const activeCount = await Subscription.countDocuments({ 
-        userId: u._id, 
-        status: 'ACTIVE' 
+      const activeCount = await Subscription.countDocuments({
+        userId: u._id,
+        status: 'ACTIVE'
       })
       return {
         ...u.toObject(),
@@ -34,10 +28,6 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     const body = await request.json()
     const user = await User.create(body)

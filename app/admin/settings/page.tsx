@@ -17,7 +17,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid gap-6">
-        {/* General Settings */}
+        {}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -48,7 +48,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Database Settings */}
+        {}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Notification Settings */}
+        {}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -125,7 +125,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Security Settings */}
+        {}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -158,7 +158,7 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* API Settings */}
+        {}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

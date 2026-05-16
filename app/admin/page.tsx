@@ -31,7 +31,7 @@ export default function AdminDashboard() {
     }
 
     fetchStats()
-    const interval = setInterval(fetchStats, 10000) // Polling every 10 seconds
+    const interval = setInterval(fetchStats, 10000)
     return () => clearInterval(interval)
   }, [])
 
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
         <p className="text-muted-foreground">Overview of your SaaS business metrics</p>
       </div>
 
-      {/* Stats Grid */}
+      {}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
           <Card key={stat.title} className="border-border/40 bg-card/50 backdrop-blur-sm">
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Quick Actions & Recent Activity */}
+      {}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
           <CardHeader>

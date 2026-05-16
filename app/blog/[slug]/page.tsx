@@ -1,11 +1,11 @@
-import { Metadata } from "next";
-import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { getBlogPosts, getBlogPostBySlug } from "@/lib/blog";
-import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Header } from "@/components/header";
+import { getBlogPostBySlug } from "@/lib/blog";
+import { ArrowLeft, Calendar, Tag, User } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
-import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ slug: string }>;

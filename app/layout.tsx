@@ -15,12 +15,12 @@ const organizationSchema = {
   "logo": "https://mkxtechnologies.vercel.app/icon.svg",
   "description": "Enterprise-grade HRMS, CRMS, and POS systems built for scale and business growth.",
   "sameAs": [
-    "https://twitter.com/mkxtechnologies", // Update with actual social links
+    "https://twitter.com/mkxtechnologies",
     "https://linkedin.com/company/mkxtechnologies"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+91-XXXXXXXXXX", // Update with actual phone
+    "telephone": "+91-XXXXXXXXXX",
     "contactType": "customer service",
     "email": "mkxtechnologies@gmail.com"
   }

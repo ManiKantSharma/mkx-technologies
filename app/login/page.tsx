@@ -61,7 +61,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <div className="flex flex-1 pt-16">
-        {/* Left Panel - Branding */}
+        {}
         <div className="hidden w-1/2 flex-col justify-between bg-card p-12 lg:flex">
 
         <div className="space-y-6">
@@ -94,7 +94,7 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Right Panel - Login Form */}
+      {}
       <div className="flex w-full flex-col lg:w-1/2">
 
         <div className="flex flex-1 items-center justify-center px-6 pb-12 lg:px-12">

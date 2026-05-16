@@ -13,13 +13,13 @@ export default function TermsPage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <main className="container mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           initial="initial"
           animate="animate"
           variants={staggerContainer}
           className="mb-12 space-y-4"
         >
-          <motion.h1 
+          <motion.h1
             variants={slideUp}
             className="text-4xl font-extrabold tracking-tight lg:text-5xl"
           >
@@ -28,7 +28,7 @@ export default function TermsPage() {
           <motion.p variants={slideUp} className="text-muted-foreground">Last updated: {lastUpdated}</motion.p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial="initial"
           animate="animate"
           variants={staggerContainer}

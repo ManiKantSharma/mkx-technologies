@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 
 export async function POST() {
   try {
-    // Clear the auth cookie
     const response = NextResponse.json({
       success: true,
       message: 'Logged out successfully'
@@ -12,7 +11,7 @@ export async function POST() {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 0 // Immediately expire
+      maxAge: 0
     })
 
     return response

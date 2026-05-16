@@ -29,7 +29,7 @@ export function Header() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {}
         <div className="hidden items-center gap-8 md:flex">
           <Link
             href="/#products"
@@ -63,7 +63,7 @@ export function Header() {
           </DemoModal>
         </div>
 
-        {/* Mobile Menu Button */}
+        {}
         <button
           className="md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -77,7 +77,7 @@ export function Header() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {}
       {mobileMenuOpen && (
         <div className="border-t border-border bg-background px-6 py-4 md:hidden">
           <div className="flex flex-col gap-4">
@@ -106,9 +106,7 @@ export function Header() {
               Contact
             </Link>
             <div className="flex flex-col gap-2 pt-4">
-              {/* <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button> */}
+              {}
               <DemoModal>
                 <Button size="sm" className="w-full">Get Started</Button>
               </DemoModal>

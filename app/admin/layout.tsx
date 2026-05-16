@@ -75,7 +75,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Mobile sidebar overlay */}
+      {}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -83,7 +83,7 @@ export default function AdminLayout({
         />
       )}
 
-      {/* Sidebar */}
+      {}
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 transform bg-card border-r border-border transition-transform duration-200 ease-in-out lg:translate-x-0",
@@ -167,9 +167,9 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main content */}
+      {}
       <div className="lg:pl-64">
-        {/* Top bar */}
+        {}
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/95 px-6 backdrop-blur supports-backdrop-filter:bg-background/60">
           <Button
             variant="ghost"
@@ -217,7 +217,7 @@ export default function AdminLayout({
           </DropdownMenu>
         </header>
 
-        {/* Page content */}
+        {}
         <main className="p-6">{children}</main>
       </div>
     </div>

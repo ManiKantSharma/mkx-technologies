@@ -16,7 +16,6 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setIsLoading(false)
     setIsSubmitted(true)
@@ -26,7 +25,7 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <div className="flex flex-1 pt-24">
-        {/* Left Panel - Branding */}
+        {}
         <div className="hidden w-1/2 flex-col justify-between bg-card p-12 lg:flex">
           <div className="space-y-6">
             <h1 className="text-4xl font-bold leading-tight text-foreground text-balance">
@@ -67,7 +66,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        {/* Right Panel - Forgot Password Form */}
+        {}
         <div className="flex w-full flex-col lg:w-1/2">
           <div className="flex flex-1 items-center justify-center px-6 pb-12 lg:px-12">
             <div className="w-full max-w-md space-y-8">

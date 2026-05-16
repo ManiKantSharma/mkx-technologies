@@ -86,7 +86,7 @@ export default function SignupPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <div className="flex flex-1 pt-24">
-      {/* Left Panel - Branding */}
+      {}
       <div className="hidden w-1/2 flex-col justify-between bg-card p-12 pl-38! lg:flex">
 
 
@@ -145,7 +145,7 @@ export default function SignupPage() {
         </p>
       </div>
 
-      {/* Right Panel - Signup Form */}
+      {}
       <div className="flex w-full flex-col lg:w-1/2">
 
 

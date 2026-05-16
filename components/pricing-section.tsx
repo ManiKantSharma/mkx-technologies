@@ -70,7 +70,7 @@ export function PricingSection() {
   return (
     <section id="pricing" className="border-t border-border px-6 py-32">
       <div className="mx-auto max-w-7xl">
-        <motion.div 
+        <motion.div
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
@@ -86,7 +86,7 @@ export function PricingSection() {
           </motion.p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}

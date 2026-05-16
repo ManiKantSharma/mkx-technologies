@@ -74,7 +74,6 @@ export function DemoModal({ children }: DemoModalProps) {
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen)
     if (!newOpen) {
-      // Reset form when closing
       setTimeout(() => {
         setIsSuccess(false)
         setFormData({

@@ -1,21 +1,17 @@
-import connectDB, { isMockMode } from '@/lib/db'
+import connectDB from '@/lib/db'
 import { Subscription } from '@/lib/models'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json([])
-    }
 
     const subscriptions = await Subscription.find()
       .populate('userId', 'name email')
       .populate('productId', 'name')
       .populate('pricingPlanId', 'name price')
       .sort({ createdAt: -1 })
-    
+
     const formatted = subscriptions.map(s => {
       const obj = s.toObject()
       return {
@@ -38,10 +34,6 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     const body = await request.json()
     const subscription = await Subscription.create(body)

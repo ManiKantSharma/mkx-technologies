@@ -35,7 +35,7 @@ export function Footer() {
     <footer className="border-t border-border lg:px-6 py-12">
       <div className="mx-auto lg:max-w-7xl">
         <div className="grid gap-8 px-6 md:grid-cols-2 lg:grid-cols-6">
-          {/* Brand */}
+          {}
           <div className="lg:col-span-2">
             <Link
               href="/"
@@ -56,7 +56,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Products */}
+          {}
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Products
@@ -75,7 +75,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
+          {}
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Company
@@ -94,7 +94,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
+          {}
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Resources
@@ -113,7 +113,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          {}
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Legal

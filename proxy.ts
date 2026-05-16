@@ -11,11 +11,7 @@ const secret = new TextEncoder().encode(JWT_SECRET);
 const protectedPaths = ["/admin"];
 const publicPaths = ["/", "/login", "/signup", "/forgot-password"];
 
-/**
- * Proxy function to handle authentication and authorization
- * @param request - The incoming Next.js request
- * @returns NextResponse with appropriate redirect or continuation
- */
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -51,10 +47,7 @@ export async function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-/**
- * Configuration for the proxy matcher
- * Defines which paths the proxy should run on
- */
+
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|public).*)"],
 };

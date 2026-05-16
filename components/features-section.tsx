@@ -41,7 +41,7 @@ export function FeaturesSection() {
   return (
     <section id="features" className="border-t border-border bg-secondary/30 px-6 py-32">
       <div className="mx-auto max-w-7xl">
-        <motion.div 
+        <motion.div
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
@@ -61,7 +61,7 @@ export function FeaturesSection() {
           </motion.div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}

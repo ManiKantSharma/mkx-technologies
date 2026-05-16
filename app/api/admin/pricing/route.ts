@@ -1,22 +1,13 @@
-import connectDB, { isMockMode } from '@/lib/db'
+import connectDB from '@/lib/db'
 import { PricingPlan } from '@/lib/models'
-import { MOCK_PRICING_PLANS } from '@/lib/mock-data'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json(MOCK_PRICING_PLANS)
-    }
-
-    // Join with products
     const plans = await PricingPlan.find()
       .populate('productId', 'name')
       .sort({ price: 1 })
-    
-    // Transform to match the expected frontend format
     const formattedPlans = plans.map(plan => {
       const p = plan.toObject()
       return {
@@ -28,17 +19,14 @@ export async function GET() {
     return NextResponse.json(formattedPlans)
   } catch (error) {
     console.error('Failed to fetch pricing plans:', error)
-    return NextResponse.json(MOCK_PRICING_PLANS)
+    return NextResponse.json({ error: 'Failed to fetch pricing plans' }, { status: 500 })
   }
 }
 
 export async function POST(request: Request) {
   try {
     await connectDB()
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Database is in Mock Mode (Read-only)' }, { status: 503 })
-    }
+
 
     const body = await request.json()
     const plan = await PricingPlan.create(body)

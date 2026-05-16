@@ -1,4 +1,4 @@
-import connectDB, { isMockMode } from '@/lib/db'
+import connectDB from '@/lib/db'
 import { BlogPost } from '@/lib/models'
 import { NextResponse } from 'next/server'
 
@@ -9,10 +9,6 @@ export async function GET(
   try {
     await connectDB()
     const { id } = await params
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     const post = await BlogPost.findById(id)
     if (!post) {
@@ -32,14 +28,10 @@ export async function PUT(
   try {
     await connectDB()
     const { id } = await params
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     const body = await request.json()
     const post = await BlogPost.findByIdAndUpdate(id, body, { new: true })
-    
+
     if (!post) {
       return NextResponse.json({ error: 'Blog post not found' }, { status: 404 })
     }
@@ -57,10 +49,6 @@ export async function DELETE(
   try {
     await connectDB()
     const { id } = await params
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     await BlogPost.findByIdAndDelete(id)
     return NextResponse.json({ success: true })

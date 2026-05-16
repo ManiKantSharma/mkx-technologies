@@ -9,7 +9,7 @@ import { slideUp, staggerContainer } from "@/lib/animations"
 export function CTASection() {
   return (
     <section id="contact" className="border-t border-border bg-secondary/30 px-6 py-32">
-      <motion.div 
+      <motion.div
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}

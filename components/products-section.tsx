@@ -78,7 +78,7 @@ export function ProductsSection() {
           </motion.p>
         </motion.div>
 
-        {/* Product Tabs */}
+        {}
         <div className="mb-12 flex flex-wrap justify-center gap-4">
           {products.map((product) => (
             <button
@@ -94,7 +94,7 @@ export function ProductsSection() {
           ))}
         </div>
 
-        {/* Active Product Display */}
+        {}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeProduct.id}
@@ -142,7 +142,7 @@ export function ProductsSection() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Product Cards Grid */}
+        {}
         <motion.div
           initial="initial"
           whileInView="animate"

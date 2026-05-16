@@ -1,4 +1,4 @@
-import connectDB, { isMockMode } from '@/lib/db'
+import connectDB from '@/lib/db'
 import { Subscription } from '@/lib/models'
 import { NextResponse } from 'next/server'
 
@@ -9,14 +9,10 @@ export async function PUT(
   try {
     await connectDB()
     const { id } = await params
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     const body = await request.json()
     const subscription = await Subscription.findByIdAndUpdate(id, body, { new: true })
-    
+
     if (!subscription) {
       return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
     }
@@ -34,10 +30,6 @@ export async function DELETE(
   try {
     await connectDB()
     const { id } = await params
-    
-    if (isMockMode()) {
-      return NextResponse.json({ error: 'Mock Mode' }, { status: 503 })
-    }
 
     await Subscription.findByIdAndDelete(id)
     return NextResponse.json({ success: true })
