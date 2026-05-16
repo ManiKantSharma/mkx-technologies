@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
-if (!JWT_SECRET) {
-  console.warn("JWT_SECRET is not defined in environment variables.");
-}
+export default async function middleware(request: NextRequest) {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!JWT_SECRET) {
+    return NextResponse.next();
+  }
+  const secret = new TextEncoder().encode(JWT_SECRET);
+  const protectedPaths = ["/admin"];
+  const publicPaths = ["/", "/login", "/signup", "/forgot-password"];
 
-const secret = new TextEncoder().encode(JWT_SECRET);
-
-const protectedPaths = ["/admin"];
-const publicPaths = ["/", "/login", "/signup", "/forgot-password"];
-
-
-export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isProtectedPath = protectedPaths.some((path) =>
