@@ -2,31 +2,31 @@ import Link from "next/link";
 
 const footerLinks = {
   products: [
-    { name: "HRMS", href: "/#products" },
-    { name: "CRMS", href: "/#products" },
-    { name: "POS System", href: "/#products" },
-    { name: "Integrations", href: "/#features" },
-    { name: "Pricing", href: "/#pricing" },
+    { name: "HRMS", href: "/products/hrms" },
+    { name: "CRMS", href: "/products/crms" },
+    { name: "POS System", href: "/products/pos" },
+    { name: "Integrations", href: "/integrations" },
+    { name: "Pricing", href: "/pricing" },
   ],
   company: [
-    { name: "About", href: "/#features" },
+    { name: "About Us", href: "/about" },
     { name: "Blog", href: "/blog" },
-    { name: "Careers", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
+    { name: "Careers", href: "/careers" },
+    { name: "Press", href: "/press" },
+    { name: "Partners", href: "/partners" },
   ],
   resources: [
-    { name: "Documentation", href: "#" },
-    { name: "Help Center", href: "#" },
-    { name: "Community", href: "#" },
-    { name: "Webinars", href: "#" },
-    { name: "Case Studies", href: "#" },
+    { name: "Documentation", href: "/docs" },
+    { name: "Help Center", href: "/help" },
+    { name: "Community", href: "/community" },
+    { name: "Webinars", href: "/webinars" },
+    { name: "Case Studies", href: "/case-studies" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Service", href: "/terms" },
-    { name: "Security", href: "#" },
-    { name: "GDPR", href: "#" },
+    { name: "Security", href: "/security" },
+    { name: "GDPR Compliance", href: "/gdpr" },
   ],
 };
 
@@ -35,13 +35,13 @@ export function Footer() {
     <footer className="border-t border-border lg:px-6 py-12">
       <div className="mx-auto lg:max-w-7xl">
         <div className="grid gap-8 px-6 md:grid-cols-2 lg:grid-cols-6">
-          {}
+          { }
           <div className="lg:col-span-2">
             <Link
               href="/"
               className="flex relative whitespace-nowrap items-center gap-0.5"
             >
-              <span className="rounded-full h-10 w-10 bg-[#A70400]"></span>
+              <span className="rounded-full h-10 w-10 bg-brand"></span>
               <span className="text-2xl absolute left-[10.5px] tracking-wider font-bold font-orbitron stroke-1 text-foreground text-stroke-black">
                 MKX Technologies
               </span>
@@ -56,7 +56,7 @@ export function Footer() {
             </div>
           </div>
 
-          {}
+          { }
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Products
@@ -75,7 +75,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {}
+          { }
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Company
@@ -94,7 +94,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {}
+          { }
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Resources
@@ -113,7 +113,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {}
+          { }
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Legal

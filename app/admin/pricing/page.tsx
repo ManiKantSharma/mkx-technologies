@@ -1,16 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useApiClient } from "@/lib/api-client";
+import { Column, DataTable } from "@/components/admin/data-table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,8 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -29,31 +22,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Plus, Pencil, Trash2, IndianRupee, Star } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useApiClient } from "@/lib/api-client";
-import type { Product, PricingPlan } from "@/lib/db";
+import { Switch } from "@/components/ui/switch";
+import type { PricingPlan, Product } from "@/lib/db";
+import { IndianRupee, Pencil, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type PlanWithProduct = PricingPlan & { productName: string };
 
 export default function PricingPage() {
-  const { toast } = useToast();
   const api = useApiClient();
   const [plans, setPlans] = useState<PlanWithProduct[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -147,8 +123,8 @@ export default function PricingPage() {
     const url = editingPlan ? `/api/admin/pricing/${editingPlan.id}` : "/api/admin/pricing";
     const method = editingPlan ? "put" : "post";
 
-    const { data } = await api[method](url, payload, { 
-      successMessage: `Plan ${editingPlan ? "updated" : "created"} successfully` 
+    const { data } = await api[method](url, payload, {
+      successMessage: `Plan ${editingPlan ? "updated" : "created"} successfully`
     });
 
     if (data) {
@@ -166,69 +142,108 @@ export default function PricingPage() {
     }
   }
 
-  const groupedPlans = plans.reduce(
-    (acc, plan) => {
-      const pid = plan.productId as string;
-      if (!acc[pid]) acc[pid] = [];
-      acc[pid].push(plan);
-      return acc;
+  const columns: Column<PlanWithProduct>[] = [
+    {
+      header: "Plan Name",
+      cell: (plan) => (
+        <div className="flex items-center gap-2">
+          <div className="font-medium group-hover:text-accent transition-colors">{plan.name}</div>
+          {plan.isPopular && (
+            <Badge variant="outline" className="text-[10px] h-4 bg-amber-500/10 text-amber-500 border-amber-500/20 px-1">
+              POPULAR
+            </Badge>
+          )}
+        </div>
+      ),
     },
-    {} as Record<string, PlanWithProduct[]>,
-  );
+    {
+      header: "Product",
+      accessorKey: "productName",
+    },
+    {
+      header: "Price",
+      cell: (plan) => (
+        <span className="font-mono text-sm font-semibold text-accent">
+          ${Number(plan.price).toFixed(2)}/{plan.interval}
+        </span>
+      ),
+    },
+    {
+      header: "Features",
+      cell: (plan) => (
+        <span className="text-xs text-muted-foreground font-mono">
+          {plan.features.length} features
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      cell: (plan) => (
+        <Badge variant={plan.isActive ? "default" : "secondary"} className="font-mono">
+          {plan.isActive ? "ACTIVE" : "INACTIVE"}
+        </Badge>
+      ),
+    },
+    {
+      header: "Actions",
+      className: "text-right",
+      cell: (plan) => (
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent/10 hover:text-accent" onClick={() => openEditDialog(plan)}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => handleDelete(plan.id)}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ]
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Pricing Plans</h1>
-          <p className="text-muted-foreground">
-            Manage pricing tiers for your products
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Pricing Plans</h1>
+          <p className="text-muted-foreground">Manage pricing tiers for your products</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openCreateDialog}>
+            <Button onClick={openCreateDialog} className="shadow-lg shadow-accent/20">
               <Plus className="mr-2 h-4 w-4" />
               Add Plan
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="border-border/40 bg-card/95 backdrop-blur-md">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
-                <DialogTitle>
-                  {editingPlan ? "Edit Plan" : "Add New Plan"}
-                </DialogTitle>
+                <DialogTitle>{editingPlan ? "Edit Plan" : "Add New Plan"}</DialogTitle>
                 <DialogDescription>
-                  {editingPlan
-                    ? "Update the plan details"
-                    : "Create a new pricing plan"}
+                  {editingPlan ? "Update the plan details" : "Create a new pricing plan"}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
                 {!editingPlan && (
-                  <>
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="id">Plan ID</Label>
                       <Input
                         id="id"
-                        placeholder="e.g., hrms-starter"
+                        placeholder="e.g., starter"
                         value={formData.id}
-                        onChange={(e) =>
-                          setFormData({ ...formData, id: e.target.value })
-                        }
+                        onChange={(e) => setFormData({ ...formData, id: e.target.value })}
                         required
+                        className="bg-background/50"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="productId">Product</Label>
                       <Select
                         value={formData.productId}
-                        onValueChange={(value) =>
-                          setFormData({ ...formData, productId: value })
-                        }
+                        onValueChange={(value) => setFormData({ ...formData, productId: value })}
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select product" />
+                        <SelectTrigger className="bg-background/50">
+                          <SelectValue placeholder="Product" />
                         </SelectTrigger>
                         <SelectContent>
                           {products.map((product) => (
@@ -239,7 +254,7 @@ export default function PricingPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                  </>
+                  </div>
                 )}
                 <div className="space-y-2">
                   <Label htmlFor="name">Plan Name</Label>
@@ -247,36 +262,32 @@ export default function PricingPage() {
                     id="name"
                     placeholder="e.g., Starter, Professional"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
+                    className="bg-background/50"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price</Label>
+                    <Label htmlFor="price">Price ($)</Label>
                     <Input
                       id="price"
                       type="number"
                       step="0.01"
                       placeholder="29.00"
                       value={formData.price}
-                      onChange={(e) =>
-                        setFormData({ ...formData, price: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                       required
+                      className="bg-background/50"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="interval">Interval</Label>
                     <Select
                       value={formData.interval}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, interval: value })
-                      }
+                      onValueChange={(value) => setFormData({ ...formData, interval: value })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-background/50">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -290,41 +301,31 @@ export default function PricingPage() {
                   <Label htmlFor="features">Features (one per line)</Label>
                   <textarea
                     id="features"
-                    className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                    className="flex min-h-[100px] w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    placeholder="Feature 1&#10;Feature 2"
                     value={formData.features}
-                    onChange={(e) =>
-                      setFormData({ ...formData, features: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, features: e.target.value })}
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="isPopular">Mark as Popular</Label>
+                  <Label htmlFor="isPopular">Featured Plan</Label>
                   <Switch
                     id="isPopular"
                     checked={formData.isPopular}
-                    onCheckedChange={(checked) =>
-                      setFormData({ ...formData, isPopular: checked })
-                    }
+                    onCheckedChange={(checked) => setFormData({ ...formData, isPopular: checked })}
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="isActive">Active</Label>
+                  <Label htmlFor="isActive">Active Status</Label>
                   <Switch
                     id="isActive"
                     checked={formData.isActive}
-                    onCheckedChange={(checked) =>
-                      setFormData({ ...formData, isActive: checked })
-                    }
+                    onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
                   />
                 </div>
               </div>
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setDialogOpen(false)}
-                >
+                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
                 <Button type="submit" disabled={saving}>
@@ -336,148 +337,16 @@ export default function PricingPage() {
         </Dialog>
       </div>
 
-      {loading ? (
-        <Card>
-          <CardContent className="py-8">
-            <div className="h-32 animate-pulse rounded bg-muted" />
-          </CardContent>
-        </Card>
-      ) : plans.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <IndianRupee className="h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-semibold">No pricing plans yet</h3>
-            <p className="text-muted-foreground">
-              Create pricing plans for your products
-            </p>
-            <Button className="mt-4" onClick={openCreateDialog}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Plan
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-6">
-          {Object.entries(groupedPlans).map(([productId, productPlans]) => (
-            <Card key={productId}>
-              <CardHeader>
-                <CardTitle>
-                  {productPlans[0]?.productName || productId}
-                </CardTitle>
-                <CardDescription>
-                  {productPlans.length} pricing{" "}
-                  {productPlans.length === 1 ? "plan" : "plans"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Plan</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Features</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {productPlans.map((plan) => (
-                      <TableRow key={plan.id}>
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-2">
-                            {plan.name}
-                            {plan.isPopular && (
-                              <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          ₹{Number(plan.price).toFixed(2)}/{plan.interval}
-                        </TableCell>
-                        <TableCell>
-                          <span className="text-muted-foreground">
-                            {plan.features.length} features
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={plan.isActive ? "default" : "secondary"}
-                          >
-                            {plan.isActive ? "Active" : "Inactive"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openEditDialog(plan)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => handleDelete(plan.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          ))}
-
-          {pagination.totalPages > 1 && (
-            <div className="flex items-center justify-between border-t pt-4">
-              <div className="text-sm text-muted-foreground">
-                Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} plans
-              </div>
-              <Pagination className="mx-0 w-auto">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious 
-                      href="#" 
-                      onClick={(e) => {
-                        e.preventDefault()
-                        if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
-                      }}
-                    />
-                  </PaginationItem>
-                  {[...Array(pagination.totalPages)].map((_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink 
-                        href="#" 
-                        isActive={pagination.page === i + 1}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setPagination(p => ({ ...p, page: i + 1 }))
-                        }}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext 
-                      href="#" 
-                      onClick={(e) => {
-                        e.preventDefault()
-                        if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
-                      }}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
-        </div>
-      )}
+      <DataTable
+        columns={columns}
+        data={plans}
+        loading={loading}
+        pagination={pagination}
+        onPageChange={(page) => setPagination(p => ({ ...p, page }))}
+        searchPlaceholder="Search plans by name..."
+        emptyMessage="No pricing plans found"
+        emptyIcon={IndianRupee}
+      />
     </div>
   );
 }

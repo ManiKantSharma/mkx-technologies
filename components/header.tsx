@@ -23,7 +23,7 @@ export function Header() {
           href="/"
           className="flex relative whitespace-nowrap items-center gap-0.5"
         >
-          <span className="rounded-full h-10 w-10 bg-[#A70400]"></span>
+          <span className="rounded-full h-10 w-10 bg-brand"></span>
           <span className="text-2xl absolute left-[10.5px] tracking-wider font-bold font-orbitron stroke-1 text-foreground text-stroke-black">
             MKX Technologies
           </span>

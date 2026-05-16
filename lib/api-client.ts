@@ -30,7 +30,6 @@ export function useApiClient() {
     const isJson = contentType && contentType.includes('application/json')
     const rawData = isJson ? await response.json() : null
 
-    // Standardized response extraction
     const success = rawData?.success ?? response.ok
     const message = rawData?.message || rawData?.error || response.statusText
     const payload = rawData?.data !== undefined ? rawData.data : rawData

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -21,30 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Plus, CreditCard, Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/hooks/use-toast"
+import { Plus, CreditCard } from "lucide-react"
 import { useApiClient } from "@/lib/api-client"
 import type { SubscriptionWithDetails, User, Product, PricingPlan } from "@/lib/db"
+import { DataTable, Column } from "@/components/admin/data-table"
 
 export default function SubscriptionsPage() {
-  const { toast } = useToast()
   const api = useApiClient()
   const [subscriptions, setSubscriptions] = useState<SubscriptionWithDetails[]>([])
   const [users, setUsers] = useState<User[]>([])
@@ -53,7 +34,6 @@ export default function SubscriptionsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
   const [pagination, setPagination] = useState({
     page: 1,
     totalPages: 1,
@@ -142,35 +122,94 @@ export default function SubscriptionsPage() {
 
   const filteredPlans = plans.filter((plan) => plan.productId === formData.productId)
 
-  const filteredSubscriptions = subscriptions.filter(
-    (sub) =>
-      sub.userEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sub.userName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sub.productName.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const statusColors: Record<string, string> = {
+  const statusColors: Record<string, "default" | "destructive" | "secondary" | "outline"> = {
     ACTIVE: "default",
     CANCELLED: "destructive",
     PAUSED: "secondary",
     EXPIRED: "outline",
   }
 
+  const columns: Column<SubscriptionWithDetails>[] = [
+    {
+      header: "User",
+      cell: (sub) => (
+        <div>
+          <div className="font-medium group-hover:text-accent transition-colors">{sub.userName || "No name"}</div>
+          <div className="text-xs text-muted-foreground">{sub.userEmail}</div>
+        </div>
+      ),
+    },
+    {
+      header: "Product / Plan",
+      cell: (sub) => (
+        <div>
+          <div className="text-sm font-medium">{sub.productName}</div>
+          <div className="text-xs text-muted-foreground">{sub.planName}</div>
+        </div>
+      ),
+    },
+    {
+      header: "Price",
+      cell: (sub) => (
+        <span className="font-mono text-sm font-semibold text-accent">
+          ${Number(sub.planPrice).toFixed(2)}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      cell: (sub) => (
+        <Badge variant={statusColors[sub.status]} className="font-mono">
+          {sub.status}
+        </Badge>
+      ),
+    },
+    {
+      header: "Started",
+      cell: (sub) => (
+        <span className="text-muted-foreground font-mono text-xs">
+          {new Date(sub.startDate).toLocaleDateString()}
+        </span>
+      ),
+    },
+    {
+      header: "Actions",
+      className: "text-right",
+      cell: (sub) => (
+        <div className="flex justify-end">
+          <Select
+            value={sub.status}
+            onValueChange={(value) => updateStatus(sub.id, value)}
+          >
+            <SelectTrigger className="w-[110px] h-8 text-xs bg-background/50 border-border/50">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ACTIVE">Active</SelectItem>
+              <SelectItem value="PAUSED">Paused</SelectItem>
+              <SelectItem value="CANCELLED">Cancelled</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Subscriptions</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Subscriptions</h1>
           <p className="text-muted-foreground">Manage user subscriptions and billing</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openCreateDialog}>
+            <Button onClick={openCreateDialog} className="shadow-lg shadow-accent/20">
               <Plus className="mr-2 h-4 w-4" />
               Add Subscription
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="border-border/40 bg-card/95 backdrop-blur-md">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
                 <DialogTitle>Create Subscription</DialogTitle>
@@ -183,7 +222,7 @@ export default function SubscriptionsPage() {
                     value={formData.userId}
                     onValueChange={(value) => setFormData({ ...formData, userId: value })}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full bg-background/50">
                       <SelectValue placeholder="Select user" />
                     </SelectTrigger>
                     <SelectContent>
@@ -203,7 +242,7 @@ export default function SubscriptionsPage() {
                       setFormData({ ...formData, productId: value, pricingPlanId: "" })
                     }
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full bg-background/50">
                       <SelectValue placeholder="Select product" />
                     </SelectTrigger>
                     <SelectContent>
@@ -222,7 +261,7 @@ export default function SubscriptionsPage() {
                     onValueChange={(value) => setFormData({ ...formData, pricingPlanId: value })}
                     disabled={!formData.productId}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full bg-background/50">
                       <SelectValue placeholder="Select plan" />
                     </SelectTrigger>
                     <SelectContent>
@@ -240,7 +279,7 @@ export default function SubscriptionsPage() {
                     value={formData.status}
                     onValueChange={(value) => setFormData({ ...formData, status: value })}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full bg-background/50">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -264,138 +303,16 @@ export default function SubscriptionsPage() {
         </Dialog>
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>All Subscriptions</CardTitle>
-              <CardDescription>{subscriptions.length} total subscriptions</CardDescription>
-            </div>
-            <div className="relative w-64">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="h-32 animate-pulse rounded bg-muted" />
-          ) : subscriptions.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <CreditCard className="h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-4 text-lg font-semibold">No subscriptions yet</h3>
-              <p className="text-muted-foreground">Subscriptions will appear here</p>
-              <Button className="mt-4" onClick={openCreateDialog}>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Subscription
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Plan</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Started</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredSubscriptions.map((sub) => (
-                    <TableRow key={sub.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{sub.userName || "No name"}</div>
-                          <div className="text-sm text-muted-foreground">{sub.userEmail}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{sub.productName}</TableCell>
-                      <TableCell>{sub.planName}</TableCell>
-                      <TableCell>${Number(sub.planPrice).toFixed(2)}</TableCell>
-                      <TableCell>
-                        <Badge variant={statusColors[sub.status] as "default" | "destructive" | "secondary" | "outline"}>
-                          {sub.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {new Date(sub.startDate).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Select
-                          value={sub.status}
-                          onValueChange={(value) => updateStatus(sub.id, value)}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="ACTIVE">Active</SelectItem>
-                            <SelectItem value="PAUSED">Paused</SelectItem>
-                            <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-
-              {pagination.totalPages > 1 && (
-                <div className="flex items-center justify-between border-t pt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} subscriptions
-                  </div>
-                  <Pagination className="mx-0 w-auto">
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious 
-                          href="#" 
-                          onClick={(e) => {
-                            e.preventDefault()
-                            if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
-                          }}
-                        />
-                      </PaginationItem>
-                      {[...Array(pagination.totalPages)].map((_, i) => (
-                        <PaginationItem key={i}>
-                          <PaginationLink 
-                            href="#" 
-                            isActive={pagination.page === i + 1}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setPagination(p => ({ ...p, page: i + 1 }))
-                            }}
-                          >
-                            {i + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <PaginationNext 
-                          href="#" 
-                          onClick={(e) => {
-                            e.preventDefault()
-                            if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
-                          }}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <DataTable
+        columns={columns}
+        data={subscriptions}
+        loading={loading}
+        pagination={pagination}
+        onPageChange={(page) => setPagination(p => ({ ...p, page }))}
+        searchPlaceholder="Search by user or product..."
+        emptyMessage="No subscriptions found"
+        emptyIcon={CreditCard}
+      />
     </div>
   )
 }

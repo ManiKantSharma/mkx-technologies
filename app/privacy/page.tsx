@@ -1,118 +1,212 @@
 "use client";
 
-import Link from "next/link";
 import { Header } from "@/components/header";
-import { Metadata } from "next";
+import { Footer } from "@/components/footer";
 import { motion } from "framer-motion";
-import { fadeIn, slideUp, staggerContainer } from "@/lib/animations";
+import { slideUp, staggerContainer, fadeIn } from "@/lib/animations";
+import {
+  Shield,
+  Database,
+  Eye,
+  Lock,
+  UserCheck,
+  Mail,
+  Globe,
+  Scale,
+  ChevronRight
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const sections = [
+  {
+    id: "introduction",
+    title: "1. Introduction",
+    icon: Shield,
+    content: "MKX Technologies (\"we,\" \"our,\" or \"us\") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our HRMS, CRMS, and POS systems."
+  },
+  {
+    id: "collection",
+    title: "2. Information We Collect",
+    icon: Database,
+    content: "We collect information you provide directly to us when you create an account, use our Services, or communicate with us.",
+    list: [
+      "Contact information (name, email, phone number)",
+      "Professional information (company name, role)",
+      "Payment and billing information",
+      "Technical data (IP address, browser type)",
+      "Usage data (interaction patterns with our services)"
+    ]
+  },
+  {
+    id: "usage",
+    title: "3. How We Use Your Information",
+    icon: Eye,
+    content: "We use the information we collect for various purposes, including:",
+    list: [
+      "Providing and maintaining our Services",
+      "Processing transactions and billing",
+      "Sending technical updates and support messages",
+      "Personalizing user experience",
+      "Analyzing platform usage and trends"
+    ]
+  },
+  {
+    id: "security",
+    title: "4. Data Security",
+    icon: Lock,
+    content: "We use industry-standard security measures to protect your personal data from unauthorized access, disclosure, or misuse. This includes end-to-end encryption for data in transit and robust encryption for data at rest. Our systems are regularly audited for security compliance."
+  },
+  {
+    id: "rights",
+    title: "5. Your Privacy Rights",
+    icon: UserCheck,
+    content: "Depending on your location, you may have rights regarding your personal data under regulations like GDPR or CCPA:",
+    list: [
+      "Right to access your personal data",
+      "Right to rectification of inaccurate data",
+      "Right to erasure ('Right to be forgotten')",
+      "Right to data portability",
+      "Right to object to certain processing"
+    ]
+  },
+  {
+    id: "compliance",
+    title: "6. Global Compliance",
+    icon: Globe,
+    content: "We comply with international data protection standards. Our infrastructure is designed to support regional data residency requirements and privacy laws across the globe."
+  },
+  {
+    id: "contact",
+    title: "7. Contact Us",
+    icon: Mail,
+    content: "If you have any questions about this Privacy Policy or our data practices, please reach out to our dedicated privacy team."
+  }
+];
 
 export default function PrivacyPage() {
-  const lastUpdated = "April 7, 2026";
+  const lastUpdated = "May 16, 2026";
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="container mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={staggerContainer}
-          className="mb-12 space-y-4"
-        >
-          <motion.h1
-            variants={slideUp}
-            className="text-4xl font-extrabold tracking-tight lg:text-5xl"
-          >
-            Privacy Policy
-          </motion.h1>
-          <motion.p variants={slideUp} className="text-muted-foreground">Last updated: {lastUpdated}</motion.p>
-        </motion.div>
-
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={staggerContainer}
-          className="prose prose-slate dark:prose-invert max-w-none space-y-12"
-        >
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">1. Introduction</h2>
-            <p className="leading-7 text-muted-foreground">
-              MKX Technologies ("we," "our," or "us") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our HRMS, CRMS, and POS systems.
-            </p>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">2. Information We Collect</h2>
-            <p className="leading-7 text-muted-foreground">
-              We collect information you provide directly to us when you create an account, use our Services, or communicate with us.
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>Contact information (e.g., name, email address, phone number).</li>
-              <li>Professional information (e.g., company name, company size).</li>
-              <li>Payment and billing information.</li>
-              <li>Technical data (e.g., IP address, browser type, device information).</li>
-              <li>Usage data (e.g., how you interact with our Services).</li>
-            </ul>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">3. How We Use Your Information</h2>
-            <p className="leading-7 text-muted-foreground">
-              We use the information we collect for various purposes, including:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-              <li>Providing, maintaining, and improving our Services.</li>
-              <li>Processing transactions and sending related information.</li>
-              <li>Sending technical notices, updates, and support messages.</li>
-              <li>Communicating with you about products, services, and events.</li>
-              <li>Monitoring and analyzing trends, usage, and activities.</li>
-            </ul>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">4. Data Security</h2>
-            <p className="leading-7 text-muted-foreground">
-              We use industry-standard security measures to protect your personal data from unauthorized access, disclosure, or misuse. This includes encryption of data in transit and at rest.
-            </p>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">5. Information Sharing</h2>
-            <p className="leading-7 text-muted-foreground">
-              We do not sell your personal data. We may share your information with service providers who perform services on our behalf, or as required by law.
-            </p>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">6. Your Rights</h2>
-            <p className="leading-7 text-muted-foreground">
-              Depending on your location, you may have rights regarding your personal data, such as the right to access, correct, or delete your information. You can manage your communication preferences through your account settings.
-            </p>
-          </motion.section>
-
-          <motion.section variants={fadeIn} className="space-y-4">
-            <h2 className="text-2xl font-bold border-b pb-2">7. Contact Us</h2>
-            <p className="leading-7 text-muted-foreground">
-              If you have any questions about this Privacy Policy or our data practices, please contact us at:
-            </p>
-            <div className="rounded-lg bg-card p-6 border border-border">
-              <p className="font-semibold">MKX Technologies Privacy Team</p>
-              <p className="text-sm text-muted-foreground">Email: privacy@mkxtechnologies.com</p>
-              <p className="text-sm text-muted-foreground">Address: 2468/8 CISF, Sector 8 Faridabad, Haryana, India</p>
-            </div>
-          </motion.section>
-        </motion.div>
-      </main>
-
-      <footer className="border-t border-border bg-card py-12">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2026 MKX Technologies. All rights reserved.</p>
-          <div className="mt-4 flex justify-center gap-6">
-            <Link href="/privacy" className="hover:text-foreground">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-foreground">Terms of Service</Link>
+      <main className="flex-1 pt-24">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden py-20 lg:py-32 bg-accent/5">
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(0,167,0,0.05)_0%,transparent_100%)]" />
+          <div className="container px-6">
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={staggerContainer}
+              className="max-w-3xl"
+            >
+              <motion.div variants={slideUp} className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 mb-6">
+                <Scale className="h-4 w-4 text-accent" />
+                <span className="text-xs font-bold uppercase tracking-wider text-accent">Legal Documentation</span>
+              </motion.div>
+              <motion.h1 variants={slideUp} className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
+                Privacy <span className="text-accent">Policy</span>
+              </motion.h1>
+              <motion.p variants={slideUp} className="text-lg text-muted-foreground">
+                Last updated: {lastUpdated} • Version 2.4
+              </motion.p>
+            </motion.div>
           </div>
-        </div>
-      </footer>
+        </section>
+
+        {/* Content Section */}
+        <section className="py-24">
+          <div className="container px-6">
+            <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
+              {/* Sidebar Navigation */}
+              <aside className="hidden lg:block">
+                <div className="sticky top-32 space-y-4">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Table of Contents</p>
+                  <nav className="flex flex-col gap-2">
+                    {sections.map((section) => (
+                      <a
+                        key={section.id}
+                        href={`#${section.id}`}
+                        className="text-sm text-muted-foreground hover:text-accent hover:translate-x-1 transition-all flex items-center gap-2 group"
+                      >
+                        <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {section.title.split('. ')[1]}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </aside>
+
+              {/* Main Policy Content */}
+              <div className="space-y-20 max-w-4xl">
+                {sections.map((section) => (
+                  <motion.section
+                    key={section.id}
+                    id={section.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="scroll-mt-32"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                        <section.icon className="h-6 w-6 text-accent" />
+                      </div>
+                      <h2 className="text-2xl font-bold">{section.title}</h2>
+                    </div>
+
+                    <div className="space-y-6 text-muted-foreground leading-relaxed">
+                      <p>{section.content}</p>
+
+                      {section.list && (
+                        <ul className="grid gap-3 sm:grid-cols-2">
+                          {section.list.map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm">
+                              <div className="h-1.5 w-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {section.id === "contact" && (
+                        <div className="mt-8 p-8 rounded-2xl border border-border bg-card shadow-sm">
+                          <p className="font-bold text-foreground mb-4">MKX Technologies Privacy Team</p>
+                          <div className="space-y-2 text-sm">
+                            <p className="flex items-center gap-2">
+                              <Mail className="h-4 w-4 text-accent" />
+                              privacy@mkxtechnologies.com
+                            </p>
+                            <p className="flex items-start gap-2">
+                              <Globe className="h-4 w-4 text-accent mt-0.5" />
+                              2468/8 CISF, Sector 8 Faridabad,<br />Haryana, India
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </motion.section>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24 border-t border-border/40">
+          <div className="container px-6 text-center">
+            <h2 className="text-3xl font-bold mb-6">Have concerns about your data?</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto mb-10">
+              Our data protection officer is available to answer any questions you may have regarding our privacy practices.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-accent hover:bg-accent/90">Contact DPO</Button>
+              <Button size="lg" variant="outline">View Security Center</Button>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -1,9 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
@@ -14,24 +12,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Plus, Pencil, Trash2, Package } from "lucide-react"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useToast } from "@/hooks/use-toast"
 import { useApiClient } from "@/lib/api-client"
 import type { Product } from "@/lib/db"
+import { DataTable, Column } from "@/components/admin/data-table"
 
 export default function ProductsPage() {
-  const { toast } = useToast()
   const api = useApiClient()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -118,21 +108,68 @@ export default function ProductsPage() {
     }
   }
 
+  const columns: Column<Product>[] = [
+    {
+      header: "Product",
+      cell: (product) => (
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 border border-accent/20 text-accent">
+            <Package className="h-5 w-5" />
+          </div>
+          <div>
+            <div className="font-medium group-hover:text-accent transition-colors">{product.name}</div>
+            <div className="text-xs text-muted-foreground font-mono">{product.id}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Description",
+      cell: (product) => (
+        <p className="text-sm text-muted-foreground line-clamp-1 max-w-[300px]">
+          {product.description || "No description"}
+        </p>
+      ),
+    },
+    {
+      header: "Status",
+      cell: (product) => (
+        <Badge variant={product.isActive ? "default" : "secondary"} className="font-mono">
+          {product.isActive ? "ACTIVE" : "INACTIVE"}
+        </Badge>
+      ),
+    },
+    {
+      header: "Actions",
+      className: "text-right",
+      cell: (product) => (
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-accent/10 hover:text-accent" onClick={() => openEditDialog(product)}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => handleDelete(product.id)}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Products</h1>
           <p className="text-muted-foreground">Manage your SaaS product offerings</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openCreateDialog}>
+            <Button onClick={openCreateDialog} className="shadow-lg shadow-accent/20">
               <Plus className="mr-2 h-4 w-4" />
               Add Product
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="border-border/40 bg-card/95 backdrop-blur-md">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
                 <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
@@ -152,6 +189,7 @@ export default function ProductsPage() {
                       value={formData.id}
                       onChange={(e) => setFormData({ ...formData, id: e.target.value })}
                       required
+                      className="bg-background/50"
                     />
                   </div>
                 )}
@@ -163,6 +201,7 @@ export default function ProductsPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
+                    className="bg-background/50"
                   />
                 </div>
                 <div className="space-y-2">
@@ -172,19 +211,11 @@ export default function ProductsPage() {
                     placeholder="Product description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="icon">Icon (Lucide icon name)</Label>
-                  <Input
-                    id="icon"
-                    placeholder="e.g., users, shopping-cart"
-                    value={formData.icon}
-                    onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                    className="bg-background/50"
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="isActive">Active</Label>
+                  <Label htmlFor="isActive">Active Status</Label>
                   <Switch
                     id="isActive"
                     checked={formData.isActive}
@@ -205,116 +236,16 @@ export default function ProductsPage() {
         </Dialog>
       </div>
 
-      {loading ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i}>
-              <CardHeader>
-                <div className="h-6 w-32 animate-pulse rounded bg-muted" />
-              </CardHeader>
-              <CardContent>
-                <div className="h-4 w-full animate-pulse rounded bg-muted" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : products.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Package className="h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-semibold">No products yet</h3>
-            <p className="text-muted-foreground">Get started by creating your first product</p>
-            <Button className="mt-4" onClick={openCreateDialog}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Product
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <Card key={product.id}>
-                <CardHeader className="flex flex-row items-start justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      {product.name}
-                      <Badge variant={product.isActive ? "default" : "secondary"}>
-                        {product.isActive ? "Active" : "Inactive"}
-                      </Badge>
-                    </CardTitle>
-                    <CardDescription className="mt-1">{product.id}</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {product.description || "No description"}
-                  </p>
-                  <div className="mt-4 flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => openEditDialog(product)}>
-                      <Pencil className="mr-2 h-3 w-3" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => handleDelete(product.id)}
-                    >
-                      <Trash2 className="mr-2 h-3 w-3" />
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {pagination.totalPages > 1 && (
-            <div className="flex items-center justify-between border-t pt-6">
-              <div className="text-sm text-muted-foreground">
-                Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} products
-              </div>
-              <Pagination className="mx-0 w-auto">
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
-                      }}
-                    />
-                  </PaginationItem>
-                  {[...Array(pagination.totalPages)].map((_, i) => (
-                    <PaginationItem key={i}>
-                      <PaginationLink
-                        href="#"
-                        isActive={pagination.page === i + 1}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setPagination(p => ({ ...p, page: i + 1 }))
-                        }}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
-                      }}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
-        </div>
-      )}
+      <DataTable
+        columns={columns}
+        data={products}
+        loading={loading}
+        pagination={pagination}
+        onPageChange={(page) => setPagination(p => ({ ...p, page }))}
+        searchPlaceholder="Search products by name or ID..."
+        emptyMessage="No products found"
+        emptyIcon={Package}
+      />
     </div>
   )
 }
