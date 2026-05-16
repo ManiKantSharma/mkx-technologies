@@ -30,16 +30,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 import { Plus, Users, Search } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { useApiClient } from "@/lib/api-client"
 import type { User } from "@/lib/db"
 
 type UserWithSubscriptions = User & { activeSubscriptions: number }
 
 export default function UsersPage() {
+  const { toast } = useToast()
+  const api = useApiClient()
   const [users, setUsers] = useState<UserWithSubscriptions[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    limit: 10,
+    total: 0
+  })
   const [formData, setFormData] = useState({
     id: "",
     email: "",
@@ -49,15 +68,20 @@ export default function UsersPage() {
   })
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers(pagination.page)
+  }, [pagination.page])
 
-  async function fetchUsers() {
+  async function fetchUsers(page: number = 1) {
     try {
-      const res = await fetch("/api/admin/users")
-      if (res.ok) {
-        const data = await res.json()
+      const { data, meta } = await api.get<UserWithSubscriptions[]>(`/api/admin/users?page=${page}&limit=${pagination.limit}`, { silent: true })
+      if (data) {
         setUsers(data)
+        if (meta?.pagination) {
+          setPagination(prev => ({
+            ...prev,
+            ...meta.pagination
+          }))
+        }
       }
     } catch (error) {
       console.error("Failed to fetch users:", error)
@@ -79,19 +103,14 @@ export default function UsersPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    try {
-      const res = await fetch("/api/admin/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
-      if (res.ok) {
-        fetchUsers()
-        setDialogOpen(false)
-      }
-    } catch (error) {
-      console.error("Failed to create user:", error)
+    setSaving(true)
+    const { data } = await api.post("/api/admin/users", formData, { successMessage: "User created successfully" })
+
+    if (data) {
+      fetchUsers()
+      setDialogOpen(false)
     }
+    setSaving(false)
   }
 
   const filteredUsers = users.filter(
@@ -174,7 +193,9 @@ export default function UsersPage() {
                 <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit">Create User</Button>
+                <Button type="submit" disabled={saving}>
+                  {saving ? "Creating..." : "Create User"}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -213,46 +234,92 @@ export default function UsersPage() {
               </Button>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Subscriptions</TableHead>
-                  <TableHead>Joined</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent">
-                          <span className="text-sm font-medium text-accent-foreground">
-                            {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
-                          </span>
-                        </div>
-                        <div>
-                          <div className="font-medium">{user.name || "No name"}</div>
-                          <div className="text-sm text-muted-foreground">{user.email}</div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.company || "-"}</TableCell>
-                    <TableCell>{user.companySize || "-"}</TableCell>
-                    <TableCell>
-                      <Badge variant={Number(user.activeSubscriptions) > 0 ? "default" : "secondary"}>
-                        {user.activeSubscriptions} active
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </TableCell>
+            <div className="space-y-4">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Company</TableHead>
+                    <TableHead>Size</TableHead>
+                    <TableHead>Subscriptions</TableHead>
+                    <TableHead>Joined</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredUsers.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent">
+                            <span className="text-sm font-medium text-accent-foreground">
+                              {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="font-medium">{user.name || "No name"}</div>
+                            <div className="text-sm text-muted-foreground">{user.email}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{user.company || "-"}</TableCell>
+                      <TableCell>{user.companySize || "-"}</TableCell>
+                      <TableCell>
+                        <Badge variant={Number(user.activeSubscriptions) > 0 ? "default" : "secondary"}>
+                          {user.activeSubscriptions} active
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              
+              {pagination.totalPages > 1 && (
+                <div className="flex items-center justify-between border-t pt-4">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} users
+                  </div>
+                  <Pagination className="mx-0 w-auto">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault()
+                            if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
+                          }}
+                        />
+                      </PaginationItem>
+                      {[...Array(pagination.totalPages)].map((_, i) => (
+                        <PaginationItem key={i}>
+                          <PaginationLink 
+                            href="#" 
+                            isActive={pagination.page === i + 1}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setPagination(p => ({ ...p, page: i + 1 }))
+                            }}
+                          >
+                            {i + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+                      <PaginationItem>
+                        <PaginationNext 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault()
+                            if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
+                          }}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </div>
           )}
         </CardContent>
       </Card>

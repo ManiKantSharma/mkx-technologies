@@ -18,13 +18,32 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Plus, Pencil, Trash2, Package } from "lucide-react"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import { useToast } from "@/hooks/use-toast"
+import { useApiClient } from "@/lib/api-client"
 import type { Product } from "@/lib/db"
 
 export default function ProductsPage() {
+  const { toast } = useToast()
+  const api = useApiClient()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    limit: 10,
+    total: 0
+  })
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -34,15 +53,20 @@ export default function ProductsPage() {
   })
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    fetchProducts(pagination.page)
+  }, [pagination.page])
 
-  async function fetchProducts() {
+  async function fetchProducts(page: number = 1) {
     try {
-      const res = await fetch("/api/admin/products")
-      if (res.ok) {
-        const data = await res.json()
+      const { data, meta } = await api.get<Product[]>(`/api/admin/products?page=${page}&limit=${pagination.limit}`, { silent: true })
+      if (data) {
         setProducts(data)
+        if (meta?.pagination) {
+          setPagination(prev => ({
+            ...prev,
+            ...meta.pagination
+          }))
+        }
       }
     } catch (error) {
       console.error("Failed to fetch products:", error)
@@ -71,42 +95,26 @@ export default function ProductsPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    try {
-      if (editingProduct) {
-        const res = await fetch(`/api/admin/products/${editingProduct.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        })
-        if (res.ok) {
-          fetchProducts()
-          setDialogOpen(false)
-        }
-      } else {
-        const res = await fetch("/api/admin/products", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        })
-        if (res.ok) {
-          fetchProducts()
-          setDialogOpen(false)
-        }
-      }
-    } catch (error) {
-      console.error("Failed to save product:", error)
+    setSaving(true)
+    const url = editingProduct ? `/api/admin/products/${editingProduct.id}` : "/api/admin/products"
+    const method = editingProduct ? "put" : "post"
+
+    const { data } = await api[method](url, formData, {
+      successMessage: `Product ${editingProduct ? "updated" : "created"} successfully`
+    })
+
+    if (data) {
+      fetchProducts()
+      setDialogOpen(false)
     }
+    setSaving(false)
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this product?")) return
-    try {
-      const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" })
-      if (res.ok) {
-        fetchProducts()
-      }
-    } catch (error) {
-      console.error("Failed to delete product:", error)
+    const { data } = await api.delete(`/api/admin/products/${id}`, { successMessage: "Product removed" })
+    if (data) {
+      fetchProducts()
     }
   }
 
@@ -188,7 +196,9 @@ export default function ProductsPage() {
                 <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit">{editingProduct ? "Save Changes" : "Create Product"}</Button>
+                <Button type="submit" disabled={saving}>
+                  {saving ? "Saving..." : editingProduct ? "Save Changes" : "Create Product"}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -221,42 +231,88 @@ export default function ProductsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <Card key={product.id}>
-              <CardHeader className="flex flex-row items-start justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    {product.name}
-                    <Badge variant={product.isActive ? "default" : "secondary"}>
-                      {product.isActive ? "Active" : "Inactive"}
-                    </Badge>
-                  </CardTitle>
-                  <CardDescription className="mt-1">{product.id}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {product.description || "No description"}
-                </p>
-                <div className="mt-4 flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => openEditDialog(product)}>
-                    <Pencil className="mr-2 h-3 w-3" />
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    <Trash2 className="mr-2 h-3 w-3" />
-                    Delete
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <Card key={product.id}>
+                <CardHeader className="flex flex-row items-start justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      {product.name}
+                      <Badge variant={product.isActive ? "default" : "secondary"}>
+                        {product.isActive ? "Active" : "Inactive"}
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription className="mt-1">{product.id}</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {product.description || "No description"}
+                  </p>
+                  <div className="mt-4 flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => openEditDialog(product)}>
+                      <Pencil className="mr-2 h-3 w-3" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive hover:text-destructive"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      <Trash2 className="mr-2 h-3 w-3" />
+                      Delete
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between border-t pt-6">
+              <div className="text-sm text-muted-foreground">
+                Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} products
+              </div>
+              <Pagination className="mx-0 w-auto">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                  {[...Array(pagination.totalPages)].map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        href="#"
+                        isActive={pagination.page === i + 1}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setPagination(p => ({ ...p, page: i + 1 }))
+                        }}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -20,7 +20,7 @@ if (!cached) {
   }
 }
 
-/**
+/**ßß
  * Connects to the MongoDB database using mongoose.
  * Implements a connection caching mechanism for Next.js serverless environment.
  * Includes a fallback to direct shard connection if SRV connection fails.
@@ -41,7 +41,12 @@ async function connectDB() {
     }
 
     cached.lastAttempt = Date.now()
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongooseInstance) => {
+    let srvUri = MONGODB_URI!;
+    if (srvUri.includes('.net/?') && DB_NAME) {
+      srvUri = srvUri.replace('.net/?', `.net/${DB_NAME}?`);
+    }
+    
+    cached.promise = mongoose.connect(srvUri, opts).then((mongooseInstance) => {
       console.log('MongoDB connected successfully via SRV')
       cached.conn = mongooseInstance
       return mongooseInstance
@@ -86,9 +91,9 @@ async function connectDB() {
 export default connectDB
 
 
-export type { IProduct as Product, IPricingPlan as PricingPlan, IUser as User, ISubscription as Subscription, IBlogPost as BlogPost } from './models'
+export type { IBlogPost as BlogPost, IPricingPlan as PricingPlan, IProduct as Product, ISubscription as Subscription, IUser as User } from './models'
 
-import type { ISubscription, IUser, IProduct, IPricingPlan } from './models'
+import type { ISubscription } from './models'
 
 export type SubscriptionWithDetails = ISubscription & {
   userName: string;

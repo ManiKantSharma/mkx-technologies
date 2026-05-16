@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Package, Users, CreditCard, DollarSign, TrendingUp, ArrowUpRight } from "lucide-react"
+import { useApiClient } from "@/lib/api-client"
 
 type Stats = {
   totalProducts: number
@@ -12,24 +13,24 @@ type Stats = {
 }
 
 export default function AdminDashboard() {
+  const api = useApiClient()
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch("/api/admin/stats")
-        if (res.ok) {
-          const data = await res.json()
-          setStats(data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch stats:", error)
-      } finally {
-        setLoading(false)
+  async function fetchStats() {
+    try {
+      const { data } = await api.get<Stats>("/api/admin/stats", { silent: true })
+      if (data) {
+        setStats(data)
       }
+    } catch (error) {
+      console.error("Failed to fetch stats:", error)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchStats()
     const interval = setInterval(fetchStats, 10000)
     return () => clearInterval(interval)
@@ -77,7 +78,6 @@ export default function AdminDashboard() {
         <p className="text-muted-foreground">Overview of your SaaS business metrics</p>
       </div>
 
-      {}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
           <Card key={stat.title} className="border-border/40 bg-card/50 backdrop-blur-sm">
@@ -101,7 +101,6 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
           <CardHeader>

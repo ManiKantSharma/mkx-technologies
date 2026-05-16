@@ -1,6 +1,6 @@
 import connectDB from '@/lib/db'
 import { Product, Subscription, User } from '@/lib/models'
-import { NextResponse } from 'next/server'
+import { ApiResponse } from '@/lib/api-utils'
 
 export async function GET() {
   try {
@@ -17,19 +17,14 @@ export async function GET() {
       return acc + (plan?.price || 0)
     }, 0)
 
-    return NextResponse.json({
+    return ApiResponse.success({
       totalProducts: productsCount,
       totalUsers: usersCount,
       activeSubscriptions: activeSubscriptionsCount,
       monthlyRevenue: totalRevenue
-    })
+    }, 'Dashboard statistics fetched successfully')
   } catch (error) {
     console.error('Failed to fetch stats:', error)
-    return NextResponse.json({
-      totalProducts: 0,
-      totalUsers: 0,
-      activeSubscriptions: 0,
-      monthlyRevenue: 0
-    })
+    return ApiResponse.error('Failed to fetch stats')
   }
 }

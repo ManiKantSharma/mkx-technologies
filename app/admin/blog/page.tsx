@@ -18,15 +18,33 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Plus, Pencil, Trash2, FileText, ExternalLink } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { useApiClient } from "@/lib/api-client"
 import type { BlogPost } from "@/lib/db"
 import Link from "next/link"
-import { toast } from "sonner"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export default function BlogAdminPage() {
+  const { toast } = useToast()
+  const api = useApiClient()
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    limit: 10,
+    total: 0
+  })
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -40,19 +58,23 @@ export default function BlogAdminPage() {
   })
 
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    fetchPosts(pagination.page)
+  }, [pagination.page])
 
-  async function fetchPosts() {
+  async function fetchPosts(page: number = 1) {
     try {
-      const res = await fetch("/api/admin/blog")
-      if (res.ok) {
-        const data = await res.json()
+      const { data, meta } = await api.get<BlogPost[]>(`/api/admin/blog?page=${page}&limit=${pagination.limit}`, { silent: true })
+      if (data) {
         setPosts(data)
+        if (meta?.pagination) {
+          setPagination(prev => ({
+            ...prev,
+            ...meta.pagination
+          }))
+        }
       }
     } catch (error) {
       console.error("Failed to fetch blog posts:", error)
-      toast.error("Failed to fetch blog posts")
     } finally {
       setLoading(false)
     }
@@ -92,43 +114,26 @@ export default function BlogAdminPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    try {
-      const url = editingPost ? `/api/admin/blog/${editingPost.id}` : "/api/admin/blog"
-      const method = editingPost ? "PUT" : "POST"
+    setSaving(true)
+    const url = editingPost ? `/api/admin/blog/${editingPost.id}` : "/api/admin/blog"
+    const method = editingPost ? "put" : "post"
 
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
+    const { data } = await api[method](url, formData, { 
+      successMessage: editingPost ? "Post updated" : "Post created" 
+    })
 
-      if (res.ok) {
-        toast.success(editingPost ? "Post updated successfully" : "Post created successfully")
-        fetchPosts()
-        setDialogOpen(false)
-      } else {
-        const error = await res.json()
-        toast.error(error.error || "Failed to save post")
-      }
-    } catch (error) {
-      console.error("Failed to save post:", error)
-      toast.error("An error occurred while saving the post")
+    if (data) {
+      fetchPosts()
+      setDialogOpen(false)
     }
+    setSaving(false)
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this blog post?")) return
-    try {
-      const res = await fetch(`/api/admin/blog/${id}`, { method: "DELETE" })
-      if (res.ok) {
-        toast.success("Post deleted successfully")
-        fetchPosts()
-      } else {
-        toast.error("Failed to delete post")
-      }
-    } catch (error) {
-      console.error("Failed to delete post:", error)
-      toast.error("An error occurred while deleting the post")
+    const { data } = await api.delete(`/api/admin/blog/${id}`, { successMessage: "Post removed" })
+    if (data) {
+      fetchPosts()
     }
   }
   useEffect(() => {
@@ -252,7 +257,9 @@ export default function BlogAdminPage() {
                 <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit">{editingPost ? "Save Changes" : "Publish Post"}</Button>
+                <Button type="submit" disabled={saving}>
+                  {saving ? "Publishing..." : editingPost ? "Save Changes" : "Publish Post"}
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -285,46 +292,92 @@ export default function BlogAdminPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <Card key={post.id} className="flex flex-col">
-              <CardHeader className="flex flex-row items-start justify-between pb-2">
-                <div className="space-y-1">
-                  <CardTitle className="line-clamp-1">{post.title}</CardTitle>
-                  <CardDescription>{post.date} • {post.category}</CardDescription>
-                </div>
-                <Badge variant={post.published ? "default" : "secondary"}>
-                  {post.published ? "Published" : "Draft"}
-                </Badge>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <p className="text-sm text-muted-foreground line-clamp-3">
-                  {post.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm" onClick={() => openEditDialog(post)}>
-                    <Pencil className="mr-2 h-3 w-3" />
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(post.id)}
-                  >
-                    <Trash2 className="mr-2 h-3 w-3" />
-                    Delete
-                  </Button>
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={`/blog/${post.slug}`} target="_blank">
-                      <ExternalLink className="mr-2 h-3 w-3" />
-                      View
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <Card key={post.id} className="flex flex-col">
+                <CardHeader className="flex flex-row items-start justify-between pb-2">
+                  <div className="space-y-1">
+                    <CardTitle className="line-clamp-1">{post.title}</CardTitle>
+                    <CardDescription>{post.date} • {post.category}</CardDescription>
+                  </div>
+                  <Badge variant={post.published ? "default" : "secondary"}>
+                    {post.published ? "Published" : "Draft"}
+                  </Badge>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {post.description}
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    <Button variant="outline" size="sm" onClick={() => openEditDialog(post)}>
+                      <Pencil className="mr-2 h-3 w-3" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive hover:text-destructive"
+                      onClick={() => handleDelete(post.id)}
+                    >
+                      <Trash2 className="mr-2 h-3 w-3" />
+                      Delete
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/blog/${post.slug}`} target="_blank">
+                        <ExternalLink className="mr-2 h-3 w-3" />
+                        View
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between border-t pt-6">
+              <div className="text-sm text-muted-foreground">
+                Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} posts
+              </div>
+              <Pagination className="mx-0 w-auto">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      href="#" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                  {[...Array(pagination.totalPages)].map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink 
+                        href="#" 
+                        isActive={pagination.page === i + 1}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setPagination(p => ({ ...p, page: i + 1 }))
+                        }}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext 
+                      href="#" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       )}
     </div>

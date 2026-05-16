@@ -75,7 +75,6 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      {}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -83,7 +82,7 @@ export default function AdminLayout({
         />
       )}
 
-      {}
+      { }
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 transform bg-card border-r border-border transition-transform duration-200 ease-in-out lg:translate-x-0",
@@ -99,25 +98,9 @@ export default function AdminLayout({
               <span className="text-[13px] font-black tracking-tighter text-primary-foreground">MKX</span>
               <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
-            <div className="flex flex-col leading-none">
+            <div className="flex flex-col gap-1 leading-none">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold tracking-tight text-foreground">MKX Admin</span>
-                {dbStatus === 'live' ? (
-                  <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-1.5 py-0.5 border border-emerald-500/20">
-                    <div className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[8px] font-bold text-emerald-600 uppercase tracking-tight">Live</span>
-                  </div>
-                ) : dbStatus === 'demo' ? (
-                  <div className="flex items-center gap-1.5 rounded-full bg-amber-500/10 px-1.5 py-0.5 border border-amber-500/20">
-                    <div className="h-1 w-1 rounded-full bg-amber-500" />
-                    <span className="text-[8px] font-bold text-amber-600 uppercase tracking-tight">Demo</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1.5 rounded-full bg-slate-500/10 px-1.5 py-0.5 border border-slate-500/20">
-                    <div className="h-1 w-1 rounded-full bg-slate-400 animate-pulse" />
-                    <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tight">...</span>
-                  </div>
-                )}
+                <span className="font-bold text-foreground">MKX Technologies</span>
               </div>
               <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-[0.2em] mt-0.5">Management</span>
             </div>
@@ -167,9 +150,9 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {}
+      { }
       <div className="lg:pl-64">
-        {}
+        { }
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/95 px-6 backdrop-blur supports-backdrop-filter:bg-background/60">
           <Button
             variant="ghost"
@@ -217,7 +200,7 @@ export default function AdminLayout({
           </DropdownMenu>
         </header>
 
-        {}
+        { }
         <main className="p-6">{children}</main>
       </div>
     </div>

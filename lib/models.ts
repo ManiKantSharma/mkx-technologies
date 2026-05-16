@@ -145,7 +145,7 @@ const BlogPostSchema = new Schema<IBlogPost>({
   content: { type: String, required: true },
   image: { type: String },
   published: { type: Boolean, default: true },
-}, { timestamps: true })
+}, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 export const Product = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema)
 export const PricingPlan = mongoose.models.PricingPlan || mongoose.model<IPricingPlan>('PricingPlan', PricingPlanSchema)

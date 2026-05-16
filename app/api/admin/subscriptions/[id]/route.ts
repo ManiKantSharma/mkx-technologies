@@ -1,6 +1,6 @@
 import connectDB from '@/lib/db'
 import { Subscription } from '@/lib/models'
-import { NextResponse } from 'next/server'
+import { ApiResponse } from '@/lib/api-utils'
 
 export async function PUT(
   request: Request,
@@ -14,12 +14,12 @@ export async function PUT(
     const subscription = await Subscription.findByIdAndUpdate(id, body, { new: true })
 
     if (!subscription) {
-      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
+      return ApiResponse.error('Subscription not found', 404)
     }
-    return NextResponse.json(subscription)
+    return ApiResponse.success(subscription, 'Subscription updated successfully')
   } catch (error) {
     console.error('Failed to update subscription:', error)
-    return NextResponse.json({ error: 'Failed to update subscription' }, { status: 500 })
+    return ApiResponse.error('Failed to update subscription')
   }
 }
 
@@ -32,9 +32,9 @@ export async function DELETE(
     const { id } = await params
 
     await Subscription.findByIdAndDelete(id)
-    return NextResponse.json({ success: true })
+    return ApiResponse.success({ success: true }, 'Subscription deleted successfully')
   } catch (error) {
     console.error('Failed to delete subscription:', error)
-    return NextResponse.json({ error: 'Failed to delete subscription' }, { status: 500 })
+    return ApiResponse.error('Failed to delete subscription')
   }
 }

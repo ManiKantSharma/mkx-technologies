@@ -1,6 +1,6 @@
 import connectDB from '@/lib/db'
 import { Product } from '@/lib/models'
-import { NextResponse } from 'next/server'
+import { ApiResponse } from '@/lib/api-utils'
 
 export async function GET(
   request: Request,
@@ -12,12 +12,12 @@ export async function GET(
 
     const product = await Product.findById(id)
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+      return ApiResponse.error('Product not found', 404)
     }
-    return NextResponse.json(product)
+    return ApiResponse.success(product)
   } catch (error) {
     console.error('Failed to fetch product:', error)
-    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 })
+    return ApiResponse.error('Failed to fetch product')
   }
 }
 
@@ -33,12 +33,12 @@ export async function PUT(
     const product = await Product.findByIdAndUpdate(id, body, { new: true })
 
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+      return ApiResponse.error('Product not found', 404)
     }
-    return NextResponse.json(product)
+    return ApiResponse.success(product, 'Product updated successfully')
   } catch (error) {
     console.error('Failed to update product:', error)
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
+    return ApiResponse.error('Failed to update product')
   }
 }
 
@@ -51,9 +51,9 @@ export async function DELETE(
     const { id } = await params
 
     await Product.findByIdAndDelete(id)
-    return NextResponse.json({ success: true })
+    return ApiResponse.success({ success: true }, 'Product deleted successfully')
   } catch (error) {
     console.error('Failed to delete product:', error)
-    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
+    return ApiResponse.error('Failed to delete product')
   }
 }

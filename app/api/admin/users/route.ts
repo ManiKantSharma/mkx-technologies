@@ -1,12 +1,20 @@
 import connectDB from '@/lib/db'
 import { User, Subscription } from '@/lib/models'
-import { NextResponse } from 'next/server'
+import { ApiResponse } from '@/lib/api-utils'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     await connectDB()
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const skip = (page - 1) * limit
 
-    const users = await User.find().sort({ createdAt: -1 })
+    const [users, total] = await Promise.all([
+      User.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      User.countDocuments()
+    ])
+
     const enrichedUsers = await Promise.all(users.map(async (u) => {
       const activeCount = await Subscription.countDocuments({
         userId: u._id,
@@ -18,10 +26,17 @@ export async function GET() {
       }
     }))
 
-    return NextResponse.json(enrichedUsers)
+    return ApiResponse.success(enrichedUsers, 'Users fetched successfully', 200, {
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    })
   } catch (error) {
     console.error('Failed to fetch users:', error)
-    return NextResponse.json([], { status: 500 })
+    return ApiResponse.error('Failed to fetch users')
   }
 }
 
@@ -31,9 +46,9 @@ export async function POST(request: Request) {
 
     const body = await request.json()
     const user = await User.create(body)
-    return NextResponse.json(user, { status: 201 })
+    return ApiResponse.success(user, 'User created successfully', 201)
   } catch (error) {
     console.error('Failed to create user:', error)
-    return NextResponse.json({ error: 'Failed to create user' }, { status: 500 })
+    return ApiResponse.error('Failed to create user')
   }
 }

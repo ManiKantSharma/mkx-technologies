@@ -37,17 +37,36 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Plus, Pencil, Trash2, IndianRupee, Star } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useApiClient } from "@/lib/api-client";
 import type { Product, PricingPlan } from "@/lib/db";
 
 type PlanWithProduct = PricingPlan & { productName: string };
 
 export default function PricingPage() {
+  const { toast } = useToast();
+  const api = useApiClient();
   const [plans, setPlans] = useState<PlanWithProduct[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState<PlanWithProduct | null>(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    limit: 10,
+    total: 0
+  });
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -60,17 +79,25 @@ export default function PricingPage() {
   });
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(pagination.page);
+  }, [pagination.page]);
 
-  async function fetchData() {
+  async function fetchData(page: number = 1) {
     try {
       const [plansRes, productsRes] = await Promise.all([
-        fetch("/api/admin/pricing"),
-        fetch("/api/admin/products"),
+        api.get<PlanWithProduct[]>(`/api/admin/pricing?page=${page}&limit=${pagination.limit}`, { silent: true }),
+        api.get<Product[]>("/api/admin/products", { silent: true }),
       ]);
-      if (plansRes.ok) setPlans(await plansRes.json());
-      if (productsRes.ok) setProducts(await productsRes.json());
+      if (plansRes.data) {
+        setPlans(plansRes.data);
+        if (plansRes.meta?.pagination) {
+          setPagination(prev => ({
+            ...prev,
+            ...plansRes.meta.pagination
+          }));
+        }
+      }
+      if (productsRes.data) setProducts(productsRes.data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     } finally {
@@ -110,45 +137,32 @@ export default function PricingPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSaving(true);
     const payload = {
       ...formData,
       price: parseFloat(formData.price),
       features: formData.features.split("\n").filter((f) => f.trim()),
     };
-    try {
-      if (editingPlan) {
-        const res = await fetch(`/api/admin/pricing/${editingPlan.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (res.ok) {
-          fetchData();
-          setDialogOpen(false);
-        }
-      } else {
-        const res = await fetch("/api/admin/pricing", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (res.ok) {
-          fetchData();
-          setDialogOpen(false);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to save plan:", error);
+
+    const url = editingPlan ? `/api/admin/pricing/${editingPlan.id}` : "/api/admin/pricing";
+    const method = editingPlan ? "put" : "post";
+
+    const { data } = await api[method](url, payload, { 
+      successMessage: `Plan ${editingPlan ? "updated" : "created"} successfully` 
+    });
+
+    if (data) {
+      fetchData();
+      setDialogOpen(false);
     }
+    setSaving(false);
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this pricing plan?")) return;
-    try {
-      const res = await fetch(`/api/admin/pricing/${id}`, { method: "DELETE" });
-      if (res.ok) fetchData();
-    } catch (error) {
-      console.error("Failed to delete plan:", error);
+    const { data } = await api.delete(`/api/admin/pricing/${id}`, { successMessage: "Pricing plan removed" });
+    if (data) {
+      fetchData();
     }
   }
 
@@ -313,8 +327,8 @@ export default function PricingPage() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit">
-                  {editingPlan ? "Save Changes" : "Create Plan"}
+                <Button type="submit" disabled={saving}>
+                  {saving ? "Saving..." : editingPlan ? "Save Changes" : "Create Plan"}
                 </Button>
               </DialogFooter>
             </form>
@@ -418,6 +432,50 @@ export default function PricingPage() {
               </CardContent>
             </Card>
           ))}
+
+          {pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between border-t pt-4">
+              <div className="text-sm text-muted-foreground">
+                Showing {(pagination.page - 1) * pagination.limit + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} plans
+              </div>
+              <Pagination className="mx-0 w-auto">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      href="#" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page > 1) setPagination(p => ({ ...p, page: p.page - 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                  {[...Array(pagination.totalPages)].map((_, i) => (
+                    <PaginationItem key={i}>
+                      <PaginationLink 
+                        href="#" 
+                        isActive={pagination.page === i + 1}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setPagination(p => ({ ...p, page: i + 1 }))
+                        }}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext 
+                      href="#" 
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (pagination.page < pagination.totalPages) setPagination(p => ({ ...p, page: p.page + 1 }))
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       )}
     </div>
