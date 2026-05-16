@@ -1,0 +1,110 @@
+import mongoose, { Schema, Document } from 'mongoose'
+
+export interface IProduct extends Document {
+  name: string
+  description?: string
+  icon?: string
+  isActive: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+const ProductSchema = new Schema<IProduct>({
+  name: { type: String, required: true },
+  description: { type: String },
+  icon: { type: String },
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true })
+
+export interface IPricingPlan extends Document {
+  name: string
+  price: number
+  interval: 'MONTH' | 'YEAR'
+  features: string[]
+  isPopular: boolean
+  isActive: boolean
+  productId: mongoose.Types.ObjectId
+  createdAt: Date
+  updatedAt: Date
+}
+
+const PricingPlanSchema = new Schema<IPricingPlan>({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  interval: { type: String, enum: ['MONTH', 'YEAR'], default: 'MONTH' },
+  features: { type: [String], default: [] },
+  isPopular: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
+  productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+}, { timestamps: true })
+
+export interface IUser extends Document {
+  email: string
+  password?: string
+  name?: string
+  company?: string
+  companySize?: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+const UserSchema = new Schema<IUser>({
+  email: { type: String, required: true, unique: true },
+  password: { type: String },
+  name: { type: String },
+  company: { type: String },
+  companySize: { type: String },
+}, { timestamps: true })
+
+
+export interface ISubscription extends Document {
+  userId: mongoose.Types.ObjectId
+  productId: mongoose.Types.ObjectId
+  pricingPlanId: mongoose.Types.ObjectId
+  status: 'ACTIVE' | 'CANCELLED' | 'EXPIRED' | 'PENDING'
+  startDate: Date
+  endDate?: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+const SubscriptionSchema = new Schema<ISubscription>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+  pricingPlanId: { type: Schema.Types.ObjectId, ref: 'PricingPlan', required: true },
+  status: { type: String, enum: ['ACTIVE', 'CANCELLED', 'EXPIRED', 'PENDING'], default: 'ACTIVE' },
+  startDate: { type: Date, default: Date.now },
+  endDate: { type: Date },
+}, { timestamps: true })
+
+export interface IBlogPost extends Document {
+  title: string
+  description: string
+  slug: string
+  date: string
+  author: string
+  category: string
+  content: string
+  image?: string
+  published: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+const BlogPostSchema = new Schema<IBlogPost>({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  date: { type: String, required: true },
+  author: { type: String, required: true },
+  category: { type: String, required: true },
+  content: { type: String, required: true },
+  image: { type: String },
+  published: { type: Boolean, default: true },
+}, { timestamps: true })
+
+export const Product = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema)
+export const PricingPlan = mongoose.models.PricingPlan || mongoose.model<IPricingPlan>('PricingPlan', PricingPlanSchema)
+export const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema)
+export const Subscription = mongoose.models.Subscription || mongoose.model<ISubscription>('Subscription', SubscriptionSchema)
+export const BlogPost = mongoose.models.BlogPost || mongoose.model<IBlogPost>('BlogPost', BlogPostSchema)
