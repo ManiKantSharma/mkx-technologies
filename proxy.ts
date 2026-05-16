@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const secret = JWT_SECRET ? new TextEncoder().encode(JWT_SECRET) : null;
-
-const protectedPaths = ["/admin"];
-const publicPaths = ["/", "/login", "/signup", "/forgot-password"];
-
-export async function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  const secret = JWT_SECRET ? new TextEncoder().encode(JWT_SECRET) : null;
+  const protectedPaths = ["/admin"];
+  const publicPaths = ["/", "/login", "/signup", "/forgot-password"];
   const { pathname } = request.nextUrl;
 
   const isProtectedPath = protectedPaths.some((path) =>
