@@ -1,5 +1,5 @@
 import { getAttendanceModel, getEmployeeModel } from "@/lib/app-models";
-import { ApiResponse, getTenantIdFromToken } from '@/lib/api-utils';
+import { ApiResponse, getTenantIdFromToken, withActivityLog } from '@/lib/api-utils';
 import { NextRequest } from 'next/server';
 
 /**
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
  * @param {NextRequest} request - The incoming Next.js API request.
  * @returns {Promise<Response>} API response with the created attendance entry.
  */
-export async function POST(request: NextRequest) {
+export const POST = withActivityLog("LOG_ATTENDANCE", async function POST(request: NextRequest) {
   try {
     const orgId = getTenantIdFromToken(request);
     if (!orgId) return ApiResponse.error("Unauthorized", 401);
@@ -80,4 +80,4 @@ export async function POST(request: NextRequest) {
     console.error("Attendance API Error:", error.message);
     return ApiResponse.error("Failed to create attendance log", 500);
   }
-}
+});

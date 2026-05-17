@@ -4,17 +4,17 @@ import { Column, DataTable } from "@/components/admin/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle
+} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useApiClient } from "@/lib/api-client";
-import { Edit2, Loader2, Plus, Trash2, Users } from "lucide-react";
+import { Edit2, Loader2, Plus, Sparkles, Trash2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /**
@@ -56,7 +56,49 @@ export default function EmployeesPage() {
   const [birthday, setBirthday] = useState("");
   const [managerName, setManagerName] = useState("");
 
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
   const api = useApiClient();
+
+  const handleAiQuickCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aiPrompt.trim()) return;
+
+    setIsAiLoading(true);
+    // 1. Parse prompt via AI
+    const { data: parsed, error: parseError } = await api.post<any>("/api/hrms/employees/ai-parse", { prompt: aiPrompt }, {
+      silent: true
+    });
+
+    if (parseError || !parsed) {
+      setIsAiLoading(false);
+      return;
+    }
+
+    // 2. Directly create the employee in the database
+    const payload = {
+      firstName: parsed.firstName || "Mani",
+      lastName: parsed.lastName || "Sharma",
+      email: parsed.email || `${(parsed.firstName || "Mani").toLowerCase()}.${(parsed.lastName || "Sharma").toLowerCase()}@mkx.com`,
+      department: parsed.department || "Sales",
+      role: parsed.role || "Associate",
+      joiningDate: parsed.joiningDate || undefined,
+      birthday: parsed.birthday || undefined,
+      managerName: parsed.managerName || undefined,
+    };
+
+    const { error: createError } = await api.post("/api/hrms/employees", payload, {
+      successMessage: `Successfully onboarded ${payload.firstName} ${payload.lastName} via AI!`,
+    });
+
+    setIsAiLoading(false);
+
+    if (!createError) {
+      setAiPrompt("");
+      fetchEmployees();
+    }
+  };
 
   /**
    * Fetches the complete list of employees from the tenant's API database.
@@ -247,125 +289,128 @@ export default function EmployeesPage() {
           </p>
         </div>
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Sheet open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <Button onClick={handleOpenAddDialog} className="flex items-center gap-2">
             <Plus className="h-4 w-4" /> Add Employee
           </Button>
-          <DialogContent className="sm:max-w-[480px]">
-            <form onSubmit={handleAddEmployee} className="space-y-4">
-              <DialogHeader>
-                <DialogTitle>{editId ? "Edit Employee Details" : "Add New Employee"}</DialogTitle>
-                <DialogDescription>
-                  Enter the personal and occupational details of the staff member.
-                </DialogDescription>
-              </DialogHeader>
+          <SheetContent className="sm:max-w-[480px] flex flex-col h-full p-6">
+            <form onSubmit={handleAddEmployee} className="flex flex-col h-full justify-between">
+              <div className="flex flex-col gap-6 overflow-y-auto pr-2 pb-6">
+                <SheetHeader className="p-0">
+                  <SheetTitle className="text-xl font-bold tracking-tight">
+                    {editId ? "Edit Employee Details" : "Add New Employee"}
+                  </SheetTitle>
+                  <SheetDescription className="text-xs text-muted-foreground mt-1">
+                    Enter the personal and occupational details of the staff member.
+                  </SheetDescription>
+                </SheetHeader>
 
-              <div className="grid gap-4 py-2 max-h-[60vh] overflow-y-auto px-1">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="firstName" className="text-right">
-                    First Name *
-                  </Label>
-                  <Input
-                    id="firstName"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Jane"
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="lastName" className="text-right">
-                    Last Name *
-                  </Label>
-                  <Input
-                    id="lastName"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Smith"
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="email" className="text-right">
-                    Email *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="jane.smith@example.com"
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="department" className="text-right">
-                    Department *
-                  </Label>
-                  <Input
-                    id="department"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                    placeholder="Engineering"
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="role" className="text-right">
-                    Role / Title
-                  </Label>
-                  <Input
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    placeholder="Principal Engineer"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="managerName" className="text-right">
-                    Manager
-                  </Label>
-                  <Input
-                    id="managerName"
-                    value={managerName}
-                    onChange={(e) => setManagerName(e.target.value)}
-                    placeholder="Alice Cooper"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="joiningDate" className="text-right">
-                    Joining Date
-                  </Label>
-                  <Input
-                    id="joiningDate"
-                    type="date"
-                    value={joiningDate}
-                    onChange={(e) => setJoiningDate(e.target.value)}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="birthday" className="text-right">
-                    Birthday
-                  </Label>
-                  <Input
-                    id="birthday"
-                    type="date"
-                    value={birthday}
-                    onChange={(e) => setBirthday(e.target.value)}
-                    className="col-span-3"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="firstName" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      First Name <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="firstName"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="Jane"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="lastName" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Last Name <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="lastName"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Smith"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 col-span-2">
+                    <Label htmlFor="email" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Email Address <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="jane.smith@example.com"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="department" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Department <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="department"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                      placeholder="Engineering"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="role" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Role / Title
+                    </Label>
+                    <Input
+                      id="role"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      placeholder="Principal Engineer"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 col-span-2">
+                    <Label htmlFor="managerName" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Manager
+                    </Label>
+                    <Input
+                      id="managerName"
+                      value={managerName}
+                      onChange={(e) => setManagerName(e.target.value)}
+                      placeholder="Alice Cooper"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="joiningDate" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Joining Date
+                    </Label>
+                    <Input
+                      id="joiningDate"
+                      type="date"
+                      value={joiningDate}
+                      onChange={(e) => setJoiningDate(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="birthday" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80">
+                      Birthday
+                    </Label>
+                    <Input
+                      id="birthday"
+                      type="date"
+                      value={birthday}
+                      onChange={(e) => setBirthday(e.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <DialogFooter className="pt-2">
-                <Button type="submit" disabled={isSubmitting}>
+              <SheetFooter className="border-t pt-4 mt-auto">
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
@@ -374,11 +419,48 @@ export default function EmployeesPage() {
                     "Save Employee"
                   )}
                 </Button>
-              </DialogFooter>
+              </SheetFooter>
             </form>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
       </div>
+
+      {/* AI Quick-Onboard Assistant */}
+      <Card className="border border-indigo-500/20 bg-gradient-to-r from-indigo-500/5 via-transparent to-transparent shadow-sm">
+        <CardContent className="pt-6">
+          <form onSubmit={handleAiQuickCreate} className="space-y-4">
+            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+              <Sparkles className="h-5 w-5 animate-pulse" />
+              <span className="text-sm font-bold uppercase tracking-wider">
+                AI Onboarding Assistant
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Onboard employees rapidly in plain English. Just describe the onboarding events (e.g., <i>"Today join a employee Mani Kant Sharma in Sales Department who is 25 years old"</i>) to let AI auto-complete the paperwork.
+            </p>
+            <div className="flex gap-2">
+              <Input
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                placeholder="Today join a employee Mani Kant Sharma in Sales Department who is 25 years old..."
+                disabled={isAiLoading}
+                className="flex-1 bg-background/50 border-indigo-500/10 focus-visible:ring-indigo-500"
+              />
+              <Button type="submit" disabled={isAiLoading} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-500 dark:hover:bg-indigo-600 transition-colors">
+                {isAiLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Parsing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" /> Parse & Fill
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

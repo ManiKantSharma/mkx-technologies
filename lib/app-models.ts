@@ -157,3 +157,33 @@ export async function getHRSettingsModel(tenantId: string) {
   if (!db) throw new Error("Application DB connection failed");
   return db.models.HRSettings || db.model<IHRSettings>('HRSettings', HRSettingsSchema);
 }
+
+/**
+ * Represents a system activity or audit log record for an organization.
+ * 
+ * @interface IActivityLog
+ * @extends {Document}
+ */
+export interface IActivityLog extends Document {
+  id: string;
+  organizationId: string;
+  userEmail: string;
+  action: string;
+  details: string;
+  ipAddress?: string;
+  createdAt: Date;
+}
+
+const ActivityLogSchema = new Schema<IActivityLog>({
+  organizationId: { type: String, required: true, index: true },
+  userEmail: { type: String, required: true },
+  action: { type: String, required: true },
+  details: { type: String },
+  ipAddress: { type: String },
+}, { timestamps: { createdAt: true, updatedAt: false }, toJSON: commonTransform, toObject: commonTransform });
+
+export async function getActivityLogModel(tenantId: string) {
+  const db: Connection = await connectApplicationDB(tenantId);
+  if (!db) throw new Error("Application DB connection failed");
+  return db.models.ActivityLog || db.model<IActivityLog>('ActivityLog', ActivityLogSchema);
+}

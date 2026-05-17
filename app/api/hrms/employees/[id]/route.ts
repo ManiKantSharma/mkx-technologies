@@ -1,5 +1,5 @@
 import { getEmployeeModel } from "@/lib/app-models";
-import { ApiResponse, getTenantIdFromToken } from "@/lib/api-utils";
+import { ApiResponse, getTenantIdFromToken, withActivityLog } from "@/lib/api-utils";
 import { NextRequest } from "next/server";
 
 /**
@@ -10,7 +10,7 @@ import { NextRequest } from "next/server";
  * @param {Promise<{ id: string }>} context.params - Promise resolving to the ID.
  * @returns {Promise<Response>} API response with the updated employee record.
  */
-export async function PUT(
+export const PUT = withActivityLog("UPDATE_EMPLOYEE", async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -47,7 +47,7 @@ export async function PUT(
     console.error("Employee Update Error:", error.message);
     return ApiResponse.error("Failed to update employee", 500);
   }
-}
+});
 
 /**
  * Handles DELETE requests to permanently remove an employee from the directory.
@@ -57,7 +57,7 @@ export async function PUT(
  * @param {Promise<{ id: string }>} context.params - Promise resolving to the ID.
  * @returns {Promise<Response>} API response confirming successful deletion.
  */
-export async function DELETE(
+export const DELETE = withActivityLog("DELETE_EMPLOYEE", async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -79,4 +79,4 @@ export async function DELETE(
     console.error("Employee Delete Error:", error.message);
     return ApiResponse.error("Failed to delete employee", 500);
   }
-}
+});

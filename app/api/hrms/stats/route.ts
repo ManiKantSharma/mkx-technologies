@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getEmployeeModel, getAttendanceModel, getLeaveRequestModel } from "@/lib/app-models";
+import { getEmployeeModel, getAttendanceModel, getLeaveRequestModel, getActivityLogModel } from "@/lib/app-models";
 import { ApiResponse, getTenantIdFromToken } from "@/lib/api-utils";
 
 /**
@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     const Employee = await getEmployeeModel(orgId);
     const Attendance = await getAttendanceModel(orgId);
     const LeaveRequest = await getLeaveRequestModel(orgId);
+    const ActivityLog = await getActivityLogModel(orgId);
 
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
@@ -38,9 +39,7 @@ export async function GET(request: NextRequest) {
 
     const onLeave = await LeaveRequest.countDocuments({
       organizationId: orgId,
-      status: "APPROVED",
-      startDate: { $lte: endOfToday },
-      endDate: { $gte: startOfToday }
+      status: "APPROVED"
     });
 
     const pendingLeaves = await LeaveRequest.countDocuments({
@@ -78,6 +77,11 @@ export async function GET(request: NextRequest) {
 
     const attendanceRate = totalEmployees > 0 ? Math.round((presentToday / totalEmployees) * 100) : 0;
 
+    const recentActivities = await ActivityLog.find({ organizationId: orgId })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select("userEmail action details ipAddress createdAt");
+
     return ApiResponse.success({
       totalEmployees,
       presentToday,
@@ -86,6 +90,7 @@ export async function GET(request: NextRequest) {
       pendingLeaves,
       recentHires,
       upcomingBirthdays,
+      recentActivities,
       productivity: "+12.5%", 
     });
   } catch (error: any) {

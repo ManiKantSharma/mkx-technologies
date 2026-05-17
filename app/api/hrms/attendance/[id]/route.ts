@@ -1,5 +1,5 @@
 import { getAttendanceModel } from "@/lib/app-models";
-import { ApiResponse, getTenantIdFromToken } from "@/lib/api-utils";
+import { ApiResponse, getTenantIdFromToken, withActivityLog } from "@/lib/api-utils";
 import { NextRequest } from "next/server";
 
 /**
@@ -10,7 +10,7 @@ import { NextRequest } from "next/server";
  * @param {Promise<{ id: string }>} context.params - Promise resolving to the ID.
  * @returns {Promise<Response>} API response with the updated attendance record.
  */
-export async function PUT(
+export const PUT = withActivityLog("UPDATE_ATTENDANCE", async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -43,7 +43,7 @@ export async function PUT(
     console.error("Attendance Update Error:", error.message);
     return ApiResponse.error("Failed to update attendance log", 500);
   }
-}
+});
 
 /**
  * Handles DELETE requests to permanently delete a specific attendance log.
@@ -53,7 +53,7 @@ export async function PUT(
  * @param {Promise<{ id: string }>} context.params - Promise resolving to the ID.
  * @returns {Promise<Response>} API response confirming successful deletion.
  */
-export async function DELETE(
+export const DELETE = withActivityLog("DELETE_ATTENDANCE", async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -75,4 +75,4 @@ export async function DELETE(
     console.error("Attendance Delete Error:", error.message);
     return ApiResponse.error("Failed to delete attendance log", 500);
   }
-}
+});

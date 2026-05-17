@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Clock, CalendarDays, TrendingUp, Sparkles, UserPlus } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, Clock, CalendarDays, TrendingUp, Sparkles, UserPlus, Activity } from "lucide-react";
 import { useApiClient } from "@/lib/api-client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -25,6 +25,15 @@ interface BirthdayInfo {
   formattedDate: string;
 }
 
+interface ActivityLog {
+  id: string;
+  userEmail: string;
+  action: string;
+  details: string;
+  ipAddress?: string;
+  createdAt: string;
+}
+
 interface DashboardStats {
   totalEmployees: number;
   presentToday: number;
@@ -34,6 +43,7 @@ interface DashboardStats {
   productivity: string;
   recentHires: Employee[];
   upcomingBirthdays: BirthdayInfo[];
+  recentActivities?: ActivityLog[];
 }
 
 export default function HRMSDashboard() {
@@ -125,7 +135,7 @@ export default function HRMSDashboard() {
               <div className="text-2xl font-bold">{stats?.onLeave ?? 0}</div>
             )}
             <p className="text-xs text-muted-foreground mt-1">
-              {stats?.pendingLeaves ?? 0} pending requests
+              Approved leaves ({stats?.pendingLeaves ?? 0} pending)
             </p>
           </CardContent>
         </Card>
@@ -216,6 +226,72 @@ export default function HRMSDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Recent Activity Full-Width Section at the Bottom */}
+      <Card className="w-full mt-6">
+        <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-border/40">
+          <div>
+            <CardTitle className="text-lg font-bold flex items-center gap-2">
+              <Activity className="h-5 w-5 text-primary" /> System Activity Audit Log
+            </CardTitle>
+            <p className="text-xs text-muted-foreground mt-1">
+              Real-time multi-tenant execution trace for compliance and monitoring.
+            </p>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+          {loading ? (
+            <div className="space-y-3">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          ) : stats?.recentActivities && stats.recentActivities.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-border/60 text-muted-foreground font-semibold">
+                    <th className="pb-3 pr-4">Action</th>
+                    <th className="pb-3 pr-4">Details</th>
+                    <th className="pb-3 pr-4">Operator</th>
+                    <th className="pb-3 pr-4">IP Address</th>
+                    <th className="pb-3 text-right">Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/30">
+                  {stats.recentActivities.map((act) => (
+                    <tr key={act.id} className="hover:bg-muted/30 transition-colors">
+                      <td className="py-3.5 pr-4 font-semibold text-primary uppercase tracking-wider text-[11px]">
+                        {act.action.replace(/_/g, ' ')}
+                      </td>
+                      <td className="py-3.5 pr-4 text-muted-foreground max-w-[300px] truncate">
+                        {act.details}
+                      </td>
+                      <td className="py-3.5 pr-4 font-medium text-muted-foreground">
+                        {act.userEmail}
+                      </td>
+                      <td className="py-3.5 pr-4 text-muted-foreground font-mono text-[11px]">
+                        {act.ipAddress || "127.0.0.1"}
+                      </td>
+                      <td className="py-3.5 text-right text-muted-foreground font-mono text-[10px]">
+                        {new Date(act.createdAt).toLocaleString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit'
+                        })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No recent system activity logged yet.</p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

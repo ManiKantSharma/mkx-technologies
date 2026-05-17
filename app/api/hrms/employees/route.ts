@@ -1,5 +1,5 @@
 import { getEmployeeModel } from "@/lib/app-models";
-import { ApiResponse, getTenantIdFromToken } from '@/lib/api-utils';
+import { ApiResponse, getTenantIdFromToken, withActivityLog } from '@/lib/api-utils';
 import { NextRequest } from 'next/server';
 
 /**
@@ -8,7 +8,7 @@ import { NextRequest } from 'next/server';
  * @param {NextRequest} request - The incoming Next.js API request.
  * @returns {Promise<Response>} API response containing the paginated array of employee objects.
  */
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   try {
     const orgId = getTenantIdFromToken(request);
     if (!orgId) return ApiResponse.error("Unauthorized: Invalid session or missing tenant ID", 401);
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
  * @param {NextRequest} request - The incoming Next.js API request.
  * @returns {Promise<Response>} API response with the created employee record.
  */
-export async function POST(request: NextRequest) {
+export const POST = withActivityLog("CREATE_EMPLOYEE", async function POST(request: NextRequest) {
   try {
     const orgId = getTenantIdFromToken(request);
     if (!orgId) return ApiResponse.error("Unauthorized: Invalid session", 401);
@@ -71,4 +71,4 @@ export async function POST(request: NextRequest) {
     console.error("HRMS API Error:", error.message);
     return ApiResponse.error("Failed to create employee", 500);
   }
-}
+});
