@@ -3,6 +3,7 @@
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { ArrowRight, Briefcase, Clock, MapPin, Heart, Zap, Globe, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 import { slideUp, staggerContainer, fadeIn } from "@/lib/animations";
@@ -108,9 +109,15 @@ export default function CareersPage() {
                        ))}
                     </div>
                  </div>
-                 <div className="aspect-[4/3] rounded-3xl bg-card border border-border flex items-center justify-center">
-                    <Zap className="h-24 w-24 text-accent/10" />
-                 </div>
+                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl group">
+                    <Image
+                      src="/illustrations/careers_culture.png"
+                      alt="Careers Culture Illustration"
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
               </div>
            </div>
         </section>

@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { CheckCircle2, Rocket, Users, Target, Shield } from "lucide-react";
 
 export default function AboutPage() {
@@ -44,11 +45,14 @@ export default function AboutPage() {
                   ))}
                 </div>
               </div>
-              <div className="relative aspect-video rounded-2xl border border-border/50 bg-card/50 shadow-2xl overflow-hidden group">
+              <div className="relative aspect-video rounded-2xl overflow-hidden border border-border/50 bg-card/50 shadow-2xl group">
+                <Image
+                  src="/illustrations/about_story.png"
+                  alt="Our Story Illustration"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="flex h-full items-center justify-center">
-                   <Target className="h-24 w-24 text-accent/20" />
-                </div>
               </div>
             </div>
           </div>

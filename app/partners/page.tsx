@@ -3,6 +3,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Handshake, Star, TrendingUp, ShieldCheck, Zap, Globe, Award, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { slideUp, staggerContainer, fadeIn } from "@/lib/animations";
@@ -117,8 +118,15 @@ export default function PartnersPage() {
                     <p className="text-lg italic text-foreground mb-6">
                        "Partnering with MKX Technologies allowed our agency to offer high-end HR solutions that were previously out of reach. Our revenue increased by 40% in just 6 months."
                     </p>
-                    <div className="flex items-center gap-4">
-                       <div className="h-10 w-10 rounded-full bg-accent" />
+                     <div className="flex items-center gap-4">
+                        <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-accent/20">
+                           <Image
+                              src="/team/rajesh.png"
+                              alt="Rajesh Kumar"
+                              fill
+                              className="object-cover"
+                           />
+                        </div>
                        <div>
                           <p className="font-bold text-sm">Rajesh Kumar</p>
                           <p className="text-xs text-muted-foreground">Director, RK Consulting</p>
