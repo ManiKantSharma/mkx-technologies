@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -20,9 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { CheckCircle2, Calendar, ArrowRight } from "lucide-react"
-import { toast } from "sonner"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import * as React from "react"
+import { toast } from "sonner"
 
 interface DemoModalProps {
   children: React.ReactNode
@@ -233,31 +233,31 @@ export function DemoModal({ children }: DemoModalProps) {
                     </SelectContent>
                   </Select>
                 </div>
-                 <div className="space-y-2">
-                   <Label htmlFor="product">Product Interest</Label>
-                   <Select
-                     value={formData.product}
-                     onValueChange={(value) =>
-                       setFormData({ ...formData, product: value })
-                     }
-                   >
-                     <SelectTrigger id="product" className="w-full">
-                       <SelectValue placeholder="Select product" />
-                     </SelectTrigger>
-                     <SelectContent>
-                       {products.length > 0 ? (
-                         products.map((prod) => (
-                           <SelectItem key={prod.id || prod._id} value={prod.id || prod._id}>
-                             {prod.name}
-                           </SelectItem>
-                         ))
-                       ) : (
-                         <SelectItem value="hrms">MKX HRMS Ultimate</SelectItem>
-                       )}
-                     </SelectContent>
-                   </Select>
-                 </div>
-               </div>
+                <div className="space-y-2">
+                  <Label htmlFor="product">Product Interest</Label>
+                  <Select
+                    value={formData.product}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, product: value })
+                    }
+                  >
+                    <SelectTrigger id="product" className="w-full">
+                      <SelectValue placeholder="Select product" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {products.length > 0 ? (
+                        products.map((prod) => (
+                          <SelectItem key={prod.id || prod._id} value={prod.id || prod._id}>
+                            {prod.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="hrms">MKX HRMS Ultimate</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="message">

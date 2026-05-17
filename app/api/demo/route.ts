@@ -162,21 +162,21 @@ export async function POST(request: Request) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const loginUrl = `${baseUrl}/login`;
 
-    const brandColor = "#A70400";
-    const backgroundColor = "#0a0a0a";
-    const cardBackground = "#141414";
-    const textColor = "#ffffff";
-    const mutedTextColor = "#a3a3a3";
-    const borderColor = "#262626";
+    const brandColor = "#0f172a";
+    const backgroundColor = "#f8fafc";
+    const cardBackground = "#ffffff";
+    const textColor = "#0f172a";
+    const mutedTextColor = "#334155";
+    const borderColor = "#e2e8f0";
 
     const logoHtml = `
       <div style="margin-bottom: 16px; text-align: left;">
         <svg width="130" height="30" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg" style="display: block; max-width: 100%; height: auto;">
           <g transform="translate(-20, -130) scale(1.1)">
             <path d="M 124 136 L 106 141 L 87 150 L 74 159 L 56 177 L 46 192 L 35 218 L 31 240 L 33 271 L 42 298 L 54 318 L 74 339 L 104 356 L 125 362 L 149 364 L 176 360 L 191 355 L 211 344 L 234 323 L 242 312 L 232 305 L 232 194 L 232 194 L 244 189 L 226 166 L 211 154 L 186 141 L 163 135 Z" fill="${brandColor}" />
-            <path d="M 356 195 L 356 204 L 394 249 L 355 295 L 355 302 L 379 303 L 406 270 L 410 268 L 439 303 L 463 303 L 463 295 L 424 249 L 463 203 L 463 195 L 440 195 L 409 231 L 379 195 Z" fill="white" />
-            <path d="M 238 195 L 237 303 L 259 303 L 260 260 L 281 260 L 317 303 L 340 303 L 340 294 L 302 249 L 340 204 L 340 195 L 317 195 L 281 238 L 260 238 L 260 196 Z" fill="white" />
-            <path d="M 97 195 L 97 303 L 119 303 L 120 231 L 157 274 L 194 231 L 195 302 L 217 303 L 217 195 L 194 195 L 157 239 L 121 196 Z" fill="white" />
+            <path d="M 356 195 L 356 204 L 394 249 L 355 295 L 355 302 L 379 303 L 406 270 L 410 268 L 439 303 L 463 303 L 463 295 L 424 249 L 463 203 L 463 195 L 440 195 L 409 231 L 379 195 Z" fill="${brandColor}" />
+            <path d="M 238 195 L 237 303 L 259 303 L 260 260 L 281 260 L 317 303 L 340 303 L 340 294 L 302 249 L 340 204 L 340 195 L 317 195 L 281 238 L 260 238 L 260 196 Z" fill="${brandColor}" />
+            <path d="M 97 195 L 97 303 L 119 303 L 120 231 L 157 274 L 194 231 L 195 302 L 217 303 L 217 195 L 194 195 L 157 239 L 121 196 Z" fill="${brandColor}" />
           </g>
         </svg>
       </div>
@@ -189,7 +189,7 @@ export async function POST(request: Request) {
           <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: ${backgroundColor};">
             <tr>
               <td align="center" style="padding: 20px 10px;">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: ${cardBackground}; border-radius: 12px; border: 1px solid ${borderColor}; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: ${cardBackground}; border-radius: 12px; border: 1px solid ${borderColor}; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);">
                   <tr>
                     <td style="padding: 32px 24px;">
                       ${logoHtml}
@@ -199,13 +199,13 @@ export async function POST(request: Request) {
                         Hello ${firstName}, we have automatically registered your organization and pre-populated your private, secure trial sandbox with rich demo dataset so you can start exploring immediately.
                       </p>
 
-                      <div style="background-color: ${backgroundColor}; border-radius: 8px; border: 1px solid ${borderColor}; padding: 20px; margin-bottom: 24px;">
-                        <h3 style="margin: 0 0 14px; font-size: 13px; color: ${brandColor}; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">🔐 Dynamic Trial Credentials</h3>
+                      <div style="background-color: #f8fafc; border-radius: 8px; border: 1px solid ${borderColor}; padding: 20px; margin-bottom: 24px;">
+                        <h3 style="margin: 0 0 14px; font-size: 13px; color: ${brandColor}; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">Dynamic Trial Credentials</h3>
                         
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 14px;">
                           <tr>
                             <td style="padding: 4px 0; color: ${mutedTextColor}; width: 120px;">Work Email:</td>
-                            <td style="padding: 4px 0; font-weight: 600; color: ${textColor};">${email}</td>
+                            <td style="padding: 4px 0; font-weight: 600;">${email}</td>
                           </tr>
                           <tr>
                             <td style="padding: 4px 0; color: ${mutedTextColor};">Temp Password:</td>
@@ -219,17 +219,17 @@ export async function POST(request: Request) {
                       </div>
 
                       <div style="text-align: center; margin: 32px 0;">
-                        <a href="${loginUrl}" style="display: inline-block; background-color: ${brandColor}; color: ${textColor}; text-decoration: none; font-weight: 700; font-size: 15px; padding: 14px 32px; border-radius: 6px; box-shadow: 0 4px 12px rgba(167, 4, 0, 0.4); text-transform: uppercase; letter-spacing: 0.5px;">
-                          🔑 Go to Login Page
+                        <a href="${loginUrl}" style="display: inline-block; background-color: ${brandColor}; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 15px; padding: 14px 32px; border-radius: 6px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2); text-transform: uppercase; letter-spacing: 0.5px;">
+                          Go to Login Page
                         </a>
                         <p style="font-size: 12px; color: ${mutedTextColor}; margin: 10px 0 0;">
                           Please use the Email and Password listed above to access your dashboard.
                         </p>
                       </div>
 
-                      <div style="background-color: rgba(167, 4, 0, 0.05); border-left: 3px solid ${brandColor}; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
+                      <div style="background-color: #f1f5f9; border-left: 3px solid #64748b; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
                         <p style="margin: 0; color: ${textColor}; font-size: 13px; line-height: 1.5; font-weight: 500;">
-                          💡 <strong>What's Pre-loaded:</strong> We have seeded 3 mock employee profiles, real-time daily attendance check-ins, and leave requests. Feel free to perform any CRUD updates!
+                          <strong>What's Pre-loaded:</strong> We have seeded 3 mock employee profiles, real-time daily attendance check-ins, and leave requests. Feel free to perform any CRUD updates!
                         </p>
                       </div>
 
