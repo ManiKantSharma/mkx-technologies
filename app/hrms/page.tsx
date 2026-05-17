@@ -50,6 +50,8 @@ export default function HRMSDashboard() {
   const api = useApiClient();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [insights, setInsights] = useState<string[]>([]);
+  const [insightsLoading, setInsightsLoading] = useState(true);
 
   const fetchStats = async () => {
     try {
@@ -64,8 +66,22 @@ export default function HRMSDashboard() {
     }
   };
 
+  const fetchAiInsights = async () => {
+    try {
+      const response = await api.get<string[]>("/api/hrms/stats/ai-insights");
+      if (response && !response.error && response.data) {
+        setInsights(response.data);
+      }
+    } catch (err) {
+      console.error("Error loading AI insights:", err);
+    } finally {
+      setInsightsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchStats();
+    fetchAiInsights();
   }, []);
 
   const handleSeedData = async () => {
@@ -152,6 +168,36 @@ export default function HRMSDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* AI Workforce Analytics & Executive Insights */}
+      <Card className="border border-indigo-500/20 bg-gradient-to-r from-indigo-500/5 via-transparent to-transparent shadow-sm">
+        <CardHeader className="flex flex-row items-center gap-2 pb-2">
+          <Sparkles className="h-5 w-5 text-indigo-500 animate-pulse" />
+          <CardTitle className="text-md font-bold text-indigo-600 dark:text-indigo-400">
+            AI Workforce Analytics & Executive Insights
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {insightsLoading ? (
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+              <Skeleton className="h-4 w-4/5" />
+            </div>
+          ) : insights.length > 0 ? (
+            <ul className="space-y-2.5">
+              {insights.map((insight, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-xs font-medium text-foreground/90">
+                  <span className="flex-shrink-0 text-indigo-500 font-semibold">•</span>
+                  <span>{insight}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-xs text-muted-foreground">No executive insights compiled yet.</p>
+          )}
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="col-span-1">

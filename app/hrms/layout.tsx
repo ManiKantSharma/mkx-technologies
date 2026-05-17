@@ -16,6 +16,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AiCopilot } from "@/components/admin/ai-copilot";
 import { useState, useEffect } from "react";
 import {
   DropdownMenu,
@@ -249,6 +250,7 @@ export default function HRMSLayout({
 
         {}
         <main className="p-6">{children}</main>
+        <AiCopilot />
       </div>
     </div>
   );

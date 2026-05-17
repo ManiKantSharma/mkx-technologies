@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useApiClient } from "@/lib/api-client";
-import { CalendarDays, Edit2, Loader2, Plus, Trash2 } from "lucide-react";
+import { CalendarDays, Edit2, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /**
@@ -69,7 +69,23 @@ export default function LeavesPage() {
   const [status, setStatus] = useState<"PENDING" | "APPROVED" | "REJECTED">("PENDING");
   const [reason, setReason] = useState("");
 
+  const [aiRecommendation, setAiRecommendation] = useState<{ sentiment: string; recommendation: string; priority: string } | null>(null);
+  const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
+
   const api = useApiClient();
+
+  /**
+   * Assessment trigger that parses employee time-off reason sentiment and urgency.
+   */
+  const handleAiAnalyzeLeave = async () => {
+    if (!reason.trim()) return;
+    setIsAiAnalyzing(true);
+    const { data, error } = await api.post<any>("/api/hrms/leaves/ai-recommend", { reason }, { silent: true });
+    setIsAiAnalyzing(false);
+    if (!error && data) {
+      setAiRecommendation(data);
+    }
+  };
 
   /**
    * Fetches the complete list of leaves from the tenant's API database.
@@ -109,6 +125,7 @@ export default function LeavesPage() {
     setType("VACATION");
     setStatus("PENDING");
     setReason("");
+    setAiRecommendation(null);
     setIsDialogOpen(true);
   };
 
@@ -125,6 +142,7 @@ export default function LeavesPage() {
     setType(leave.type);
     setStatus(leave.status);
     setReason(leave.reason || "");
+    setAiRecommendation(null);
     setIsDialogOpen(true);
   };
 
@@ -354,6 +372,42 @@ export default function LeavesPage() {
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="Annual summer family vacation trip"
                   />
+                  {reason.trim().length > 3 && (
+                    <div className="mt-2 flex justify-between items-center bg-indigo-500/5 border border-indigo-500/10 p-2.5 rounded-lg">
+                      <div className="flex-1 mr-2">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                          <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+                          AI Co-pilot Assessment
+                        </div>
+                        {isAiAnalyzing ? (
+                          <p className="text-[11px] text-muted-foreground mt-1 animate-pulse">Analyzing reason urgency...</p>
+                        ) : aiRecommendation ? (
+                          <div className="mt-1 space-y-1">
+                            <p className="text-[11px] font-medium text-foreground/90 leading-relaxed">{aiRecommendation.recommendation}</p>
+                            <div className="flex gap-2 items-center mt-1.5">
+                              <span className="text-[9px] uppercase tracking-wider font-bold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded">
+                                Sentiment: {aiRecommendation.sentiment}
+                              </span>
+                              <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded ${
+                                aiRecommendation.priority === 'HIGH' ? 'bg-red-500/15 text-red-600 dark:text-red-400' :
+                                aiRecommendation.priority === 'MEDIUM' ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400' :
+                                'bg-green-500/15 text-green-600 dark:text-green-400'
+                              }`}>
+                                Priority: {aiRecommendation.priority}
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-[11px] text-muted-foreground mt-1">Ready to assess sentiment.</p>
+                        )}
+                      </div>
+                      {!aiRecommendation && !isAiAnalyzing && (
+                        <Button type="button" onClick={handleAiAnalyzeLeave} variant="outline" size="sm" className="h-7 text-[10px] gap-1 border-indigo-500/30 text-indigo-600 hover:bg-indigo-500/5 transition-all">
+                          <Sparkles className="h-3 w-3" /> Assess
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
