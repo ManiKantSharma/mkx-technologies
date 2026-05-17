@@ -6,31 +6,22 @@ import { Badge } from "@/components/ui/badge";
 
 const tiers = [
   {
-    name: "Starter",
-    id: "starter",
-    price: "29",
-    description: "Perfect for small teams and startups.",
-    features: ["Up to 10 users", "Core HRMS modules", "Basic Reporting", "Email Support"],
+    name: "Trial",
+    id: "trial",
+    price: "0",
+    description: "Perfect for exploring platform capabilities.",
+    features: ["15-day sandbox trial", "Core HRMS modules", "Pre-seeded employee records", "Standard check-in/out logs", "Email support"],
     icon: Zap,
     popular: false
   },
   {
-    name: "Professional",
-    id: "professional",
+    name: "Premium",
+    id: "premium",
     price: "99",
-    description: "Advanced features for growing businesses.",
-    features: ["Up to 50 users", "Full HRMS & CRMS", "Advanced Analytics", "Priority Support", "Custom Integrations"],
+    description: "Advanced features for scaling enterprise teams.",
+    features: ["Unlimited active employees", "Full HRMS, CRMS & POS access", "Advanced attendance reporting", "Priority 24/7 support", "Custom API integrations"],
     icon: Rocket,
     popular: true
-  },
-  {
-    name: "Enterprise",
-    id: "enterprise",
-    price: "Custom",
-    description: "Unlimited power for large scale organizations.",
-    features: ["Unlimited users", "Full Suite Access", "White-glove Onboarding", "Dedicated Success Manager", "24/7 Phone Support"],
-    icon: Building2,
-    popular: false
   }
 ];
 
@@ -50,7 +41,7 @@ export default function PricingPage() {
 
         <section className="pb-24">
           <div className="container px-6">
-            <div className="grid gap-8 lg:grid-cols-3">
+            <div className="grid gap-8 lg:grid-cols-2 max-w-4xl mx-auto">
               {tiers.map((tier) => (
                 <div
                   key={tier.id}
@@ -82,7 +73,7 @@ export default function PricingPage() {
                     className={`w-full h-12 text-md font-semibold ${tier.popular ? 'bg-accent hover:bg-accent/90' : 'variant-outline border-border/50'}`}
                     variant={tier.popular ? 'default' : 'outline'}
                   >
-                    {tier.price === 'Custom' ? 'Contact Sales' : 'Get Started'}
+                    {tier.price === '0' ? 'Get Started' : 'Upgrade Now'}
                   </Button>
                 </div>
               ))}
@@ -98,26 +89,25 @@ export default function PricingPage() {
                     <thead className="bg-accent/50 font-bold">
                        <tr>
                           <th className="p-6 border-b border-border">Features</th>
-                          <th className="p-6 border-b border-border">Starter</th>
-                          <th className="p-6 border-b border-border">Professional</th>
-                          <th className="p-6 border-b border-border">Enterprise</th>
+                          <th className="p-6 border-b border-border">Trial Plan</th>
+                          <th className="p-6 border-b border-border">Premium Plan</th>
                        </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                        {[
-                         { feature: "Users", s: "Up to 10", p: "Up to 50", e: "Unlimited" },
-                         { feature: "HRMS Modules", s: "Core", p: "Full", e: "Full + Custom" },
-                         { feature: "CRMS Modules", s: "—", p: "Full", e: "Full + Custom" },
-                         { feature: "POS Support", s: "Basic", p: "Advanced", e: "Multi-Store" },
-                         { feature: "API Access", s: "—", p: "Standard", e: "Premium (High-Rate)" },
-                         { feature: "Support", s: "Email", p: "Priority Email", e: "24/7 Phone & Success Manager" },
-                         { feature: "Security", s: "Standard", p: "Standard", e: "Advanced + Custom SSO" }
+                         { feature: "Trial Period", s: "15 Days", p: "Lifetime / Active Sub" },
+                         { feature: "Active Employees", s: "Up to 3", p: "Unlimited" },
+                         { feature: "HRMS Modules", s: "Core Modules", p: "Full Suite (All Modules)" },
+                         { feature: "CRMS Modules", s: "—", p: "Full Suite" },
+                         { feature: "POS Support", s: "Basic", p: "Enterprise Multi-Store" },
+                         { feature: "API Access", s: "—", p: "Premium (High-Rate)" },
+                         { feature: "Support", s: "Email Support", p: "24/7 Priority Support" },
+                         { feature: "Security & SSO", s: "Standard", p: "Enterprise Grade / SSO" }
                        ].map((row, i) => (
                          <tr key={i} className="hover:bg-accent/20 transition-colors">
                             <td className="p-6 font-bold">{row.feature}</td>
                             <td className="p-6 text-muted-foreground">{row.s}</td>
                             <td className="p-6 text-muted-foreground">{row.p}</td>
-                            <td className="p-6 text-muted-foreground">{row.e}</td>
                          </tr>
                        ))}
                     </tbody>

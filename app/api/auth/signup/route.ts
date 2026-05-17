@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       name: `${firstName} ${lastName}`,
       company,
       companySize,
+      password,
     });
     const token = jwt.sign(
       {

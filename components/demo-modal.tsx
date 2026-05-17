@@ -32,6 +32,7 @@ export function DemoModal({ children }: DemoModalProps) {
   const [open, setOpen] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isSuccess, setIsSuccess] = React.useState(false)
+  const [products, setProducts] = React.useState<any[]>([])
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -41,6 +42,26 @@ export function DemoModal({ children }: DemoModalProps) {
     product: "",
     message: "",
   })
+
+  React.useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch("/api/admin/products?limit=50")
+        if (res.ok) {
+          const result = await res.json()
+          if (result && result.success && Array.isArray(result.data)) {
+            setProducts(result.data)
+            if (result.data.length > 0) {
+              setFormData(prev => ({ ...prev, product: result.data[0].id || result.data[0]._id }))
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load products inside modal:", err)
+      }
+    }
+    loadProducts()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -99,25 +120,34 @@ export function DemoModal({ children }: DemoModalProps) {
               <CheckCircle2 className="h-8 w-8 text-accent" />
             </div>
             <DialogHeader className="space-y-2">
-              <DialogTitle className="text-2xl">Demo Request Received</DialogTitle>
-              <DialogDescription className="text-base">
-                Thank you for your interest in MKX Technologies Pvt Ltd! Our team will contact you within 24 hours to schedule your personalized demo.
+              <DialogTitle className="text-2xl">Your 15-Day Free Trial is Ready!</DialogTitle>
+              <DialogDescription className="text-base text-balance leading-normal">
+                Thank you for choosing MKX Technologies! We have successfully provisioned your private isolated database partition and emailed your temporary credentials to <strong className="text-foreground">{formData.email}</strong>.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-6 w-full rounded-lg border border-border bg-secondary/50 p-4">
-              <div className="flex items-center gap-3">
-                <Calendar className="h-5 w-5 text-muted-foreground" />
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent/10">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-accent" />
+                </div>
                 <div className="text-left">
-                  <p className="text-sm font-medium text-foreground">What to expect</p>
-                  <p className="text-sm text-muted-foreground">
-                    A 30-minute personalized walkthrough of the products you selected
+                  <p className="text-sm font-semibold text-foreground leading-none">What is pre-loaded?</p>
+                  <p className="text-xs text-muted-foreground leading-normal mt-1.5">
+                    We pre-seeded 3 employee files, live daily attendance registers, and time-off leave logs so you can start exploring immediately!
                   </p>
                 </div>
               </div>
             </div>
-            <Button className="mt-6" onClick={() => handleOpenChange(false)}>
-              Close
-            </Button>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 w-full">
+              <Button variant="outline" className="flex-1" onClick={() => handleOpenChange(false)}>
+                Dismiss
+              </Button>
+              <Button asChild className="flex-1 gap-2">
+                <Link href="/login">
+                  Go to Login <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         ) : (
           <>
@@ -203,26 +233,31 @@ export function DemoModal({ children }: DemoModalProps) {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="product">Product Interest</Label>
-                  <Select
-                    value={formData.product}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, product: value })
-                    }
-                  >
-                    <SelectTrigger id="product" className="w-full">
-                      <SelectValue placeholder="Select product" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="hrms">HRMS</SelectItem>
-                      <SelectItem value="crms">CRMS</SelectItem>
-                      <SelectItem value="pos">POS System</SelectItem>
-                      <SelectItem value="all">All Products</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="product">Product Interest</Label>
+                   <Select
+                     value={formData.product}
+                     onValueChange={(value) =>
+                       setFormData({ ...formData, product: value })
+                     }
+                   >
+                     <SelectTrigger id="product" className="w-full">
+                       <SelectValue placeholder="Select product" />
+                     </SelectTrigger>
+                     <SelectContent>
+                       {products.length > 0 ? (
+                         products.map((prod) => (
+                           <SelectItem key={prod.id || prod._id} value={prod.id || prod._id}>
+                             {prod.name}
+                           </SelectItem>
+                         ))
+                       ) : (
+                         <SelectItem value="hrms">MKX HRMS Ultimate</SelectItem>
+                       )}
+                     </SelectContent>
+                   </Select>
+                 </div>
+               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="message">

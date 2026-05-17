@@ -41,3 +41,36 @@ export const ApiResponse = {
     )
   }
 }
+
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+/**
+ * Centralized utility to extract the organization ID from the secure HttpOnly auth cookie.
+ * Prevents code duplication across SaaS API routes.
+ */
+export function getTenantIdFromToken(request: NextRequest): string | null {
+  try {
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token || !JWT_SECRET) {
+      return process.env.NODE_ENV === 'development' ? 'demo-org-123' : null;
+    }
+    
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    
+    if (decoded.type === 'customer' && decoded.userId) {
+      return decoded.userId;
+    }
+    
+    if (decoded.type === 'admin') {
+      const { searchParams } = new URL(request.url);
+      return searchParams.get('orgId') || (process.env.NODE_ENV === 'development' ? 'demo-org-123' : null);
+    }
+    
+    return process.env.NODE_ENV === 'development' ? 'demo-org-123' : null;
+  } catch (error) {
+    return process.env.NODE_ENV === 'development' ? 'demo-org-123' : null;
+  }
+}

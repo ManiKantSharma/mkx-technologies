@@ -106,61 +106,26 @@ async function seed() {
     ])
 
     console.log('Seeding Products...')
-    const productNames = [
-      'Analytics Pro', 'Customer CRM', 'Cloud Connect', 'Enterprise ERP', 'HRMS Ultimate', 
-      'Inventory Sync', 'Project Hub', 'Marketing AI', 'Support Desk', 'Cyber Shield'
-    ]
-    const products = await Product.create(productNames.map(name => ({
-      name: `MKX ${name}`,
-      description: `Premium ${name.toLowerCase()} suite designed for modern enterprises to scale effortlessly in the cloud.`,
-      icon: 'Package',
-      isActive: true
-    })))
+    const products = await Product.create([
+      {
+        name: 'MKX HRMS Ultimate',
+        description: 'Premium HRMS suite designed for modern enterprises to scale effortlessly in the cloud.',
+        icon: 'Users',
+        isActive: true
+      }
+    ])
 
     console.log('Seeding Pricing Plans...')
-    const plans = []
-    for (const product of products) {
-      const p = await PricingPlan.create([
-        { name: 'Starter', price: 49, productId: product._id, features: ['Core features', 'Up to 5 users', 'Email support'], interval: 'month' },
-        { name: 'Professional', price: 149, productId: product._id, features: ['Advanced analytics', 'Unlimited users', 'Priority support', 'API access'], isPopular: true, interval: 'month' },
-        { name: 'Enterprise', price: 499, productId: product._id, features: ['Custom development', 'Dedicated account manager', '24/7 phone support', 'SLA guarantee'], interval: 'month' }
-      ])
-      plans.push(...p)
-    }
+    const plans = await PricingPlan.create([
+      { name: 'Trial', price: 0, productId: products[0]._id, features: ['15-day sandbox trial', 'Core HRMS modules', 'Email support'], interval: 'month' },
+      { name: 'Premium', price: 99, productId: products[0]._id, features: ['Unlimited active employees', 'Full HRMS/CRMS modules', 'Priority support', 'API access'], isPopular: true, interval: 'month' }
+    ])
 
     console.log('Seeding Users...')
-    const userData = []
-    for (let i = 0; i < 75; i++) {
-      const fName = firstNames[Math.floor(Math.random() * firstNames.length)]
-      const lName = lastNames[Math.floor(Math.random() * lastNames.length)]
-      const company = `${companyPrefixes[Math.floor(Math.random() * companyPrefixes.length)]} ${companySuffixes[Math.floor(Math.random() * companySuffixes.length)]}`
-      
-      userData.push({
-        email: `${fName.toLowerCase()}.${lName.toLowerCase()}${i}@${company.toLowerCase().replace(' ', '')}.com`,
-        name: `${fName} ${lName}`,
-        company: company,
-        companySize: ['1-10', '11-50', '51-200', '201-500', '500+'][Math.floor(Math.random() * 5)]
-      })
-    }
-    const users = await User.create(userData)
+    const users = []
 
     console.log('Seeding Subscriptions...')
     const subscriptionData = []
-    for (let i = 0; i < 65; i++) {
-      const user = users[i]
-      const product = products[Math.floor(Math.random() * products.length)]
-      const productPlans = plans.filter(p => p.productId.toString() === product._id.toString())
-      const plan = productPlans[Math.floor(Math.random() * productPlans.length)]
-      
-      subscriptionData.push({
-        userId: user._id,
-        productId: product._id,
-        pricingPlanId: plan._id,
-        status: Math.random() > 0.15 ? 'ACTIVE' : 'CANCELLED',
-        startDate: new Date(Date.now() - Math.floor(Math.random() * 365) * 86400000)
-      })
-    }
-    await Subscription.create(subscriptionData)
 
     console.log('Seeding Blog Posts...')
     const blogTopics = [

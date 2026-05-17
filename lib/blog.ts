@@ -23,7 +23,7 @@ export async function getBlogPosts(limit?: number) {
   }
 }
 
-/**
+/**er
  * Fetches a single published blog post by its unique slug.
  * @param {string} slug - The URL slug of the post.
  */

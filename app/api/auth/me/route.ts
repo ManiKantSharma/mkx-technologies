@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
+import connectDB from '@/lib/db';
+import { User } from '@/lib/models';
+import jwt from 'jsonwebtoken';
+import { NextRequest, NextResponse } from 'next/server';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -10,7 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
  * @param {NextRequest} request - The incoming request containing cookies.
  * @returns {Promise<NextResponse>} JSON response with user data or error if unauthorized.
  */
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     if (!JWT_SECRET) {
       console.error("JWT_SECRET is not defined in environment variables.");
@@ -31,12 +33,23 @@ export async function GET(request: NextRequest) {
         }
       })
     } else if (decoded.type === 'customer') {
+      await connectDB();
+      const user = await User.findById(decoded.userId);
+      const createdAt = user?.createdAt || new Date();
+      const trialDurationMs = 15 * 24 * 60 * 60 * 1000;
+      const elapsedMs = Date.now() - new Date(createdAt).getTime();
+      const msLeft = trialDurationMs - elapsedMs;
+      const trialDaysLeft = Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
+
       return NextResponse.json({
         user: {
           userId: decoded.userId,
           email: decoded.email,
           role: 'user',
-          type: 'customer'
+          type: 'customer',
+          name: user?.name || 'HR Manager',
+          company: user?.company || 'MKX Technologies',
+          trialDaysLeft
         }
       })
     }

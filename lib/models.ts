@@ -74,6 +74,8 @@ export interface IUser extends Document {
   name?: string
   company?: string
   companySize?: string
+  product?: string | mongoose.Types.ObjectId | IProduct
+  message?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -84,6 +86,8 @@ const UserSchema = new Schema<IUser>({
   name: { type: String },
   company: { type: String },
   companySize: { type: String },
+  product: { type: Schema.Types.ObjectId, ref: 'Product' },
+  message: { type: String },
 }, { timestamps: true, toJSON: commonTransform, toObject: commonTransform })
 
 

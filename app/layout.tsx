@@ -53,14 +53,14 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://mkxtechnologies.vercel.app"),
-   alternates: {
-     canonical: "/",
-   },
-   openGraph: {
-     title: "MKX Technologies | Enterprise Business Solutions",
-     description: "Enterprise-grade HRMS, CRMS, and POS systems built for scale.",
-     url: "https://mkxtechnologies.vercel.app",
-     siteName: "MKX Technologies",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "MKX Technologies | Enterprise Business Solutions",
+    description: "Enterprise-grade HRMS, CRMS, and POS systems built for scale.",
+    url: "https://mkxtechnologies.vercel.app",
+    siteName: "MKX Technologies",
     images: [
       {
         url: "/api/og",
@@ -115,12 +115,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-      </head>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
