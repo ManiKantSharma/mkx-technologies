@@ -114,19 +114,19 @@ export function DemoModal({ children }: DemoModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         {isSuccess ? (
-          <div className="flex flex-col items-center py-8 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/20">
-              <CheckCircle2 className="h-8 w-8 text-accent" />
+          <div className="flex flex-col items-center py-6 sm:py-8 px-4 text-center">
+            <div className="mb-4 flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-accent/20">
+              <CheckCircle2 className="h-7 w-7 sm:h-8 sm:w-8 text-accent" />
             </div>
-            <DialogHeader className="space-y-2">
-              <DialogTitle className="text-2xl">Your 15-Day Free Trial is Ready!</DialogTitle>
-              <DialogDescription className="text-base text-balance leading-normal">
+            <DialogHeader className="space-y-2 text-center">
+              <DialogTitle className="text-xl sm:text-2xl">Your 15-Day Free Trial is Ready!</DialogTitle>
+              <DialogDescription className="text-sm sm:text-base text-balance leading-normal px-2">
                 Thank you for choosing MKX Technologies! We have successfully provisioned your private isolated database partition and emailed your temporary credentials to <strong className="text-foreground">{formData.email}</strong>.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-6 w-full rounded-lg border border-border bg-secondary/50 p-4">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent/10">
+                <div className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent/10 shrink-0">
                   <CheckCircle2 className="h-3.5 w-3.5 text-accent" />
                 </div>
                 <div className="text-left">
@@ -150,13 +150,13 @@ export function DemoModal({ children }: DemoModalProps) {
           </div>
         ) : (
           <>
-            <DialogHeader>
-              <DialogTitle className="text-2xl">Schedule a Demo</DialogTitle>
-              <DialogDescription>
+            <DialogHeader className="px-2 sm:px-6">
+              <DialogTitle className="text-xl sm:text-2xl">Schedule a Demo</DialogTitle>
+              <DialogDescription className="text-sm sm:text-base">
                 Fill out the form below and our team will reach out to schedule a personalized demo for your business.
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleSubmit} className="mt-4 space-y-4 px-2 sm:px-6 pb-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
@@ -164,6 +164,7 @@ export function DemoModal({ children }: DemoModalProps) {
                     id="firstName"
                     placeholder="John"
                     required
+                    className="text-sm sm:text-base"
                     value={formData.firstName}
                     onChange={(e) =>
                       setFormData({ ...formData, firstName: e.target.value })
@@ -176,6 +177,7 @@ export function DemoModal({ children }: DemoModalProps) {
                     id="lastName"
                     placeholder="Doe"
                     required
+                    className="text-sm sm:text-base"
                     value={formData.lastName}
                     onChange={(e) =>
                       setFormData({ ...formData, lastName: e.target.value })
@@ -191,6 +193,7 @@ export function DemoModal({ children }: DemoModalProps) {
                   type="email"
                   placeholder="john@company.com"
                   required
+                  className="text-sm sm:text-base"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -204,6 +207,7 @@ export function DemoModal({ children }: DemoModalProps) {
                   id="company"
                   placeholder="Acme Inc."
                   required
+                  className="text-sm sm:text-base"
                   value={formData.company}
                   onChange={(e) =>
                     setFormData({ ...formData, company: e.target.value })
@@ -220,7 +224,7 @@ export function DemoModal({ children }: DemoModalProps) {
                       setFormData({ ...formData, companySize: value })
                     }
                   >
-                    <SelectTrigger id="companySize" className="w-full">
+                    <SelectTrigger id="companySize" className="w-full text-sm sm:text-base">
                       <SelectValue placeholder="Select size" />
                     </SelectTrigger>
                     <SelectContent>
@@ -240,7 +244,7 @@ export function DemoModal({ children }: DemoModalProps) {
                       setFormData({ ...formData, product: value })
                     }
                   >
-                    <SelectTrigger id="product" className="w-full">
+                    <SelectTrigger id="product" className="w-full text-sm sm:text-base">
                       <SelectValue placeholder="Select product" />
                     </SelectTrigger>
                     <SelectContent>
@@ -267,6 +271,7 @@ export function DemoModal({ children }: DemoModalProps) {
                   id="message"
                   placeholder="Tell us about your business needs or any specific questions..."
                   rows={3}
+                  className="text-sm sm:text-base"
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
@@ -276,7 +281,7 @@ export function DemoModal({ children }: DemoModalProps) {
 
               <Button
                 type="submit"
-                className="w-full gap-2"
+                className="w-full gap-2 text-sm sm:text-base"
                 size="lg"
                 disabled={isSubmitting}
               >
@@ -290,7 +295,7 @@ export function DemoModal({ children }: DemoModalProps) {
                 )}
               </Button>
 
-              <p className="text-center text-xs text-muted-foreground">
+              <p className="text-center text-xs text-muted-foreground px-2">
                 By submitting this form, you agree to our{" "}
                 <Link href="/privacy" className="underline hover:text-foreground">
                   Privacy Policy
