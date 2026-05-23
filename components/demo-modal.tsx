@@ -43,25 +43,22 @@ export function DemoModal({ children }: DemoModalProps) {
     message: "",
   })
 
-  React.useEffect(() => {
-    async function loadProducts() {
-      try {
-        const res = await fetch("/api/admin/products?limit=50")
-        if (res.ok) {
-          const result = await res.json()
-          if (result && result.success && Array.isArray(result.data)) {
-            setProducts(result.data)
-            if (result.data.length > 0) {
-              setFormData(prev => ({ ...prev, product: result.data[0].id || result.data[0]._id }))
-            }
+  const loadProducts = async () => {
+    try {
+      const res = await fetch("/api/admin/products?limit=50")
+      if (res.ok) {
+        const result = await res.json()
+        if (result && result.success && Array.isArray(result.data)) {
+          setProducts(result.data)
+          if (result.data.length > 0) {
+            setFormData(prev => ({ ...prev, product: result.data[0].id || result.data[0]._id }))
           }
         }
-      } catch (err) {
-        console.error("Failed to load products inside modal:", err)
       }
+    } catch (err) {
+      console.error("Failed to load products inside modal:", err)
     }
-    loadProducts()
-  }, [])
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -94,7 +91,9 @@ export function DemoModal({ children }: DemoModalProps) {
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen)
-    if (!newOpen) {
+    if (newOpen) {
+      loadProducts()
+    } else {
       setTimeout(() => {
         setIsSuccess(false)
         setFormData({
