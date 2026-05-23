@@ -32,9 +32,9 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-4 py-12 sm:px-6 lg:px-6">
+    <footer className="border-t border-border px-3 py-12 sm:px-6 lg:px-3">
       <div className="mx-auto lg:max-w-7xl">
-        <div className="grid gap-8 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-6">
+        <div className="grid gap-8 px-3 sm:px-3 md:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link
               href="/"
@@ -55,7 +55,6 @@ export function Footer() {
             </div>
           </div>
 
-          { }
           <div>
             <h3 className="mb-4 text-sm font-semibold text-foreground">
               Products
