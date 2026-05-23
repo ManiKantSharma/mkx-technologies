@@ -11,7 +11,7 @@ export default function AboutPage() {
       <main className="flex-1">
         <section className="relative overflow-hidden pt-24 pb-12 lg:pt-32 lg:pb-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
                 Revolutionizing Business with <span className="text-accent">Intelligent Tech</span>
@@ -24,7 +24,7 @@ export default function AboutPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold tracking-tight text-foreground">Our Story</h2>
@@ -59,7 +59,7 @@ export default function AboutPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight">Our Core Values</h2>
             </div>
@@ -94,47 +94,47 @@ export default function AboutPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-           <div className="container px-6">
-              <h2 className="text-3xl font-bold tracking-tight text-center mb-16">Our Journey</h2>
-              <div className="space-y-12 max-w-4xl mx-auto">
-                 {[
-                   { year: "2018", event: "MKX Technologies founded in Faridabad with a team of 5 engineers." },
-                   { year: "2020", event: "Launched MKX HRMS, reaching 100+ enterprise clients in the first year." },
-                   { year: "2022", event: "Expanded product suite with CRMS and POS integrations." },
-                   { year: "2024", event: "Recognized as 'SaaS Innovator of the Year' with 500+ active customers." },
-                   { year: "2026", event: "Scaling globally with AI-driven business intelligence modules." }
-                 ].map((milestone, i) => (
-                   <div key={i} className="flex gap-8 items-start">
-                      <div className="text-2xl font-black text-accent w-20 shrink-0">{milestone.year}</div>
-                      <div className="pt-1.5 border-l-2 border-accent/20 pl-8 pb-8 flex-1">
-                         <p className="text-muted-foreground leading-relaxed">{milestone.event}</p>
-                      </div>
-                   </div>
-                 ))}
-              </div>
-           </div>
+          <div className="container px-3">
+            <h2 className="text-3xl font-bold tracking-tight text-center mb-16">Our Journey</h2>
+            <div className="space-y-12 max-w-4xl mx-auto">
+              {[
+                { year: "2018", event: "MKX Technologies founded in Faridabad with a team of 5 engineers." },
+                { year: "2020", event: "Launched MKX HRMS, reaching 100+ enterprise clients in the first year." },
+                { year: "2022", event: "Expanded product suite with CRMS and POS integrations." },
+                { year: "2024", event: "Recognized as 'SaaS Innovator of the Year' with 500+ active customers." },
+                { year: "2026", event: "Scaling globally with AI-driven business intelligence modules." }
+              ].map((milestone, i) => (
+                <div key={i} className="flex gap-8 items-start">
+                  <div className="text-2xl font-black text-accent w-20 shrink-0">{milestone.year}</div>
+                  <div className="pt-1.5 border-l-2 border-accent/20 pl-8 pb-8 flex-1">
+                    <p className="text-muted-foreground leading-relaxed">{milestone.event}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="py-24">
-           <div className="container px-6">
-              <h2 className="text-3xl font-bold tracking-tight text-center mb-16">Leadership Team</h2>
-              <div className="grid gap-12 md:grid-cols-4">
-                 {[
-                   { name: "Mani Kant Sharma", role: "CEO & Founder", initial: "MS" },
-                   { name: "Anita Rao", role: "Chief Product Officer", initial: "AR" },
-                   { name: "David Miller", role: "VP of Engineering", initial: "DM" },
-                   { name: "Sarah Jenkins", role: "Head of Customer Success", initial: "SJ" }
-                 ].map((member, i) => (
-                   <div key={i} className="text-center group">
-                      <div className="h-40 w-40 rounded-full bg-accent mx-auto mb-6 flex items-center justify-center text-4xl font-bold text-accent/20 group-hover:bg-accent/10 group-hover:text-accent transition-all">
-                         {member.initial}
-                      </div>
-                      <h3 className="text-xl font-bold">{member.name}</h3>
-                      <p className="text-sm text-muted-foreground">{member.role}</p>
-                   </div>
-                 ))}
-              </div>
-           </div>
+          <div className="container px-3">
+            <h2 className="text-3xl font-bold tracking-tight text-center mb-16">Leadership Team</h2>
+            <div className="grid gap-12 md:grid-cols-4">
+              {[
+                { name: "Mani Kant Sharma", role: "CEO & Founder", initial: "MS" },
+                { name: "Anita Rao", role: "Chief Product Officer", initial: "AR" },
+                { name: "David Miller", role: "VP of Engineering", initial: "DM" },
+                { name: "Sarah Jenkins", role: "Head of Customer Success", initial: "SJ" }
+              ].map((member, i) => (
+                <div key={i} className="text-center group">
+                  <div className="h-40 w-40 rounded-full bg-accent mx-auto mb-6 flex items-center justify-center text-4xl font-bold text-accent/20 group-hover:bg-accent/10 group-hover:text-accent transition-all">
+                    {member.initial}
+                  </div>
+                  <h3 className="text-xl font-bold">{member.name}</h3>
+                  <p className="text-sm text-muted-foreground">{member.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
       </main>

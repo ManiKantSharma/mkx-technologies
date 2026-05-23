@@ -11,7 +11,7 @@ export default function HRMSPage() {
       <Header />
       <main className="flex-1 pt-24">
         <section className="py-20 lg:py-32">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-6">
                 <Badge variant="outline" className="text-accent border-accent/20 bg-accent/5">
@@ -41,7 +41,7 @@ export default function HRMSPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16 max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold tracking-tight">Powerful Features for HR Teams</h2>
               <p className="mt-4 text-muted-foreground">Everything you need to manage your workforce efficiently and securely.</p>
@@ -68,7 +68,7 @@ export default function HRMSPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="order-2 lg:order-1">
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -109,7 +109,7 @@ export default function HRMSPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16 max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold tracking-tight">Smooth Implementation</h2>
               <p className="mt-4 text-muted-foreground">Our 4-step process to get your team up and running in weeks, not months.</p>
@@ -133,7 +133,7 @@ export default function HRMSPage() {
 
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h2 className="text-3xl font-bold mb-6">Ready to transform your HR?</h2>
             <p className="text-muted-foreground mb-10 max-w-xl mx-auto">Join 500+ enterprises using MKX Technologies to scale their business operations securely.</p>
             <Button size="lg" className="bg-accent hover:bg-accent/90 px-12">Contact Sales</Button>

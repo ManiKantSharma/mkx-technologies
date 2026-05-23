@@ -35,7 +35,7 @@ export default function CaseStudiesPage() {
       <main className="flex-1 pt-24">
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <motion.div
               initial="initial"
               animate="animate"
@@ -53,64 +53,64 @@ export default function CaseStudiesPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
-               <h2 className="text-3xl font-bold">Success Stories</h2>
-               <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-                  {["All", "Retail", "Technology", "Manufacturing", "Finance"].map((ind) => (
-                    <button key={ind} className="px-6 py-2 rounded-full border border-border bg-card text-sm font-bold whitespace-nowrap hover:border-accent hover:text-accent transition-all">
-                       {ind}
-                    </button>
-                  ))}
-               </div>
+              <h2 className="text-3xl font-bold">Success Stories</h2>
+              <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+                {["All", "Retail", "Technology", "Manufacturing", "Finance"].map((ind) => (
+                  <button key={ind} className="px-3 py-2 rounded-full border border-border bg-card text-sm font-bold whitespace-nowrap hover:border-accent hover:text-accent transition-all">
+                    {ind}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="grid gap-12 lg:grid-cols-2">
               {caseStudies.map((study, i) => (
                 <motion.div
-                   key={i}
-                   initial={{ opacity: 0, y: 30 }}
-                   whileInView={{ opacity: 1, y: 0 }}
-                   viewport={{ once: true }}
-                   className="flex flex-col p-8 rounded-3xl border border-border bg-card/50 hover:shadow-xl transition-all group"
-                 >
-                   <div className="flex items-center gap-4 mb-6">
-                     <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                       <Building2 className="h-6 w-6 text-accent" />
-                     </div>
-                     <div>
-                       <h3 className="text-xl font-bold">{study.company}</h3>
-                       <p className="text-sm text-accent font-medium uppercase tracking-wider">{study.sector}</p>
-                     </div>
-                   </div>
-                   <div className="space-y-6 flex-1">
-                     <div>
-                       <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-2">The Challenge</h4>
-                       <p className="text-muted-foreground text-sm leading-relaxed italic">"{study.challenge}"</p>
-                     </div>
-                     <div>
-                       <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-2">The Solution</h4>
-                       <p className="text-muted-foreground text-sm leading-relaxed">{study.result}</p>
-                     </div>
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="flex flex-col p-8 rounded-3xl border border-border bg-card/50 hover:shadow-xl transition-all group"
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="h-12 w-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                      <Building2 className="h-6 w-6 text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">{study.company}</h3>
+                      <p className="text-sm text-accent font-medium uppercase tracking-wider">{study.sector}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-6 flex-1">
+                    <div>
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-2">The Challenge</h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed italic">"{study.challenge}"</p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-widest mb-2">The Solution</h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{study.result}</p>
+                    </div>
 
-                     <div className="p-4 rounded-xl bg-accent/5 border border-accent/10 italic text-sm text-muted-foreground">
-                       <Quote className="h-4 w-4 text-accent mb-2 opacity-50" />
-                       "{study.quote}"
-                       <p className="mt-2 font-bold text-foreground not-italic">— {study.author}</p>
-                     </div>
+                    <div className="p-4 rounded-xl bg-accent/5 border border-accent/10 italic text-sm text-muted-foreground">
+                      <Quote className="h-4 w-4 text-accent mb-2 opacity-50" />
+                      "{study.quote}"
+                      <p className="mt-2 font-bold text-foreground not-italic">— {study.author}</p>
+                    </div>
 
-                     <div className="pt-6 border-t border-border mt-auto">
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center gap-2">
-                           <TrendingIcon className="h-5 w-5 text-green-500" />
-                           <span className="font-bold text-lg text-accent">{study.impact}</span>
-                         </div>
-                         <Button variant="ghost" className="group-hover:translate-x-2 transition-transform text-accent">
-                           Read Case Study <ArrowRight className="ml-2 h-4 w-4" />
-                         </Button>
-                       </div>
-                     </div>
-                   </div>
-                 </motion.div>
+                    <div className="pt-6 border-t border-border mt-auto">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <TrendingIcon className="h-5 w-5 text-green-500" />
+                          <span className="font-bold text-lg text-accent">{study.impact}</span>
+                        </div>
+                        <Button variant="ghost" className="group-hover:translate-x-2 transition-transform text-accent">
+                          Read Case Study <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function CaseStudiesPage() {
 
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-8 md:grid-cols-4">
               {[
                 { label: "Satisfied Customers", value: "2,500+" },
@@ -141,7 +141,7 @@ export default function CaseStudiesPage() {
         </section>
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h2 className="text-4xl font-bold mb-6">Ready to scale your business?</h2>
             <p className="text-muted-foreground mb-10 max-w-xl mx-auto">Join hundreds of companies that have transformed their operations with MKX.</p>
             <Button size="lg" className="bg-accent px-12">Get Started Today</Button>

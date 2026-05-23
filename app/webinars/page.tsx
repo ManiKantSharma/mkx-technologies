@@ -10,7 +10,7 @@ export default function WebinarsPage() {
       <main className="flex-1">
         <section className="relative overflow-hidden pt-24 pb-12 lg:pt-32 lg:pb-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
                 Webinars & <span className="text-accent">Events</span>
@@ -23,7 +23,7 @@ export default function WebinarsPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <h2 className="text-3xl font-bold mb-12">Upcoming Webinars</h2>
             <div className="grid gap-8 lg:grid-cols-2">
               {[
@@ -67,16 +67,16 @@ export default function WebinarsPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
-               <h2 className="text-3xl font-bold">On-Demand Archive</h2>
-               <div className="flex gap-2">
-                  {["All", "HRMS", "CRMS", "POS", "Strategy"].map((cat) => (
-                    <button key={cat} className="px-4 py-1.5 rounded-full border border-border text-xs font-bold hover:border-accent hover:text-accent transition-colors">
-                       {cat}
-                    </button>
-                  ))}
-               </div>
+              <h2 className="text-3xl font-bold">On-Demand Archive</h2>
+              <div className="flex gap-2">
+                {["All", "HRMS", "CRMS", "POS", "Strategy"].map((cat) => (
+                  <button key={cat} className="px-4 py-1.5 rounded-full border border-border text-xs font-bold hover:border-accent hover:text-accent transition-colors">
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               {[
@@ -93,7 +93,7 @@ export default function WebinarsPage() {
                       <Play className="h-4 w-4 text-accent fill-accent group-hover:text-white group-hover:fill-white" />
                     </div>
                     <span className="text-xs font-bold text-accent bg-accent/5 px-2 py-1 rounded">
-                       {recording.category}
+                      {recording.category}
                     </span>
                   </div>
                   <h4 className="font-bold group-hover:text-accent transition-colors mb-2">{recording.title}</h4>
@@ -105,7 +105,7 @@ export default function WebinarsPage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-               <Button variant="outline" className="border-accent/20 text-accent hover:bg-accent/5">Load More Recordings</Button>
+              <Button variant="outline" className="border-accent/20 text-accent hover:bg-accent/5">Load More Recordings</Button>
             </div>
           </div>
         </section>

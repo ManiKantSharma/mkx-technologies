@@ -93,7 +93,7 @@ export default function PrivacyPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden py-20 lg:py-32 bg-accent/5">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(0,167,0,0.05)_0%,transparent_100%)]" />
-          <div className="container px-6">
+          <div className="container px-3">
             <motion.div
               initial="initial"
               animate="animate"
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
 
         {/* Content Section */}
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
               {/* Sidebar Navigation */}
               <aside className="hidden lg:block">
@@ -194,7 +194,7 @@ export default function PrivacyPage() {
 
         {/* CTA Section */}
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h2 className="text-3xl font-bold mb-6">Have concerns about your data?</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-10">
               Our data protection officer is available to answer any questions you may have regarding our privacy practices.

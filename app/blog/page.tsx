@@ -18,7 +18,7 @@ export default async function BlogPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main className="container mx-auto px-4 py-24 sm:px-6 lg:px-8 max-w-7xl">
+      <main className="container mx-auto px-4 py-24 sm:px-3 lg:px-8 max-w-7xl">
         <div className="mb-16 text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             Insights & Resources

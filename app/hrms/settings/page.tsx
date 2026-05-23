@@ -228,7 +228,7 @@ export default function HRMSSettingsPage() {
 
           {/* Action Trigger */}
           <div className="flex items-center justify-end pt-4 border-t border-border/40">
-            <Button type="submit" disabled={isSaving} className="shadow-lg shadow-primary/20 flex items-center gap-2 px-6">
+            <Button type="submit" disabled={isSaving} className="shadow-lg shadow-primary/20 flex items-center gap-2 px-3">
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" /> Saving Configuration...

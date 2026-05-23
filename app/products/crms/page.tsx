@@ -11,7 +11,7 @@ export default function CRMSPage() {
       <Header />
       <main className="flex-1 pt-24">
         <section className="py-20 lg:py-32">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-6">
                 <Badge variant="outline" className="text-blue-500 border-blue-500/20 bg-blue-500/5">
@@ -41,7 +41,7 @@ export default function CRMSPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16 max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold tracking-tight">Everything You Need to Grow</h2>
               <p className="mt-4 text-muted-foreground">Automate your sales pipeline and provide exceptional customer support.</p>
@@ -68,7 +68,7 @@ export default function CRMSPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="mx-auto max-w-4xl">
               <div className="text-center mb-16">
                 <h2 className="text-3xl font-bold tracking-tight">The MKX Sales Funnel</h2>
@@ -83,7 +83,7 @@ export default function CRMSPage() {
                 ].map((funnel, i) => (
                   <div key={i} className="flex items-center gap-4">
                     <div className="w-24 text-sm font-bold text-right">{funnel.stage}</div>
-                    <div className={`h-12 ${funnel.width} ${funnel.color} rounded-r-full flex items-center px-6 text-sm font-bold text-foreground`}>
+                    <div className={`h-12 ${funnel.width} ${funnel.color} rounded-r-full flex items-center px-3 text-sm font-bold text-foreground`}>
                       {funnel.count}
                     </div>
                   </div>
@@ -94,21 +94,21 @@ export default function CRMSPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
-             <div className="text-center mb-16">
-                <h2 className="text-3xl font-bold tracking-tight">Native Integrations</h2>
-                <p className="mt-4 text-muted-foreground">Connect your sales stack effortlessly.</p>
-             </div>
-             <div className="grid gap-6 md:grid-cols-4">
-                {[
-                  "Slack", "Gmail", "Mailchimp", "QuickBooks", 
-                  "LinkedIn", "Zendesk", "WhatsApp", "Zoom"
-                ].map((app) => (
-                  <div key={app} className="p-6 rounded-xl border border-border bg-card flex items-center justify-center font-bold text-muted-foreground hover:text-blue-500 transition-colors">
-                    {app}
-                  </div>
-                ))}
-             </div>
+          <div className="container px-3">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tight">Native Integrations</h2>
+              <p className="mt-4 text-muted-foreground">Connect your sales stack effortlessly.</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-4">
+              {[
+                "Slack", "Gmail", "Mailchimp", "QuickBooks",
+                "LinkedIn", "Zendesk", "WhatsApp", "Zoom"
+              ].map((app) => (
+                <div key={app} className="p-6 rounded-xl border border-border bg-card flex items-center justify-center font-bold text-muted-foreground hover:text-blue-500 transition-colors">
+                  {app}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

@@ -4,13 +4,13 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { motion } from "framer-motion";
 import { slideUp, staggerContainer, fadeIn } from "@/lib/animations";
-import { 
-  Handshake, 
-  Terminal, 
-  CreditCard, 
-  Copyright, 
-  AlertTriangle, 
-  RefreshCw, 
+import {
+  Handshake,
+  Terminal,
+  CreditCard,
+  Copyright,
+  AlertTriangle,
+  RefreshCw,
   HelpCircle,
   ChevronRight,
   Scale,
@@ -87,7 +87,7 @@ export default function TermsPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden py-20 lg:py-32 bg-accent/5">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(0,167,0,0.05)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center lg:text-left">
+          <div className="container px-3 text-center lg:text-left">
             <motion.div
               initial="initial"
               animate="animate"
@@ -111,7 +111,7 @@ export default function TermsPage() {
 
         {/* Content Section */}
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-16 lg:grid-cols-[280px_1fr]">
               {/* Sidebar Navigation */}
               <aside className="hidden lg:block">
@@ -149,10 +149,10 @@ export default function TermsPage() {
                       </div>
                       <h2 className="text-2xl font-bold">{section.title}</h2>
                     </div>
-                    
+
                     <div className="space-y-6 text-muted-foreground leading-relaxed text-sm md:text-base">
                       <p>{section.content}</p>
-                      
+
                       {section.list && (
                         <div className="grid gap-4 sm:grid-cols-2 mt-4">
                           {section.list.map((item, i) => (
@@ -186,17 +186,17 @@ export default function TermsPage() {
 
         {/* Bottom Bar */}
         <section className="py-12 bg-accent/5 border-t border-border">
-          <div className="container px-6">
-             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-2">
-                   <Scale className="h-5 w-5 text-accent" />
-                   <p className="text-sm font-medium">Governing Law: Haryana, India</p>
-                </div>
-                <div className="flex gap-8">
-                   <a href="/privacy" className="text-sm text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
-                   <a href="/security" className="text-sm text-muted-foreground hover:text-accent transition-colors">Security Overview</a>
-                </div>
-             </div>
+          <div className="container px-3">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-2">
+                <Scale className="h-5 w-5 text-accent" />
+                <p className="text-sm font-medium">Governing Law: Haryana, India</p>
+              </div>
+              <div className="flex gap-8">
+                <a href="/privacy" className="text-sm text-muted-foreground hover:text-accent transition-colors">Privacy Policy</a>
+                <a href="/security" className="text-sm text-muted-foreground hover:text-accent transition-colors">Security Overview</a>
+              </div>
+            </div>
           </div>
         </section>
       </main>

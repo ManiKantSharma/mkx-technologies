@@ -9,7 +9,7 @@ export default function DocsPage() {
       <main className="flex-1">
         <section className="relative overflow-hidden pt-24 pb-12 lg:pt-32 lg:pb-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
                 Documentation <span className="text-accent">Hub</span>
@@ -32,7 +32,7 @@ export default function DocsPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <h2 className="text-2xl font-bold mb-10 text-center">Explore by Product</h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
