@@ -78,13 +78,13 @@ export function HeroSection() {
       >
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-6 py-12 md:grid-cols-4">
           <div className="text-center md:text-left">
-            <p className="text-3xl font-bold text-foreground md:text-4xl">
+            <p className="text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
               20 days
             </p>
             <p className="text-sm text-muted-foreground">saved on average</p>
           </div>
           <div className="text-center md:text-left">
-            <p className="text-3xl font-bold text-foreground md:text-4xl">
+            <p className="text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
               98%
             </p>
             <p className="text-sm text-muted-foreground">
@@ -92,7 +92,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="text-center md:text-left">
-            <p className="text-3xl font-bold text-foreground md:text-4xl">
+            <p className="text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
               300%
             </p>
             <p className="text-sm text-muted-foreground">
@@ -100,7 +100,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="text-center md:text-left">
-            <p className="text-3xl font-bold text-foreground md:text-4xl">6x</p>
+            <p className="text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">6x</p>
             <p className="text-sm text-muted-foreground">faster to scale</p>
           </div>
         </div>

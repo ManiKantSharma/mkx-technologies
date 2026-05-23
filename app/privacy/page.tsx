@@ -1,9 +1,7 @@
 "use client";
-
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { motion } from "framer-motion";
-import { slideUp, staggerContainer, fadeIn } from "@/lib/animations";
+import { Badge } from "@/components/ui/badge";
 import {
   Shield,
   Database,
@@ -16,6 +14,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const sections = [
   {
@@ -89,28 +88,21 @@ export default function PrivacyPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 pt-24">
+      <main className="flex-1 pt-8">
         {/* Hero Section */}
-        <section className="relative overflow-hidden py-20 lg:py-32 bg-accent/5">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(0,167,0,0.05)_0%,transparent_100%)]" />
+        <section className="py-20 text-center lg:py-32 bg-accent/5">
           <div className="container px-3">
-            <motion.div
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
-              className="max-w-3xl"
-            >
-              <motion.div variants={slideUp} className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 mb-6">
-                <Scale className="h-4 w-4 text-accent" />
-                <span className="text-xs font-bold uppercase tracking-wider text-accent">Legal Documentation</span>
-              </motion.div>
-              <motion.h1 variants={slideUp} className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
+            <div className="mx-auto max-w-3xl space-y-6">
+              <Badge variant="outline" className="text-accent border-accent/20 bg-accent/5">
+                Legal Documentation
+              </Badge>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
                 Privacy <span className="text-accent">Policy</span>
-              </motion.h1>
-              <motion.p variants={slideUp} className="text-lg text-muted-foreground">
+              </h1>
+              <p className="text-lg text-muted-foreground">
                 Last updated: {lastUpdated} • Version 2.4
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
           </div>
         </section>
 
@@ -143,9 +135,6 @@ export default function PrivacyPage() {
                   <motion.section
                     key={section.id}
                     id={section.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
                     className="scroll-mt-32"
                   >
                     <div className="flex items-center gap-4 mb-6">
@@ -193,7 +182,7 @@ export default function PrivacyPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 border-t border-border/40">
+        <section className="py-24 bg-accent/5 border-t border-border/40">
           <div className="container px-3 text-center">
             <h2 className="text-3xl font-bold mb-6">Have concerns about your data?</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-10">

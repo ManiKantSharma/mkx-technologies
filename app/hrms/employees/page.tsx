@@ -190,11 +190,11 @@ export default function EmployeesPage() {
 
     const { error } = editId
       ? await api.put(`/api/hrms/employees/${editId}`, payload, {
-          successMessage: "Employee details updated successfully!",
-        })
+        successMessage: "Employee details updated successfully!",
+      })
       : await api.post("/api/hrms/employees", payload, {
-          successMessage: "Employee created successfully!",
-        });
+        successMessage: "Employee created successfully!",
+      });
 
     setIsSubmitting(false);
     if (!error) {
@@ -245,10 +245,10 @@ export default function EmployeesPage() {
         <span>
           {emp.joiningDate
             ? new Date(emp.joiningDate).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
             : "—"}
         </span>
       ),
@@ -293,7 +293,7 @@ export default function EmployeesPage() {
           <Button onClick={handleOpenAddDialog} className="flex items-center gap-2">
             <Plus className="h-4 w-4" /> Add Employee
           </Button>
-          <SheetContent className="sm:max-w-[480px] flex flex-col h-full p-6">
+          <SheetContent className="sm:max-w-120 flex flex-col h-full p-6">
             <form onSubmit={handleAddEmployee} className="flex flex-col h-full justify-between">
               <div className="flex flex-col gap-6 overflow-y-auto pr-2 pb-6">
                 <SheetHeader className="p-0">
@@ -426,7 +426,7 @@ export default function EmployeesPage() {
       </div>
 
       {/* AI Quick-Onboard Assistant */}
-      <Card className="border border-indigo-500/20 bg-gradient-to-r from-indigo-500/5 via-transparent to-transparent shadow-sm">
+      <Card className="border border-indigo-500/20 bg-linear-to-r from-indigo-500/5 via-transparent to-transparent shadow-sm">
         <CardContent className="pt-6">
           <form onSubmit={handleAiQuickCreate} className="space-y-4">
             <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
