@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { DemoModal } from "./demo-modal";
 import { motion } from "framer-motion";
-import { slideDown } from "@/lib/animations";
+import { slideDown, staggerContainer, fadeIn } from "@/lib/animations";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -64,56 +64,115 @@ export function Header() {
         </div>
 
         { }
-        <button
+        <motion.button
           className="md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
+          whileTap={{ scale: 0.9 }}
+          transition={{ duration: 0.2 }}
         >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-foreground" />
-          ) : (
-            <Menu className="h-6 w-6 text-foreground" />
-          )}
-        </button>
+          <motion.div
+            animate={{ rotate: mobileMenuOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6 text-foreground" />
+            ) : (
+              <Menu className="h-6 w-6 text-foreground" />
+            )}
+          </motion.div>
+        </motion.button>
       </nav>
 
       { }
-      {mobileMenuOpen && (
-        <div className="border-t border-border bg-background px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-4">
-            <Link
-              href="/#products"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+      <motion.div
+        initial="collapsed"
+        animate={mobileMenuOpen ? "expanded" : "collapsed"}
+        variants={{
+          expanded: {
+            height: "auto",
+            opacity: 1,
+            transition: { duration: 0.3, ease: "easeInOut" }
+          },
+          collapsed: {
+            height: 0,
+            opacity: 0,
+            overflow: "hidden",
+            transition: { duration: 0.3, ease: "easeInOut" }
+          }
+        }}
+        className="md:hidden"
+      >
+        <motion.div
+          className="border-t border-border bg-background px-6 py-4"
+          initial="hidden"
+          animate={mobileMenuOpen ? "visible" : "hidden"}
+          variants={{
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.3, delay: 0.1 }
+            },
+            hidden: {
+              opacity: 0,
+              y: -10,
+              transition: { duration: 0.2 }
+            }
+          }}
+        >
+          <motion.div
+            className="flex flex-col gap-4"
+            variants={staggerContainer}
+            initial="initial"
+            animate={mobileMenuOpen ? "animate" : "initial"}
+          >
+            <motion.div variants={fadeIn}>
+              <Link
+                href="/#products"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Products
+              </Link>
+            </motion.div>
+            <motion.div variants={fadeIn}>
+              <Link
+                href="/#features"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Features
+              </Link>
+            </motion.div>
+            <motion.div variants={fadeIn}>
+              <Link
+                href="/#pricing"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Pricing
+              </Link>
+            </motion.div>
+            <motion.div variants={fadeIn}>
+              <Link
+                href="/#contact"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
+            </motion.div>
+            <motion.div
+              className="flex flex-col gap-2 pt-4"
+              variants={fadeIn}
             >
-              Products
-            </Link>
-            <Link
-              href="/#features"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Features
-            </Link>
-            <Link
-              href="/#pricing"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/#contact"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Contact
-            </Link>
-            <div className="flex flex-col gap-2 pt-4">
-              { }
               <DemoModal>
                 <Button size="sm" className="w-full">Get Started</Button>
               </DemoModal>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </motion.header>
   );
 }
