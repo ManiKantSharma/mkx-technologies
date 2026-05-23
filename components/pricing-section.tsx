@@ -68,7 +68,7 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="border-t border-border px-6 py-32">
+    <section id="pricing" className="border-t border-border px-3 py-32">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial="initial"
@@ -77,7 +77,7 @@ export function PricingSection() {
           variants={staggerContainer}
           className="mb-16 text-center"
         >
-          <motion.h2 variants={slideUp} className="mb-4 text-3xl font-bold text-foreground md:text-5xl">
+          <motion.h2 variants={slideUp} className="mb-4 text-2xl font-bold text-foreground sm:text-3xl md:text-5xl">
             Simple, transparent pricing
           </motion.h2>
           <motion.p variants={slideUp} className="mx-auto max-w-2xl text-muted-foreground">
@@ -96,9 +96,8 @@ export function PricingSection() {
           {plans.map((plan) => (
             <motion.div key={plan.name} variants={fadeIn}>
               <Card
-                className={`relative h-full border-border ${
-                  plan.highlighted ? "border-accent bg-accent/5" : "bg-card"
-                }`}
+                className={`relative h-full border-border ${plan.highlighted ? "border-accent bg-accent/5" : "bg-card"
+                  }`}
               >
                 {plan.highlighted && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -108,12 +107,12 @@ export function PricingSection() {
                   </div>
                 )}
                 <CardHeader className="text-center">
-                  <CardTitle className="text-xl text-card-foreground">
+                  <CardTitle className="text-lg text-card-foreground sm:text-xl">
                     {plan.name}
                   </CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
                   <div className="mt-4">
-                    <span className="text-4xl font-bold text-foreground">
+                    <span className="text-3xl font-bold text-foreground sm:text-4xl">
                       {plan.price}
                     </span>
                     <span className="text-muted-foreground ">{plan.period}</span>

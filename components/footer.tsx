@@ -32,25 +32,24 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border lg:px-6 py-12">
+    <footer className="border-t border-border px-4 py-12 sm:px-6 lg:px-6">
       <div className="mx-auto lg:max-w-7xl">
-        <div className="grid gap-8 px-6 md:grid-cols-2 lg:grid-cols-6">
-          { }
+        <div className="grid gap-8 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link
               href="/"
               className="flex relative whitespace-nowrap items-center gap-0.5"
             >
               <span className="rounded-full h-10 w-10 bg-brand"></span>
-              <span className="text-2xl absolute left-[10.5px] tracking-wider font-bold font-orbitron stroke-1 text-foreground text-stroke-black">
+              <span className="text-xl absolute left-[10.5px] tracking-wider font-bold font-orbitron stroke-1 text-foreground text-stroke-black sm:text-2xl">
                 MKX Technologies
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+            <p className="mt-4 max-w-xs text-xs text-muted-foreground sm:text-sm">
               MKX Technologies Pvt Ltd. Enterprise-grade business solutions to
               help you scale.
             </p>
-            <div className="mt-2 space-y-2 text-sm text-muted-foreground">
+            <div className="mt-2 space-y-2 text-xs text-muted-foreground sm:text-sm">
               <p> 2468/8 CISF, Sector 8, Faridabad, Haryana, India</p>
               <p className="">Email: support@mkxtechnologies.com</p>
             </div>

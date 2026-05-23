@@ -8,7 +8,7 @@ import { slideUp, staggerContainer } from "@/lib/animations";
 
 export function HeroSection() {
   return (
-    <section className="relative flex flex-col items-center px-6 pt-28 lg:pt-28 md:justify-center">
+    <section className="relative flex flex-col items-center px-3 pt-28 lg:pt-28 md:justify-center">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-size-[64px_64px]" />
 
       <motion.div
@@ -22,14 +22,14 @@ export function HeroSection() {
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-1.5"
         >
           <span className="h-2 w-2 rounded-full bg-accent" />
-          <span className="lg:text-sm text-[10px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground sm:text-sm lg:text-sm">
             Enterprise grade Solutions For Modern Businesses
           </span>
         </motion.div>
 
         <motion.h1
           variants={slideUp}
-          className="mb-6 text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl lg:text-7xl"
+          className="mb-6 text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-5xl lg:text-7xl"
         >
           The complete platform to
           <span className="block"> run your business</span>
@@ -37,7 +37,7 @@ export function HeroSection() {
 
         <motion.p
           variants={slideUp}
-          className="mx-auto mb-5 max-w-4xl text-pretty text-sm text-muted-foreground md:text-lg lg:text-xl"
+          className="mx-auto mb-5 max-w-4xl text-pretty text-sm text-muted-foreground sm:text-base md:text-lg lg:text-xl"
         >
           MKX Technologies brings your team&apos;s toolkit to streamline
           operations. Securely manage HR, customers, and sales with our
@@ -56,7 +56,7 @@ export function HeroSection() {
           </DemoModal>
           <Button
             size="lg"
-            className="!bg-secondary"
+            className="bg-secondary!"
             variant="outline"
             onClick={() => {
               document

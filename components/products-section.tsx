@@ -63,7 +63,7 @@ export function ProductsSection() {
   const [activeProduct, setActiveProduct] = useState(products[0])
 
   return (
-    <section id="products" className="px-6 py-20">
+    <section id="products" className="px-3 py-20">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial="initial"
@@ -72,19 +72,19 @@ export function ProductsSection() {
           variants={staggerContainer}
           className="mb-16 text-center"
         >
-          <motion.h2 variants={slideUp} className="mb-4 text-3xl font-bold text-foreground md:text-5xl">Our Products</motion.h2>
+          <motion.h2 variants={slideUp} className="mb-4 text-2xl font-bold text-foreground sm:text-3xl md:text-5xl">Our Products</motion.h2>
           <motion.p variants={slideUp} className="mx-auto max-w-2xl text-muted-foreground">
             A collection of enterprise-grade solutions you can easily integrate into your business.
           </motion.p>
         </motion.div>
 
-        {}
+        { }
         <div className="mb-12 flex flex-wrap justify-center gap-4">
           {products.map((product) => (
             <button
               key={product.id}
               onClick={() => setActiveProduct(product)}
-              className={`rounded px-6 py-3 text-sm font-medium transition-all ${activeProduct.id === product.id
+              className={`rounded px-4 py-2.5 text-xs font-medium transition-all sm:px-6 sm:py-3 sm:text-sm ${activeProduct.id === product.id
                 ? "bg-primary text-primary-foreground"
                 : "bg-secondary text-secondary-foreground hover:bg-muted"
                 }`}
@@ -94,7 +94,7 @@ export function ProductsSection() {
           ))}
         </div>
 
-        {}
+        { }
         <AnimatePresence mode="wait">
           <motion.div
             key={activeProduct.id}
@@ -109,8 +109,8 @@ export function ProductsSection() {
                 <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded ${activeProduct.color}`}>
                   <activeProduct.icon className="h-6 w-6 text-background" />
                 </div>
-                <CardTitle className="text-2xl text-card-foreground">{activeProduct.fullName}</CardTitle>
-                <CardDescription className="text-base">{activeProduct.description}</CardDescription>
+                <CardTitle className="text-xl text-card-foreground sm:text-2xl">{activeProduct.fullName}</CardTitle>
+                <CardDescription className="text-sm sm:text-base">{activeProduct.description}</CardDescription>
               </CardHeader>
               <CardContent>
                 <DemoModal>
@@ -124,7 +124,7 @@ export function ProductsSection() {
 
             <Card className="border-border bg-secondary/50">
               <CardHeader>
-                <CardTitle className="text-lg text-card-foreground">Key Features</CardTitle>
+                <CardTitle className="text-base text-card-foreground sm:text-lg">Key Features</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="grid gap-3 md:grid-cols-2">
@@ -142,7 +142,7 @@ export function ProductsSection() {
           </motion.div>
         </AnimatePresence>
 
-        {}
+        { }
         <motion.div
           initial="initial"
           whileInView="animate"
@@ -160,7 +160,7 @@ export function ProductsSection() {
                   <div className={`mb-2 inline-flex h-10 w-10 items-center justify-center rounded ${product.color}`}>
                     <product.icon className="h-5 w-5 text-background" />
                   </div>
-                  <CardTitle className="text-card-foreground">{product.name}</CardTitle>
+                  <CardTitle className="text-base text-card-foreground sm:text-lg">{product.name}</CardTitle>
                   <CardDescription className="line-clamp-2">{product.description}</CardDescription>
                 </CardHeader>
                 <CardContent>

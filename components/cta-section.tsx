@@ -8,7 +8,7 @@ import { slideUp, staggerContainer } from "@/lib/animations"
 
 export function CTASection() {
   return (
-    <section id="contact" className="border-t border-border bg-secondary/30 px-6 py-32">
+    <section id="contact" className="border-t border-border bg-secondary/30 px-3 py-32">
       <motion.div
         initial="initial"
         whileInView="animate"
@@ -16,10 +16,10 @@ export function CTASection() {
         variants={staggerContainer}
         className="mx-auto max-w-4xl text-center"
       >
-        <motion.h2 variants={slideUp} className="mb-6 text-3xl font-bold text-foreground md:text-5xl">
+        <motion.h2 variants={slideUp} className="mb-6 text-2xl font-bold text-foreground sm:text-3xl md:text-5xl">
           Ready to transform your business?
         </motion.h2>
-        <motion.p variants={slideUp} className="mb-10 text-lg text-muted-foreground">
+        <motion.p variants={slideUp} className="mb-10 text-base text-muted-foreground sm:text-lg">
           Join thousands of companies already using MKX Technologies to streamline their operations.
           Get started with a free trial today.
         </motion.p>

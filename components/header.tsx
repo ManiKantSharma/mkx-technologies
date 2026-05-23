@@ -18,7 +18,7 @@ export function Header() {
       variants={slideDown}
       className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-3 py-4">
         <Link
           href="/"
           className="flex relative whitespace-nowrap items-center gap-0.5"
@@ -29,7 +29,7 @@ export function Header() {
           </span>
         </Link>
 
-        {}
+        { }
         <div className="hidden items-center gap-8 md:flex">
           <Link
             href="/#products"
@@ -63,7 +63,7 @@ export function Header() {
           </DemoModal>
         </div>
 
-        {}
+        { }
         <button
           className="md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -77,7 +77,7 @@ export function Header() {
         </button>
       </nav>
 
-      {}
+      { }
       {mobileMenuOpen && (
         <div className="border-t border-border bg-background px-6 py-4 md:hidden">
           <div className="flex flex-col gap-4">
@@ -106,7 +106,7 @@ export function Header() {
               Contact
             </Link>
             <div className="flex flex-col gap-2 pt-4">
-              {}
+              { }
               <DemoModal>
                 <Button size="sm" className="w-full">Get Started</Button>
               </DemoModal>
