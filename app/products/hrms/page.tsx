@@ -9,8 +9,8 @@ export default function HRMSPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 pt-24">
-        <section className="py-20 lg:py-32">
+      <main className="flex-1 pt-8">
+        <section className="py-20 lg:text-start text-center lg:py-32">
           <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-6">
@@ -23,12 +23,12 @@ export default function HRMSPage() {
                 <p className="text-lg text-muted-foreground">
                   The all-in-one HR management system designed to automate payroll, tracking, and performance management for modern teams.
                 </p>
-                <div className="flex flex-wrap gap-4 pt-4">
+                <div className="flex flex-wrap lg:justify-start justify-center gap-4 pt-4">
                   <Button size="lg" className="bg-accent hover:bg-accent/90">Get Started</Button>
                   <Button size="lg" variant="outline">Watch Demo</Button>
                 </div>
               </div>
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border/50 bg-gradient-to-br from-accent/10 to-transparent">
+              <div className="relative aspect-4/3 rounded overflow-hidden border border-border/50 bg-linear-to-br from-accent/10 to-transparent">
                 <Image
                   src="/illustrations/hrms.png"
                   alt="HRMS Illustration"

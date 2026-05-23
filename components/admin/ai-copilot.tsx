@@ -140,8 +140,8 @@ export function AiCopilot() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Sliding Chat Window */}
       {isOpen && (
-        <Card className="mb-4 w-[360px] sm:w-[400px] h-[500px] shadow-2xl border border-indigo-500/20 bg-card/95 backdrop-blur flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-200">
-          <CardHeader className="p-4 border-b border-border/40 bg-gradient-to-r from-indigo-500/10 via-transparent to-transparent flex flex-row items-center justify-between">
+        <Card className="mb-4 w-90 sm:w-100 h-125 shadow-2xl border border-indigo-500/20 bg-card/95 backdrop-blur flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-200">
+          <CardHeader className="p-4 border-b border-border/40 bg-linear-to-r from-indigo-500/10 via-transparent to-transparent flex flex-row items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="relative">
                 <div className="bg-indigo-600 dark:bg-indigo-500 p-1.5 rounded-lg text-white">
@@ -171,21 +171,19 @@ export function AiCopilot() {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`flex gap-2.5 max-w-[85%] ${
-                  msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
-                }`}
+                className={`flex gap-2.5 max-w-[85%] ${msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
+                  }`}
               >
                 {msg.role === "model" && (
-                  <div className="flex-shrink-0 h-6.5 w-6.5 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/10">
+                  <div className="shrink-0 h-6.5 w-6.5 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/10">
                     <Bot className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                   </div>
                 )}
                 <div
-                  className={`p-3 rounded-2xl shadow-sm ${
-                    msg.role === "user"
-                      ? "bg-indigo-600 text-white dark:bg-indigo-500 rounded-tr-none"
-                      : "bg-muted text-foreground/90 rounded-tl-none border border-border/30"
-                  }`}
+                  className={`p-3 rounded-2xl shadow-sm ${msg.role === "user"
+                    ? "bg-indigo-600 text-white dark:bg-indigo-500 rounded-tr-none"
+                    : "bg-muted text-foreground/90 rounded-tl-none border border-border/30"
+                    }`}
                 >
                   {renderFormattedContent(msg.content)}
                 </div>
@@ -193,7 +191,7 @@ export function AiCopilot() {
             ))}
             {isLoading && (
               <div className="flex gap-2.5 max-w-[85%] mr-auto">
-                <div className="flex-shrink-0 h-6.5 w-6.5 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/10">
+                <div className="shrink-0 h-6.5 w-6.5 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/10">
                   <Bot className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div className="p-3 bg-muted rounded-2xl rounded-tl-none border border-border/30 flex items-center gap-1">
@@ -240,7 +238,7 @@ export function AiCopilot() {
                 type="submit"
                 disabled={!input.trim() || isLoading}
                 size="icon"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-500 dark:hover:bg-indigo-600 transition-colors h-8.5 w-8.5 flex-shrink-0"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-500 dark:hover:bg-indigo-600 transition-colors h-8.5 w-8.5 shrink-0"
               >
                 <Send className="h-4 w-4" />
               </Button>

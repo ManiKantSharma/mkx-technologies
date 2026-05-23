@@ -9,8 +9,8 @@ export default function POSPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 pt-24">
-        <section className="py-20 lg:py-32">
+      <main className="flex-1 pt-8">
+        <section className="py-20 lg:text-start text-center lg:py-32">
           <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div className="space-y-6">
@@ -23,12 +23,12 @@ export default function POSPage() {
                 <p className="text-lg text-muted-foreground">
                   Empower your retail business with a cloud-based point-of-sale system that handles inventory, payments, and multi-store management effortlessly.
                 </p>
-                <div className="flex flex-wrap gap-4 pt-4">
+                <div className="flex flex-wrap lg:justify-start justify-center gap-4 pt-4">
                   <Button size="lg" className="bg-amber-500 hover:bg-amber-500/90">Get Started</Button>
                   <Button size="lg" variant="outline">View Features</Button>
                 </div>
               </div>
-              <div className="relative aspect-video rounded-3xl overflow-hidden border border-border/50 bg-gradient-to-br from-accent/10 to-transparent">
+              <div className="relative aspect-4/3 rounded overflow-hidden border border-border/50 bg-linear-to-br from-amber-500/10 to-transparent">
                 <Image
                   src="/illustrations/pos.png"
                   alt="POS Illustration"
@@ -70,44 +70,35 @@ export default function POSPage() {
         <section className="py-24">
           <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold tracking-tight">Certified Hardware Support</h2>
-                <p className="text-muted-foreground">
-                  MKX POS works with the hardware you already own or choose from our curated list of certified devices for a plug-and-play experience.
-                </p>
-                <div className="grid gap-6 sm:grid-cols-2">
+              <div className="order-2 lg:order-1">
+                <div className="grid gap-4 sm:grid-cols-2">
                   {[
-                    { title: "Tablets", desc: "iPad & Android Tablet support for mobile selling." },
-                    { title: "Terminals", desc: "Integrated card readers from Verifone & Ingenico." },
-                    { title: "Printers", desc: "Bluetooth & Network thermal receipt printers." },
-                    { title: "Scanners", desc: "1D/2D barcode scanners for fast SKU entry." }
-                  ].map((hw, i) => (
-                    <div key={i} className="flex gap-4 p-4 rounded-xl border border-border bg-card/30">
-                      <div className="h-2 w-2 rounded-full bg-amber-500 mt-2 shrink-0" />
-                      <div>
-                        <p className="font-bold text-sm">{hw.title}</p>
-                        <p className="text-xs text-muted-foreground">{hw.desc}</p>
-                      </div>
+                    { title: "Restaurants", desc: "Table management, kitchen orders, and split billing." },
+                    { title: "Fashion Retail", desc: "Size tracking, seasonal inventory, and returns processing." },
+                    { title: "Grocery Stores", desc: "Perishable stock management and weighted items." },
+                    { title: "Automotive", desc: "Parts cataloging and service counter transactions." }
+                  ].map((industry, i) => (
+                    <div key={i} className="p-6 rounded-xl border border-border bg-card/30">
+                      <h4 className="font-bold mb-2 text-amber-500">{industry.title}</h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{industry.desc}</p>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="relative p-8 rounded-3xl border border-border bg-card shadow-2xl">
-                <h3 className="text-xl font-bold mb-6">Offline-First Architecture</h3>
-                <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-                  Don't let a patchy internet connection stop your sales. MKX POS uses a local-first synchronization engine that caches all data securely on your device.
+              <div className="order-1 lg:order-2 space-y-6">
+                <h2 className="text-3xl font-bold tracking-tight">Designed for Your Business</h2>
+                <p className="text-muted-foreground">
+                  MKX POS adapts to your specific retail environment with industry-specific workflows, hardware integration, and inventory management features.
                 </p>
                 <ul className="space-y-4">
                   {[
-                    "Process payments offline",
-                    "Automatic sync when back online",
-                    "Encrypted local database",
-                    "Zero-latency interface"
+                    "Industry-specific tax and compliance handling",
+                    "Customizable receipt templates",
+                    "Multi-location inventory synchronization",
+                    "Integrated supplier management"
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
-                      <div className="h-5 w-5 rounded-full bg-amber-500/10 flex items-center justify-center">
-                        <Zap className="h-3 w-3 text-amber-500" />
-                      </div>
+                      <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                       {item}
                     </li>
                   ))}
@@ -117,6 +108,36 @@ export default function POSPage() {
           </div>
         </section>
 
+        <section className="py-24 bg-accent/5">
+          <div className="container px-3">
+            <div className="text-center mb-16 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight">Quick Setup Process</h2>
+              <p className="mt-4 text-muted-foreground">Get your store up and running with our streamlined 4-step implementation.</p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-4">
+              {[
+                { step: "01", title: "Assessment", desc: "We evaluate your current setup and recommend the right hardware." },
+                { step: "02", title: "Configuration", desc: "Set up your products, tax rules, and employee permissions." },
+                { step: "03", title: "Hardware Setup", desc: "Install and configure your devices with our certified equipment." },
+                { step: "04", title: "Training", desc: "Train your staff and go live with dedicated support." }
+              ].map((step, i) => (
+                <div key={i} className="relative p-8 rounded-2xl border border-border bg-card hover:border-amber-500/30 transition-all">
+                  <span className="absolute -top-4 left-6 text-4xl font-black text-amber-500/10">{step.step}</span>
+                  <h3 className="text-lg font-bold mb-2 mt-4">{step.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 border-t border-border/40">
+          <div className="container px-3 text-center">
+            <h2 className="text-3xl font-bold mb-6">Ready to modernize your store?</h2>
+            <p className="text-muted-foreground mb-10 max-w-xl mx-auto">Join 500+ enterprises using MKX Technologies to scale their business operations securely.</p>
+            <Button size="lg" className="bg-amber-500 hover:bg-amber-500/90 px-12">Contact Sales</Button>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>

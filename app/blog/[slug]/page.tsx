@@ -72,7 +72,7 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl mb-8 leading-[1.1] bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-extrabold tracking-tight lg:text-6xl mb-8 leading-[1.1] bg-linear-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
               {post.title}
             </h1>
 
