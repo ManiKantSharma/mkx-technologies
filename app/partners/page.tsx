@@ -21,7 +21,7 @@ export default function PartnersPage() {
       <main className="flex-1 pt-24">
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <motion.div
               initial="initial"
               animate="animate"
@@ -42,15 +42,15 @@ export default function PartnersPage() {
         </section>
 
         <section className="py-24 border-y border-border/40">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight">Partner Tiers</h2>
               <p className="mt-4 text-muted-foreground">Tailored programs for every stage of your growth.</p>
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               {tiers.map((tier, i) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ y: -5 }}
                   className="p-8 rounded-2xl border border-border/50 bg-card/50 hover:border-accent/30 transition-all text-center group"
                 >
@@ -65,7 +65,7 @@ export default function PartnersPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight">Why Partner with Us?</h2>
             </div>
@@ -88,58 +88,58 @@ export default function PartnersPage() {
         </section>
 
         <section className="py-24">
-           <div className="container px-6">
-              <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-                 <div className="space-y-8">
-                    <h2 className="text-3xl font-bold tracking-tight">Partner Resource Center</h2>
-                    <p className="text-muted-foreground">
-                       Once you join the program, you gain access to a dedicated portal with all the tools you need to succeed.
-                    </p>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                       {[
-                         "White-labeled marketing kits",
-                         "Dedicated partner Slack channel",
-                         "Sales enablement playbooks",
-                         "Beta access to new features",
-                         "Joint webinar opportunities",
-                         "Priority technical support"
-                       ].map((item, i) => (
-                         <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="h-4 w-4 text-accent" />
-                            {item}
-                         </div>
-                       ))}
+          <div className="container px-3">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div className="space-y-8">
+                <h2 className="text-3xl font-bold tracking-tight">Partner Resource Center</h2>
+                <p className="text-muted-foreground">
+                  Once you join the program, you gain access to a dedicated portal with all the tools you need to succeed.
+                </p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {[
+                    "White-labeled marketing kits",
+                    "Dedicated partner Slack channel",
+                    "Sales enablement playbooks",
+                    "Beta access to new features",
+                    "Joint webinar opportunities",
+                    "Priority technical support"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 className="h-4 w-4 text-accent" />
+                      {item}
                     </div>
-                 </div>
-                 <div className="p-8 rounded-3xl border border-border bg-card shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">
-                       Success Story
-                    </div>
-                    <p className="text-lg italic text-foreground mb-6">
-                       "Partnering with MKX Technologies allowed our agency to offer high-end HR solutions that were previously out of reach. Our revenue increased by 40% in just 6 months."
-                    </p>
-                     <div className="flex items-center gap-4">
-                        <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-accent/20">
-                           <Image
-                              src="/team/rajesh.png"
-                              alt="Rajesh Kumar"
-                              fill
-                              className="object-cover"
-                           />
-                        </div>
-                       <div>
-                          <p className="font-bold text-sm">Rajesh Kumar</p>
-                          <p className="text-xs text-muted-foreground">Director, RK Consulting</p>
-                       </div>
-                    </div>
-                 </div>
+                  ))}
+                </div>
               </div>
-           </div>
+              <div className="p-8 rounded-3xl border border-border bg-card shadow-2xl relative overflow-hidden">
+                <div className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded">
+                  Success Story
+                </div>
+                <p className="text-lg italic text-foreground mb-6">
+                  "Partnering with MKX Technologies allowed our agency to offer high-end HR solutions that were previously out of reach. Our revenue increased by 40% in just 6 months."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-accent/20">
+                    <Image
+                      src="/team/rajesh.png"
+                      alt="Rajesh Kumar"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Rajesh Kumar</p>
+                    <p className="text-xs text-muted-foreground">Director, RK Consulting</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <div className="h-16 w-16 bg-accent-muted rounded-full flex items-center justify-center mx-auto mb-6">
               <Handshake className="h-8 w-8 text-accent" />
             </div>

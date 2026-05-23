@@ -38,7 +38,7 @@ export default function CommunityPage() {
       <main className="flex-1 pt-24">
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <motion.div
               initial="initial"
               animate="animate"
@@ -56,7 +56,7 @@ export default function CommunityPage() {
         </section>
 
         <section className="py-24 border-y border-border/40">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight">Community Initiatives</h2>
               <p className="mt-4 text-muted-foreground">Ways to get involved and grow with us.</p>
@@ -83,7 +83,7 @@ export default function CommunityPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight mb-6">Featured Contributors</h2>
@@ -128,7 +128,7 @@ export default function CommunityPage() {
         </section>
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h2 className="text-3xl font-bold mb-6">Ready to join the conversation?</h2>
             <p className="text-muted-foreground mb-10 max-w-xl mx-auto">Our community is waiting for you. Join our Discord or follow us on Twitter to stay updated.</p>
             <div className="flex justify-center gap-4">

@@ -102,7 +102,7 @@ export default function LoginPage() {
         { }
         <div className="flex w-full flex-col lg:w-1/2">
 
-          <div className="flex flex-1 items-center justify-center px-6 pb-12 lg:px-12">
+          <div className="flex flex-1 items-center justify-center px-3 pb-12 lg:px-12">
             <div className="w-full max-w-md space-y-8">
               <div className="space-y-2 text-center">
                 <h2 className="text-3xl font-bold text-foreground">

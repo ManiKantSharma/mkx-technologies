@@ -31,7 +31,7 @@ export default function PricingPage() {
       <Header />
       <main className="flex-1 pt-24">
         <section className="py-20 lg:py-32">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">Simple, Transparent <span className="text-accent">Pricing</span></h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Choose the plan that's right for your business. No hidden fees, no complex contracts.
@@ -40,7 +40,7 @@ export default function PricingPage() {
         </section>
 
         <section className="pb-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-8 lg:grid-cols-2 max-w-4xl mx-auto">
               {tiers.map((tier) => (
                 <div
@@ -82,58 +82,58 @@ export default function PricingPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-           <div className="container px-6">
-              <h2 className="text-3xl font-bold text-center mb-16">Compare Plans</h2>
-              <div className="overflow-hidden rounded-3xl border border-border bg-card">
-                 <table className="w-full text-left text-sm">
-                    <thead className="bg-accent/50 font-bold">
-                       <tr>
-                          <th className="p-6 border-b border-border">Features</th>
-                          <th className="p-6 border-b border-border">Trial Plan</th>
-                          <th className="p-6 border-b border-border">Premium Plan</th>
-                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                       {[
-                         { feature: "Trial Period", s: "15 Days", p: "Lifetime / Active Sub" },
-                         { feature: "Active Employees", s: "Up to 3", p: "Unlimited" },
-                         { feature: "HRMS Modules", s: "Core Modules", p: "Full Suite (All Modules)" },
-                         { feature: "CRMS Modules", s: "—", p: "Full Suite" },
-                         { feature: "POS Support", s: "Basic", p: "Enterprise Multi-Store" },
-                         { feature: "API Access", s: "—", p: "Premium (High-Rate)" },
-                         { feature: "Support", s: "Email Support", p: "24/7 Priority Support" },
-                         { feature: "Security & SSO", s: "Standard", p: "Enterprise Grade / SSO" }
-                       ].map((row, i) => (
-                         <tr key={i} className="hover:bg-accent/20 transition-colors">
-                            <td className="p-6 font-bold">{row.feature}</td>
-                            <td className="p-6 text-muted-foreground">{row.s}</td>
-                            <td className="p-6 text-muted-foreground">{row.p}</td>
-                         </tr>
-                       ))}
-                    </tbody>
-                 </table>
-              </div>
-           </div>
+          <div className="container px-3">
+            <h2 className="text-3xl font-bold text-center mb-16">Compare Plans</h2>
+            <div className="overflow-hidden rounded-3xl border border-border bg-card">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-accent/50 font-bold">
+                  <tr>
+                    <th className="p-6 border-b border-border">Features</th>
+                    <th className="p-6 border-b border-border">Trial Plan</th>
+                    <th className="p-6 border-b border-border">Premium Plan</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {[
+                    { feature: "Trial Period", s: "15 Days", p: "Lifetime / Active Sub" },
+                    { feature: "Active Employees", s: "Up to 3", p: "Unlimited" },
+                    { feature: "HRMS Modules", s: "Core Modules", p: "Full Suite (All Modules)" },
+                    { feature: "CRMS Modules", s: "—", p: "Full Suite" },
+                    { feature: "POS Support", s: "Basic", p: "Enterprise Multi-Store" },
+                    { feature: "API Access", s: "—", p: "Premium (High-Rate)" },
+                    { feature: "Support", s: "Email Support", p: "24/7 Priority Support" },
+                    { feature: "Security & SSO", s: "Standard", p: "Enterprise Grade / SSO" }
+                  ].map((row, i) => (
+                    <tr key={i} className="hover:bg-accent/20 transition-colors">
+                      <td className="p-6 font-bold">{row.feature}</td>
+                      <td className="p-6 text-muted-foreground">{row.s}</td>
+                      <td className="p-6 text-muted-foreground">{row.p}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
 
         <section className="py-24">
-           <div className="container px-6">
-              <div className="mx-auto max-w-3xl text-center">
-                 <h2 className="text-3xl font-bold mb-12">Frequently Asked Questions</h2>
-                 <div className="space-y-6 text-left">
-                    {[
-                      { q: "Can I upgrade or downgrade my plan later?", a: "Yes, you can change your plan at any time from your account settings. Changes will be reflected in your next billing cycle." },
-                      { q: "Are there any setup fees?", a: "We do not charge any setup fees for Starter or Professional plans. Enterprise plans may have a white-glove onboarding fee depending on requirements." },
-                      { q: "Do you offer discounts for non-profits?", a: "Yes! We offer significant discounts for eligible non-profits and educational institutions. Please contact our sales team." }
-                    ].map((faq, i) => (
-                      <div key={i} className="p-6 rounded-2xl border border-border bg-card/30">
-                         <h4 className="font-bold mb-2">{faq.q}</h4>
-                         <p className="text-sm text-muted-foreground">{faq.a}</p>
-                      </div>
-                    ))}
-                 </div>
+          <div className="container px-3">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold mb-12">Frequently Asked Questions</h2>
+              <div className="space-y-6 text-left">
+                {[
+                  { q: "Can I upgrade or downgrade my plan later?", a: "Yes, you can change your plan at any time from your account settings. Changes will be reflected in your next billing cycle." },
+                  { q: "Are there any setup fees?", a: "We do not charge any setup fees for Starter or Professional plans. Enterprise plans may have a white-glove onboarding fee depending on requirements." },
+                  { q: "Do you offer discounts for non-profits?", a: "Yes! We offer significant discounts for eligible non-profits and educational institutions. Please contact our sales team." }
+                ].map((faq, i) => (
+                  <div key={i} className="p-6 rounded-2xl border border-border bg-card/30">
+                    <h4 className="font-bold mb-2">{faq.q}</h4>
+                    <p className="text-sm text-muted-foreground">{faq.a}</p>
+                  </div>
+                ))}
               </div>
-           </div>
+            </div>
+          </div>
         </section>
 
       </main>

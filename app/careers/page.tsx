@@ -29,7 +29,7 @@ export default function CareersPage() {
       <main className="flex-1 pt-24">
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <motion.div
               initial="initial"
               animate="animate"
@@ -47,7 +47,7 @@ export default function CareersPage() {
         </section>
 
         <section className="py-24 border-y border-border/40">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight">Perks & Benefits</h2>
               <p className="mt-4 text-muted-foreground">Why you'll love working at MKX Technologies.</p>
@@ -67,67 +67,67 @@ export default function CareersPage() {
         </section>
 
         <section className="py-24">
-           <div className="container px-6">
-              <div className="text-center mb-16">
-                 <h2 className="text-3xl font-bold tracking-tight">The Interview Process</h2>
-                 <p className="mt-4 text-muted-foreground">Clear and fast. We respect your time.</p>
-              </div>
-              <div className="grid gap-8 md:grid-cols-3">
-                 {[
-                   { step: "01", title: "Intro Call", desc: "A 30-min chat with our talent team to discuss the role and your aspirations." },
-                   { step: "02", title: "Technical Review", desc: "A deep dive into your skills with the team you'll be joining." },
-                   { step: "03", title: "Founder / Leadership", desc: "Final alignment on mission, culture, and long-term vision." }
-                 ].map((step, i) => (
-                   <div key={i} className="p-8 rounded-2xl border border-border bg-card relative">
-                      <span className="text-xs font-bold text-accent tracking-widest uppercase mb-4 block">Step {step.step}</span>
-                      <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-                   </div>
-                 ))}
-              </div>
-           </div>
-        </section>
-
-        <section className="py-24 bg-accent/5">
-           <div className="container px-6">
-              <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-                 <div className="space-y-6">
-                    <h2 className="text-3xl font-bold tracking-tight">Our Culture</h2>
-                    <p className="text-muted-foreground leading-relaxed">
-                       We're builders, thinkers, and problem solvers. At MKX Technologies, we foster an environment where curiosity is rewarded and ownership is expected.
-                    </p>
-                    <div className="space-y-6">
-                       {[
-                         { title: "Radical Transparency", desc: "We share numbers, plans, and challenges openly across the company." },
-                         { title: "Ship Early, Ship Often", desc: "We value progress over perfection and learn from real-world usage." },
-                         { title: "User Obsession", desc: "Every line of code we write must solve a real problem for our users." }
-                       ].map((val, i) => (
-                         <div key={i}>
-                            <h4 className="font-bold mb-1">{val.title}</h4>
-                            <p className="text-sm text-muted-foreground">{val.desc}</p>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
-                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl group">
-                    <Image
-                      src="/illustrations/careers_culture.png"
-                      alt="Careers Culture Illustration"
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-              </div>
-           </div>
-        </section>
-
-
-        <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="text-center mb-16">
-               <h2 className="text-3xl font-bold tracking-tight">Open Positions</h2>
-               <p className="mt-4 text-muted-foreground">Find your next challenge.</p>
+              <h2 className="text-3xl font-bold tracking-tight">The Interview Process</h2>
+              <p className="mt-4 text-muted-foreground">Clear and fast. We respect your time.</p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              {[
+                { step: "01", title: "Intro Call", desc: "A 30-min chat with our talent team to discuss the role and your aspirations." },
+                { step: "02", title: "Technical Review", desc: "A deep dive into your skills with the team you'll be joining." },
+                { step: "03", title: "Founder / Leadership", desc: "Final alignment on mission, culture, and long-term vision." }
+              ].map((step, i) => (
+                <div key={i} className="p-8 rounded-2xl border border-border bg-card relative">
+                  <span className="text-xs font-bold text-accent tracking-widest uppercase mb-4 block">Step {step.step}</span>
+                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 bg-accent/5">
+          <div className="container px-3">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-bold tracking-tight">Our Culture</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  We're builders, thinkers, and problem solvers. At MKX Technologies, we foster an environment where curiosity is rewarded and ownership is expected.
+                </p>
+                <div className="space-y-6">
+                  {[
+                    { title: "Radical Transparency", desc: "We share numbers, plans, and challenges openly across the company." },
+                    { title: "Ship Early, Ship Often", desc: "We value progress over perfection and learn from real-world usage." },
+                    { title: "User Obsession", desc: "Every line of code we write must solve a real problem for our users." }
+                  ].map((val, i) => (
+                    <div key={i}>
+                      <h4 className="font-bold mb-1">{val.title}</h4>
+                      <p className="text-sm text-muted-foreground">{val.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card shadow-2xl group">
+                <Image
+                  src="/illustrations/careers_culture.png"
+                  alt="Careers Culture Illustration"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <section className="py-24 bg-accent/5">
+          <div className="container px-3">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold tracking-tight">Open Positions</h2>
+              <p className="mt-4 text-muted-foreground">Find your next challenge.</p>
             </div>
             <div className="flex flex-col gap-6 max-w-4xl mx-auto">
               {jobs.map((job, i) => (
@@ -160,7 +160,7 @@ export default function CareersPage() {
         </section>
 
         <section className="py-24 border-t border-border/40">
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <h2 className="text-3xl font-bold mb-6">Don't see a fit?</h2>
             <p className="text-muted-foreground mb-10 max-w-xl mx-auto">We're always looking for talented individuals. Send us your CV and we'll keep you in mind for future openings.</p>
             <Button size="lg" className="bg-accent hover:bg-accent/90 px-12">General Application</Button>

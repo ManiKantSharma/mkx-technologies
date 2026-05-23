@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <div className="flex flex-1 pt-24">
-        {}
+        { }
         <div className="hidden w-1/2 flex-col justify-between bg-card p-12 lg:flex">
           <div className="space-y-6">
             <h1 className="text-4xl font-bold leading-tight text-foreground text-balance">
@@ -66,87 +66,87 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        {}
+        { }
         <div className="flex w-full flex-col lg:w-1/2">
-          <div className="flex flex-1 items-center justify-center px-6 pb-12 lg:px-12">
+          <div className="flex flex-1 items-center justify-center px-3 pb-12 lg:px-12">
             <div className="w-full max-w-md space-y-8">
-            {!isSubmitted ? (
-              <>
-                <div className="space-y-2 text-center">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-                    <Mail className="h-7 w-7 text-accent" />
+              {!isSubmitted ? (
+                <>
+                  <div className="space-y-2 text-center">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
+                      <Mail className="h-7 w-7 text-accent" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-foreground">Forgot password?</h2>
+                    <p className="text-muted-foreground">
+                      No worries, we&apos;ll send you reset instructions
+                    </p>
                   </div>
-                  <h2 className="text-3xl font-bold text-foreground">Forgot password?</h2>
-                  <p className="text-muted-foreground">
-                    No worries, we&apos;ll send you reset instructions
-                  </p>
-                </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <FieldGroup>
-                    <Field>
-                      <FieldLabel htmlFor="email">Email address</FieldLabel>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="you@company.com"
-                        required
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <FieldDescription>
-                        Enter the email associated with your account
-                      </FieldDescription>
-                    </Field>
-                  </FieldGroup>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <FieldGroup>
+                      <Field>
+                        <FieldLabel htmlFor="email">Email address</FieldLabel>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="you@company.com"
+                          required
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <FieldDescription>
+                          Enter the email associated with your account
+                        </FieldDescription>
+                      </Field>
+                    </FieldGroup>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Sending..." : "Send reset link"}
-                  </Button>
-                </form>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? "Sending..." : "Send reset link"}
+                    </Button>
+                  </form>
 
-                <p className="text-center text-sm text-muted-foreground">
-                  Remember your password?{" "}
-                  <Link
-                    href="/login"
-                    className="font-medium text-accent transition-colors hover:text-accent/80"
-                  >
-                    Sign in
-                  </Link>
-                </p>
-              </>
-            ) : (
-              <div className="space-y-6 text-center">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-                  <CheckCircle className="h-7 w-7 text-accent" />
-                </div>
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-bold text-foreground">Check your email</h2>
-                  <p className="text-muted-foreground">
-                    We&apos;ve sent a password reset link to
-                  </p>
-                  <p className="font-medium text-foreground">{email}</p>
-                </div>
-
-                <div className="rounded-lg border border-border bg-card p-4 text-left">
-                  <p className="text-sm text-muted-foreground">
-                    Didn&apos;t receive the email? Check your spam folder or{" "}
-                    <button
-                      type="button"
-                      onClick={() => setIsSubmitted(false)}
-                      className="text-accent hover:text-accent/80"
+                  <p className="text-center text-sm text-muted-foreground">
+                    Remember your password?{" "}
+                    <Link
+                      href="/login"
+                      className="font-medium text-accent transition-colors hover:text-accent/80"
                     >
-                      try another email address
-                    </button>
+                      Sign in
+                    </Link>
                   </p>
-                </div>
+                </>
+              ) : (
+                <div className="space-y-6 text-center">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
+                    <CheckCircle className="h-7 w-7 text-accent" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-bold text-foreground">Check your email</h2>
+                    <p className="text-muted-foreground">
+                      We&apos;ve sent a password reset link to
+                    </p>
+                    <p className="font-medium text-foreground">{email}</p>
+                  </div>
 
-                <Button asChild variant="outline" className="w-full">
-                  <Link href="/login">Back to login</Link>
-                </Button>
-              </div>
-            )}
+                  <div className="rounded-lg border border-border bg-card p-4 text-left">
+                    <p className="text-sm text-muted-foreground">
+                      Didn&apos;t receive the email? Check your spam folder or{" "}
+                      <button
+                        type="button"
+                        onClick={() => setIsSubmitted(false)}
+                        className="text-accent hover:text-accent/80"
+                      >
+                        try another email address
+                      </button>
+                    </p>
+                  </div>
+
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/login">Back to login</Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

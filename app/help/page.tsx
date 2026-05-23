@@ -41,7 +41,7 @@ export default function HelpPage() {
       <main className="flex-1 pt-24">
         <section className="relative overflow-hidden py-20 lg:py-32">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6 text-center">
+          <div className="container px-3 text-center">
             <motion.div
               initial="initial"
               animate="animate"
@@ -63,11 +63,11 @@ export default function HelpPage() {
         </section>
 
         <section className="py-24 border-y border-border/40">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {categories.map((cat, i) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ y: -5 }}
                   className="p-6 rounded-2xl border border-border/50 bg-card/50 hover:border-accent/30 transition-all cursor-pointer group"
                 >
@@ -83,14 +83,14 @@ export default function HelpPage() {
         </section>
 
         <section className="py-24 bg-accent/5">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="grid gap-12 lg:grid-cols-3">
               <div className="lg:col-span-2">
                 <h2 className="mb-8 text-3xl font-bold tracking-tight">Frequently Asked Questions</h2>
                 <div className="space-y-6">
                   {faqs.map((faq, i) => (
-                    <motion.div 
-                      key={i} 
+                    <motion.div
+                      key={i}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}

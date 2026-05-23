@@ -10,7 +10,7 @@ export default function GDPRPage() {
       <main className="flex-1">
         <section className="relative overflow-hidden pt-24 pb-12 lg:pt-32 lg:pb-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(45%_40%_at_50%_50%,rgba(167,4,0,0.08)_0%,transparent_100%)]" />
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-foreground">
                 GDPR <span className="text-accent">Compliance</span>
@@ -23,7 +23,7 @@ export default function GDPRPage() {
         </section>
 
         <section className="py-24">
-          <div className="container px-6">
+          <div className="container px-3">
             <div className="max-w-4xl mx-auto space-y-16">
               <div className="prose prose-sm max-w-none dark:prose-invert">
                 <h2 className="text-3xl font-bold mb-6 text-foreground">Overview</h2>
